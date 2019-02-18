@@ -1,0 +1,178 @@
+/* 
+                                                     PROJET HIVER 2019 : 
+				            SYNCHRONISATION DE FEUX DE CIRCULATION
+
+Equipe 4:
+  Benoit Verret - 111 099 148
+  Elida Melo - 111 153 228
+  Isabelle Eysseric - 111 189 609
+*/
+
+// -------------------------------------------------------------------------------------------------------------------------
+//                                             ETAPE 1 : SPECIFICATION EN FSP
+// -------------------------------------------------------------------------------------------------------------------------
+
+
+// --------------- Q1 ------------------------------------------------------------------------------------------------------
+//                 Définition du processus VOITURE
+// -------------------------------------------------------------------------------------------------------------------------
+							
+VOITURE = ( entrer -> { continue, tourneDroite, tourneGauche} -> sortir -> VOITURE ).	// {entrer, sortir} pour synchroniser
+
+/*
+// Si plusieurs voitures est, ouest et sud
+const N = 2 
+VOITURE = V[0],
+V[i:0..N]  = ( [i].entrer -> [i].{ continue, tourneDroite, tourneGauche} -> [i].sortir -> V[i+1] ).
+*/ 
+
+/* 
+Ancien énoncé :
+VOITURE = (approche -> SUITE),
+SUITE = (attendV -> {continue, tourneDroite, tourneGauche} -> VOITURE| {continue, tourneDroite, tourneGauche} -> VOITURE). 
+*/
+
+
+// --------------- Q2 ------------------------------------------------------------------------------------------------------
+//                 Mise en parallele de 3 voitures : est, ouest et sud
+// -------------------------------------------------------------------------------------------------------------------------
+
+set ID = { est, ouest, sud }	
+RESSOURCE  = ( entrer -> sortir -> RESSOURCE ).
+||COMPO_VOITURES = ( [i:ID]:VOITURE || [ID]::RESSOURCE ).
+
+/*
+// Si plusieurs voitures est, ouest et sud
+||COMPO_VOITURE = ( est:VOITURE || ouest:VOITURE || sud:VOITURE ) 
+				  /{ [ID].continue / [N].continue, 
+				     [ID].tourneDroite / [N].tourneDroite, 
+				     [ID].tourneDroite / [N].tourneGauche}.
+*/
+
+/*
+Ancien énoncé :
+ORDREVOITURE = ( approche -> ORDREVOITURE | approche -> attendV -> ORDREVOITURE ).
+// Identique à convoi
+ORDREVOITURE = (approche -> {continue, tourneDroite, tourneGauche} -> ORDREVOITURE 
+			   |approche -> {approche , attendV} -> {continue, tourneDroite, tourneGauche} -> ORDREVOITURE)
+*/
+
+
+// --------------- Q3 ------------------------------------------------------------------------------------------------------
+//                 Définition du processus PIETONS avec une seule action: traverser
+// -------------------------------------------------------------------------------------------------------------------------
+
+PIETONS = ( traverse -> PIETONS ).
+
+/*
+Ancien énoncé :
+||CONVOI = (VOITURE || ORDREVOITURE).
+*/
+
+
+// --------------- Q4 ------------------------------------------------------------------------------------------------------
+//                 Processus LUMIERE avec 
+//                 - sa définition 
+//                 - sa mise en parallele de 3 lumieres : est, ouest et sud, 
+//                 - spécification des actions conjointes au processus VOITURE
+//                 - Contraintes sur plusieurs lumières
+// -------------------------------------------------------------------------------------------------------------------------
+
+LUMIERE = ( rouge -> vert -> LUMIERE ).
+||COMPO_LUMIERES = ( [i:ID]:LUMIERE ).
+
+/* 
+Ancien énoncé :
+set C = { est, ouest, sud }   
+||CONVOIS1 = ( [i:ID_Convoi]:CONVOI || [ID_Convoi]::VOITURE ).
+*/
+
+
+// --------------- Q5 ------------------------------------------------------------------------------------------------------
+//                 Processus controlant :
+//                 - le passage des voitures, 
+//                 - le passage des pietons 
+//                 - le changement de lumières
+// -------------------------------------------------------------------------------------------------------------------------
+
+/*
+const M = 2
+range R = 0..M
+range S = 1..M
+
+INTERSECTION          = INTERSECTION[0][0][0],
+INTERSECTION[e:M][s:M] = ( 
+                        when(e==0 && s < M) est[i:S].entrer -> INTERSECTION[e+1][s]
+                      | when(e > 0)         est[j:S].sortir -> INTERSECTION[e-1][s]
+
+                      | when(s==0 && e < M) sud[i:S].entrer -> INTERSECTION[e][s+1]
+                      | when(s > 0)         sud[j:S].sortir -> INTERSECTION[e][s-1] ).
+
+property SENS  = ( est[S].entrer -> EST[1] 
+				 | sud[S].entrer -> SUD[1] ), 	
+	 
+	EST[k:S]  =  ( when (k <M) est[S].entrer  -> EST[k+1]  
+				 | when (k==1) est[S].sortir  -> SENS
+				 | when (k >1) est[S].sortir  -> EST[k-1] ),
+
+	SUD[k:S]  =  ( when (k <M) sud[S].entrer  -> SUD[k+1]
+				 | when (k==1) sud[S].sortir  -> SENS
+				 | when (k >1) sud[S].sortir - > SUD[k-1] ).
+
+||COMPO_SENS = ( SENS || COMPO_VOITURES).
+*/ 
+
+/*
+Ancien énoncé :
+PIETONS1 = ( arrivent1 -> feuPietons1 -> attentePietons1 -> PIETONS1 | arrivent1 -> traversent1 -> PIETONS1 ).
+*/
+
+
+// --------------- Q6 ------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------------------------------
+
+/*
+Ancien énoncé :
+LUMIERE   = ( rouge -> vert -> clignotant -> LUMIERE ).
+LUMIERES = ( feux[r:0..4][v:0..4]  -> (
+             when ( v >= 1 ) vert -> LUMIERES | 
+	     when ( r == 3 ) clignotant -> LUMIERES | 
+	     when ( r == 4 ) rouge -> LUMIERES  ) ). 
+||COMPO_LUM = ( LUMIERE || LUMIERES ).
+
+CIRCULATION_VOITURES = ( vert -> { continue, tourneDroite } -> CIRCULATION_VOITURE | 
+                         clignotant -> { continue, tourneDroite, tourneGauche } -> CIRCULATION_VOITURE | 
+			 rouge -> attendV -> CIRCULATION_VOITURE ).
+CIRCULATION_PIETONS  = ( vert -> attentePietons1 -> CIRCULATION_PIETONS | 
+                         clignotant -> attentePietons1 -> CIRCULATION_PIETONS | 
+			 rouge -> traversent1 -> CIRCULATION_PIETONS ).
+||LUM = ( LUMIERE || CIRCULATION_VOITURES || CIRCULATION_PIETONS || CONVOI).
+*/
+
+
+// --------------- Q7 ------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+// --------------- Q8 ------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+// --------------- Q9 ------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------------------------------
+
+
+
+/*
+ETAPE 1 : MODELISATION EN JAVA
+*/
+

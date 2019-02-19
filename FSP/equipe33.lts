@@ -67,9 +67,9 @@ const False = 0
 const True = 1
 range Bool = False..True
 
-property TRAVERSE_LUMIERES_ROUGE = TRAVERSE_LUMIERES_ROUGE_PARAMETRE[False][False][False],
+property TRAVERSE_LUMIERES_ROUGE = TRAVERSE_LUMIERES_ROUGE_PARAMETRE[False][False][False], // initiallement toutes les lumierers sont rouges
 TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert:Bool][sudvert:Bool][ouestvert:Bool] =
-		( when(estvert==False && sudvert==False && ouestvert==False) traverse -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][sudvert][ouestvert]
+		( when(estvert==False && sudvert==False && ouestvert==False) traverse -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][sudvert][ouestvert] // l'action traverse se fait seulement dans cette condition
         | when(estvert==False) est.passeauvert  -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[True][sudvert][ouestvert]
 		| when(estvert==True) est.passeaurouge -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[False][sudvert][ouestvert]
 		| when(sudvert==False) sud.passeauvert  -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][True][ouestvert]

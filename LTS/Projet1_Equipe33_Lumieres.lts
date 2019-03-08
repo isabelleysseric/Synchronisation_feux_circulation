@@ -5,39 +5,51 @@
 //Isabelle Eysseric - 111 189 609
 //Slim Ben Yahia - 111 150 230
 
-// Intersection T
+//-----------------------------------Intersection T------------------------------------------------------------------------------------------------------------------------------
 
-set DirectionAlphabet = {est, ouest, sud}
 
-set DirectionAlphabet2 = {est2, ouest2, sud2, nord2}
+set DirectionAlphabet = {est, ouest, sud} 
+
+
 
 // Q1----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 VOITURE = ( {continue, tourneDroite, tourneGauche} -> VOITURE ).
+
+
 // Q2----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ||VOITURES = (DirectionAlphabet:VOITURE) \ {est.tourneDroite, sud.continue, ouest.tourneGauche}.
 
+
 // Q3----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 PIETONS = ( traverse -> PIETONS ).
+
+
 // Q4----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 LUMIERE = ( passeauvert -> passeaurouge -> LUMIERE ).
 
 ||LUMIERES = ( DirectionAlphabet:LUMIERE ).
 
 //Controles qui empechent deux lumieres adjacentes vertes en meme temps:
-
 CONTROLE_LUMIERES_SUD_EST = ( sud.passeauvert -> sud.passeaurouge -> CONTROLE_LUMIERES_SUD_EST
 						| est.passeauvert -> est.passeaurouge -> CONTROLE_LUMIERES_SUD_EST).
 
 CONTROLE_LUMIERES_SUD_OUEST = ( sud.passeauvert -> sud.passeaurouge -> CONTROLE_LUMIERES_SUD_OUEST
 						| ouest.passeauvert -> ouest.passeaurouge -> CONTROLE_LUMIERES_SUD_OUEST).
 
+//Controle qui va permettre aux lumieres opposees d'etre vertes en meme temps ou bien une verte et l'autre rouge, tout en respectant la condition d'adjacence :
 ||CONTROLE_LUMIERES = ( CONTROLE_LUMIERES_SUD_EST || CONTROLE_LUMIERES_SUD_OUEST ).
+
+
+
 // Q5----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//Controle pour garantir qu'un pieton ne traverse que quand toutes les lumieres sont rouges
+//Controle pour garantir qu'un pieton ne traverse que quand tous le lumieres sont rouges, c-a-d synchronisation sur l'action traverse pour chaque lumiere
 CONTROLE_PIETONS_LUMIERE  = (traverse -> CONTROLE_PIETONS_LUMIERE |  passeauvert -> passeaurouge -> CONTROLE_PIETONS_LUMIERE).
+
 ||CONTROLE_PASSAGEPIETONS = (DirectionAlphabet: CONTROLE_PIETONS_LUMIERE)  /{traverse/{DirectionAlphabet}.traverse}.
 
+
+//Controle pour garantir que les actions d'une voiture respectent les conditions de la lumiere (face est ou face ouest) en prennent en compte l'etat de la lumiere opposee:
 CONTROLE_VOITURE_EST_ROUGE_OUEST_ROUGE = ( est.passeauvert -> CONTROLE_VOITURE_EST_VERT_OUEST_ROUGE
 											| ouest.passeauvert -> CONTROLE_VOITURE_EST_ROUGE_OUEST_VERT),
 CONTROLE_VOITURE_EST_ROUGE_OUEST_VERT = ( est.passeauvert -> CONTROLE_VOITURE_EST_VERT_OUEST_VERT
@@ -50,15 +62,23 @@ CONTROLE_VOITURE_EST_VERT_OUEST_VERT = ( est.passeaurouge -> CONTROLE_VOITURE_ES
 											| ouest.passeaurouge-> CONTROLE_VOITURE_EST_VERT_OUEST_ROUGE
 											| {est.continue, ouest.{continue, tourneDroite}} -> CONTROLE_VOITURE_EST_VERT_OUEST_VERT).
 
+
+//Controle pour garantir que les actions d'une voiture respectent les conditions de la lumiere sud :
 CONTROLE_VOITURE_SUD_ROUGE = ( sud.passeauvert -> CONTROLE_VOITURE_SUD_VERT),
 CONTROLE_VOITURE_SUD_VERT = ( sud.{tourneDroite, tourneGauche} -> CONTROLE_VOITURE_SUD_VERT
 						| sud.passeaurouge -> CONTROLE_VOITURE_SUD_ROUGE).
 
+
 ||CONTROLE_VOITURES = ( CONTROLE_VOITURE_EST_ROUGE_OUEST_ROUGE || CONTROLE_VOITURE_SUD_ROUGE).
 
+
+//Processus qui controle le passage des voitures, des pietons et le changement des lumieres :
 ||CONTROLE_INTERSECTION = ( CONTROLE_PASSAGEPIETONS  || CONTROLE_VOITURES || CONTROLE_LUMIERES).
 
+
 ||INTERSECTION = (LUMIERES || PIETONS || VOITURES || CONTROLE_INTERSECTION).
+
+
 
 // Q6----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const False = 0
@@ -67,7 +87,8 @@ range Bool = False..True
 
 property TRAVERSE_LUMIERES_ROUGE = TRAVERSE_LUMIERES_ROUGE_PARAMETRE[False][False][False],
 TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert:Bool][sudvert:Bool][ouestvert:Bool] =
-		( when(estvert==False && sudvert==False && ouestvert==False) traverse -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][sudvert][ouestvert]
+		( when(estvert==False && sudvert==False && ouestvert==False) traverse -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][sudvert][ouestvert] // l'action traverse se fait seulement dans cette condition
+
         | when(estvert==False) est.passeauvert  -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[True][sudvert][ouestvert]
 		| when(estvert==True) est.passeaurouge -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[False][sudvert][ouestvert]
 		| when(sudvert==False) sud.passeauvert  -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][True][ouestvert]
@@ -76,6 +97,8 @@ TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert:Bool][sudvert:Bool][ouestvert:Bool] =
 		| when(ouestvert==True) ouest.passeaurouge -> TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert][sudvert][False]).
 
 ||TEST1 = ( INTERSECTION || TRAVERSE_LUMIERES_ROUGE ).
+
+
 
 // Q8----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Oui, il faut spécifier des singletons car on veut veérifier que chacune des actions peut etre executée dans toutes les composantes fortement connexes.
@@ -89,7 +112,13 @@ TRAVERSE_LUMIERES_ROUGE_PARAMETRE[estvert:Bool][sudvert:Bool][ouestvert:Bool] =
 //progress OUEST_CONTINUE = {ouest.continue}
 //progress OUEST_TOURNE_DROITE = {ouest.tourneDroite}
 
+
+
 // Q7----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Proprietes pour verifier l'absence de collision selon l'etat de la lumiere, en permettant seulement les voitures de realiser les actions qui sont en accord avec cet etat 
+//et aussi en prenant compte les lumieres adjacentes et face opposee
+
 property ABSENCE_COLLISION_EST = ABSENCE_COLLISION_EST_PARAMETRE[False][False][False], 
 ABSENCE_COLLISION_EST_PARAMETRE[estvert:Bool][sudvert:Bool][ouestvert:Bool] =
 		( when(estvert==True && sudvert==False && ouestvert==False) est.tourneGauche -> ABSENCE_COLLISION_EST_PARAMETRE[estvert][sudvert][ouestvert]
@@ -121,13 +150,21 @@ ABSENCE_COLLISION_OUEST_PARAMETRE[sudvert:Bool][ouestvert:Bool] =
 
 ||TEST2 = ( INTERSECTION || ABSENCE_COLLISION_EST || ABSENCE_COLLISION_SUD || ABSENCE_COLLISION_OUEST).
 
-// Intersection +
+// ----------------------Intersection +  ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+set DirectionAlphabet2 = {est2, ouest2, sud2, nord2}
+
+
 // Q9----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-||VOITURES_2 = ( [i:DirectionAlphabet2]:VOITURE).
+
+//Dans cette question vous trouverez les versions des questions precedentes incluant la lumiere Nord2
+
+||VOITURES_2 = ( DirectionAlphabet2:VOITURE ).
 
 PIETONS_2 = ( traverse2 -> PIETONS_2 ).
 
-||LUMIERES_2 = ( [i:DirectionAlphabet2]:LUMIERE).
+||LUMIERES_2 = ( DirectionAlphabet2:LUMIERE ).
 
 CONTROLE_LUMIERES_SUD_EST_2 = ( sud2.passeauvert -> sud2.passeaurouge -> CONTROLE_LUMIERES_SUD_EST_2
 						| est2.passeauvert -> est2.passeaurouge -> CONTROLE_LUMIERES_SUD_EST_2).
@@ -260,7 +297,11 @@ ABSENCE_COLLISION_NORD_PARAMETRE_2[estvert:Bool][sudvert:Bool][ouestvert:Bool][n
 
 ||TEST4 = ( INTERSECTION_2 || ABSENCE_COLLISION_EST_2 || ABSENCE_COLLISION_OUEST_2 || ABSENCE_COLLISION_SUD_2 || ABSENCE_COLLISION_NORD_2).
 
+
+
 // Q10----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Processus VOITURE_SYNC tel quel suggere dans l'enonce
 
 VOITURE_SYNC = ({approcheC, approcheG, approcheD} -> VSYNC ),
 VSYNC = (continue -> finitC -> VOITURE_SYNC |
@@ -271,6 +312,10 @@ attend -> VSYNC ).
 || VOITURES_SYNC1 = DirectionAlphabet:VOITURE_SYNC.
 || VOITURES_SYNC2 = DirectionAlphabet2:VOITURE_SYNC.
 ||VOITURES_SYNC = (VOITURES_SYNC1 || VOITURES_SYNC2).
+
+
+//Parallelisation des intersections, lumieres, pietons, les controles de traverse en lumiere rouge, 
+//prorietes de securite et renommage sur les actions passeauvert et passeaurouge de chaque direction pour la sychronisation sur ces actions
 
 ||SYNC_INTERSECTION = (TEST1 || TEST2 || TEST3 || TEST4) /{
 							est_sync.passeauvert/{est, est2}.passeauvert,

@@ -28,25 +28,25 @@ public class TraficController {
 		while(eastLight.isGreen() || westLight.isGreen() || southLight.isGreen()) {
 			wait();
 		}
-		
-		System.out.println("Pietons traverse");
+		System.out.println("🚶 PEDESTRIANS::CROSS");
 		
 		notifyAll();
 	}
 	
 	public synchronized void eastSwitchToGreen() throws Exception {
 		while(southLight.isGreen()) wait();
-		
+	
 		eastLight.switchTo(LightColor.GREEN);
+		
+		printLightStates();
 		intersection.carMove(Direction.EAST);
-		
 		notifyAll();
-		
 	}
 	
 	public synchronized void eastSwitchToRed() throws InterruptedException {
 		eastLight.switchTo(LightColor.RED);
 		
+		printLightStates();
 		notifyAll();
 	}
 	
@@ -56,16 +56,17 @@ public class TraficController {
 		}
 		
 		westLight.switchTo(LightColor.GREEN);
+		printLightStates();
 		intersection.carMove(Direction.WEST);
 		notifyAll();
 	}
 	
 	public synchronized void westSwitchToRed() throws InterruptedException {
 		westLight.switchTo(LightColor.RED);
+		printLightStates();
 		
 		notifyAll();
 	}
-	
 	
 	public synchronized void southSwitchToGreen() throws Exception {
 		while(westLight.isGreen() || eastLight.isGreen()) {
@@ -73,16 +74,22 @@ public class TraficController {
 		}
 		
 		southLight.switchTo(LightColor.GREEN);
-		
+		printLightStates();
 		intersection.carMove(Direction.SOUTH);
+		
 		notifyAll();
 	}
 	
 	public synchronized void southSwitchToRed() throws InterruptedException {
 		southLight.switchTo(LightColor.RED);
+		printLightStates();
 		
 		notifyAll();
 	}
-
-
+	
+	private void printLightStates() {
+		String lightStates = String.format("🚥 EAST:%s WEST:%s SOUTH:%s", eastLight.getColor(), westLight.getColor(), southLight.getColor());
+		
+		System.out.println(lightStates);
+	}
 }

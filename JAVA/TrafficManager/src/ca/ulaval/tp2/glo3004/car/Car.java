@@ -28,7 +28,7 @@ public abstract class Car {
 	}
 	
 	protected void printMovement(Action action) {
-		String movement = String.format("%s [CAR] %s", direction, action.toString().toLowerCase());
+		String movement = String.format("🚙 CAR:%s::%s", direction, action);
 		System.out.println(movement);
 	}
 	

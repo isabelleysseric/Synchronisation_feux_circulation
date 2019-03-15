@@ -11,6 +11,7 @@ public class ThreeWayIntersection extends Intersection {
 
 	@Override
 	public Direction[] getAllowedDirections() {
+		//return new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH};
 		return new Direction[] {Direction.EAST};
 	}
 	

@@ -14,7 +14,6 @@ public class Light {
 	
 	public void switchTo(LightColor color) {
 			this.color = color;
-			printCurrentState();
 	}
 
 	public Direction getDirection() {
@@ -25,17 +24,21 @@ public class Light {
 		return color;
 	}
 	
-	private void printCurrentState() {
-		String status = String.format("%s *LIGHT* is %s", direction, color);
-		System.out.println(status);
+	public String getState() {
+		String state = String.format("🚥 %s::%s", direction, color);
+		return state;
 	}
+	
+	/*private void printCurrentState() {
+		String status = String.format("🚥 LIGHT:%s::%s", direction, color);
+		System.out.println(status);
+	}*/
 
 	public boolean isGreen() {
 		return color == LightColor.GREEN;
 	}
 
 	public boolean isRed() {
-		
 		return color == LightColor.RED;
 	}
 	

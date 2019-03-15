@@ -18,7 +18,7 @@ public class Main {
 	public static void main(String[] args) throws InvalidCarActionException {
 		
 		System.out.println("TP2 setup ...");
-		
+		 
 		Intersection threeWayIntersection = new ThreeWayIntersection();
 		Direction[] directions = threeWayIntersection.getAllowedDirections();
 		

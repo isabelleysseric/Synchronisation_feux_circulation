@@ -2,16 +2,19 @@ package ca.ulaval.tp2.glo3004.car;
 
 public enum Action {
 
-	CONTINUE(0), TURN_LEFT(1), TURN_RIGHT(2);
-	
-	private final int value;
-
-    private Action(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
+	CONTINUE("➜"), TURN_LEFT("⤴"), TURN_RIGHT("⤵");
+	 private String icon;
+	 
+	 Action(String icon) {
+	        this.icon = icon;
+	 }
+	 
+	 public String getIcon() {
+		 return icon;
+	  }
+	 
+	 public String toString() {
+		 return String.format("%s%s", this.name(), this.icon);
+	 }
+    
 }

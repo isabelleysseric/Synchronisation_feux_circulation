@@ -7,7 +7,7 @@ public class Light {
 	private Direction direction;
 	private LightColor color;
 	
-	public Light(Direction direction, Object lock) {
+	public Light(Direction direction) {
 		this.direction = direction;
 		this.color = LightColor.RED;
 	}
@@ -32,6 +32,11 @@ public class Light {
 
 	public boolean isGreen() {
 		return color == LightColor.GREEN;
+	}
+
+	public boolean isRed() {
+		
+		return color == LightColor.RED;
 	}
 	
 }

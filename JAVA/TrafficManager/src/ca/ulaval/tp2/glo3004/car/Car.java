@@ -1,6 +1,6 @@
 package ca.ulaval.tp2.glo3004.car;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Random;
 
 import ca.ulaval.tp2.glo3004.Direction;
@@ -8,22 +8,23 @@ import ca.ulaval.tp2.glo3004.Direction;
 public abstract class Car {
 
 	private Direction direction;
-	protected List<Action> allowedActions;
+	private Action[] allowedActions;
 
-	public Car(Direction direction, boolean forCrossIntersection) {
+	public Car(Direction direction, Action[] allowedActions) {
 		this.direction = direction;
-		this.initializeAllowedActions(forCrossIntersection);
+		this.allowedActions = allowedActions;
 	}
 	
 	public void move(Action action) throws InvalidCarActionException {
-		if(!this.allowedActions.contains(action)) {
+		boolean actionIsAllowed = Arrays.asList(allowedActions).contains(action);
+		
+		if(!actionIsAllowed) {
 			String errorMessage = String.format("%s car can't %s", direction, action.toString());
 			
 			throw new InvalidCarActionException(errorMessage);
 		}
-		else {
-			this.printMovement(action);
-		}
+		
+		this.printMovement(action);
 	}
 	
 	protected void printMovement(Action action) {
@@ -33,15 +34,9 @@ public abstract class Car {
 	
 	 public void randomMove() throws InvalidCarActionException {
 	        Random random = new Random();
-	        int numberOfActions = allowedActions.size();
 	       
-	        Action[] values = new Action[numberOfActions];
-	        values = allowedActions.toArray(values);
-	        
-	        Action randomAction = values[random.nextInt(values.length)];
+	        Action randomAction = allowedActions[random.nextInt(allowedActions.length)];
 	      
 	        this.move(randomAction); 
 	   }
-	
-	 public abstract void initializeAllowedActions(boolean isForCrossIntersection);
 }

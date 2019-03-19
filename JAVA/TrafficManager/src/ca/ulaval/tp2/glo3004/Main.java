@@ -3,13 +3,14 @@ package ca.ulaval.tp2.glo3004;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
+import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
+import ca.ulaval.tp2.glo3004.control.ThreeWayIntersectionController;
 import ca.ulaval.tp2.glo3004.control.TraficController;
-import ca.ulaval.tp2.glo3004.control.runnable.GreenRunnable;
+import ca.ulaval.tp2.glo3004.control.runnable.CarRunnable;
+import ca.ulaval.tp2.glo3004.control.runnable.LightRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.PedestrianRunnable;
-import ca.ulaval.tp2.glo3004.control.runnable.RedRunnable;
-import ca.ulaval.tp2.glo3004.intersection.Intersection;
-import ca.ulaval.tp2.glo3004.intersection.ThreeWayIntersection;
 
 public class Main {
 
@@ -19,13 +20,17 @@ public class Main {
 		
 		System.out.println("TP2 setup ...");
 		 
-		Intersection threeWayIntersection = new ThreeWayIntersection();
-		Direction[] directions = threeWayIntersection.getAllowedDirections();
+		Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST};
+		CarFactory carFactory = new CarFactory();
 		
-		TraficController traficController = new TraficController(threeWayIntersection);
+		int numberOfCars = 2;
+		int numberOfPedestrians = 2;
+		ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
+		
+		TraficController traficController = new ThreeWayIntersectionController(carFactory, parameters);
 		
 		initializePedestriansThread(traficController);
-		initializeRedThread(directions, traficController);
+		initializeAllDirectionThreads(directions, traficController);
 		
 		for(Thread thread: threads) {
 			thread.start();
@@ -33,13 +38,14 @@ public class Main {
 		
 	}
 	
-	private static void initializeRedThread(Direction[] directions, TraficController traficController) {
+	private static void initializeAllDirectionThreads(Direction[] directions, TraficController traficController) {
 		
 		for(Direction direction: directions) {
-			Runnable redRunnable = new RedRunnable(direction, traficController);
-			addNewThread(redRunnable, direction, "RED");
 			
-			Runnable greenRunnable = new GreenRunnable(direction, traficController);
+			Runnable carRunnable = new CarRunnable(direction, traficController);
+			addNewThread(carRunnable, direction, "CAR");
+			
+			Runnable greenRunnable = new LightRunnable(direction, traficController);
 			addNewThread(greenRunnable, direction, "GREEN");
 		}
 	}
@@ -58,3 +64,7 @@ public class Main {
 	}
 	
 }
+
+//Quand est vert notify contune, tourne droite pour 10 voitures, ensuite passer au rouge
+// Paasse au rouge, si est vert -> attend
+// Seule lumiere ne pouvant pas etre executé simultanement est et sud, sud et ouest

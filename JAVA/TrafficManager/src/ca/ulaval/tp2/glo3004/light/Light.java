@@ -16,6 +16,14 @@ public class Light {
 			this.color = color;
 	}
 
+	public synchronized void switchToRed() {
+		this.color = LightColor.RED;
+}
+
+	public synchronized void switchToGreen() {
+		this.color = LightColor.GREEN;
+}
+
 	public Direction getDirection() {
 		return direction;
 	}

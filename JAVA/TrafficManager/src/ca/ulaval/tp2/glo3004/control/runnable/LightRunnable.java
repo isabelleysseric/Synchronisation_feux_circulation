@@ -34,13 +34,13 @@ public class LightRunnable implements Runnable {
 		switch (direction) {
 
 		case EAST:
-			controler.eastSwitchToGreen();
+			controler.controlEastLight();
 			break;
 		case WEST:
-			controler.westSwitchToGreen();
+			controler.controlWestLight();
 			break;
 		case SOUTH:
-			controler.southSwitchToGreen();
+			controler.controlSouthLight();
 			break;
 		case NORTH:
 			break;

@@ -64,7 +64,3 @@ public class Main {
 	}
 	
 }
-
-//Quand est vert notify contune, tourne droite pour 10 voitures, ensuite passer au rouge
-// Paasse au rouge, si est vert -> attend
-// Seule lumiere ne pouvant pas etre executé simultanement est et sud, sud et ouest

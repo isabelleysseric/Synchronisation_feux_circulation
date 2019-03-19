@@ -66,15 +66,16 @@ public abstract class TraficController {
 		System.out.print(lightStates);
 	}
 
-	public synchronized void eastSwitchToGreen() throws Exception {
-		while (lights.get(Direction.SOUTH).isGreen())
+	public synchronized void controlEastLight() throws Exception {
+		while (lights.get(Direction.SOUTH).isGreen()) {
 			wait();
-
+		}
+		
 		Direction direction = Direction.EAST;
-		handleSwitchToGreenState(direction);
+		handleLightState(direction);
 	}
 
-	private void handleSwitchToGreenState(Direction direction) throws InterruptedException {
+	private void handleLightState(Direction direction) throws InterruptedException {
 		lights.get(direction).switchTo(LightColor.GREEN);
 		notifyAll();
 
@@ -87,22 +88,22 @@ public abstract class TraficController {
 		notifyAll();
 	}
 	
-	public synchronized void westSwitchToGreen() throws Exception {
+	public synchronized void controlWestLight() throws Exception {
 		while (lights.get(Direction.SOUTH).isGreen()) {
 			wait();
 		}
 		
 		Direction direction = Direction.WEST;
-		handleSwitchToGreenState(direction);
+		handleLightState(direction);
 	}
 
-	public synchronized void southSwitchToGreen() throws Exception {
+	public synchronized void controlSouthLight() throws Exception {
 		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
 			wait();
 		}
 		
 		Direction direction = Direction.SOUTH;
-		handleSwitchToGreenState(direction);
+		handleLightState(direction);
 	}
 
 	public synchronized void carMove(Direction direction) throws Exception {

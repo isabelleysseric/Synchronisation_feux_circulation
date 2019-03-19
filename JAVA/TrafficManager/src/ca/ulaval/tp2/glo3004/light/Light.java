@@ -37,11 +37,6 @@ public class Light {
 		return state;
 	}
 	
-	/*private void printCurrentState() {
-		String status = String.format("🚥 LIGHT:%s::%s", direction, color);
-		System.out.println(status);
-	}*/
-
 	public boolean isGreen() {
 		return color == LightColor.GREEN;
 	}

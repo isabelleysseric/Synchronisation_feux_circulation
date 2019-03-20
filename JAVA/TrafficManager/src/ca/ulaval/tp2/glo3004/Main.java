@@ -1,10 +1,14 @@
 package ca.ulaval.tp2.glo3004;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
+import ca.ulaval.tp2.glo3004.control.CrossIntersectionController;
 import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.control.ThreeWayIntersectionController;
 import ca.ulaval.tp2.glo3004.control.TraficController;
@@ -19,18 +23,45 @@ public class Main {
 	public static void main(String[] args) throws InvalidCarActionException {
 		
 		System.out.println("TP2 setup ...");
-		 
-		Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST};
-		CarFactory carFactory = new CarFactory();
 		
-		int numberOfCars = 2;
-		int numberOfPedestrians = 2;
-		ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
-		
-		TraficController traficController = new ThreeWayIntersectionController(carFactory, parameters);
-		
-		initializePedestriansThread(traficController);
-		initializeAllDirectionThreads(directions, traficController);
+		BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in)); 
+        
+        System.out.print("Quel intersection voulez-vous exécuter ? (1 pour l'insterction en T, 2 pour l'instersection ordinaire et 3 pour les deux synchronisées)");
+        
+        String param = "";
+		try {
+			param = myReader.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+  
+		if (param.equals("1")) {
+			Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST};
+			CarFactory carFactory = new CarFactory();
+			
+			int numberOfCars = 2;
+			int numberOfPedestrians = 2;
+			ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
+			
+			TraficController traficController = new ThreeWayIntersectionController(carFactory, parameters);
+			
+			initializePedestriansThread(traficController);
+			initializeAllDirectionThreads(directions, traficController);
+		} else if (param.equals("2")){ 
+			Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST,Direction.SOUTH, Direction.NORTH};
+			CarFactory carFactory = new CarFactory();
+			
+			int numberOfCars = 2;
+			int numberOfPedestrians = 2;
+			ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
+			
+			TraficController traficController = new CrossIntersectionController(carFactory, parameters);
+			
+			initializePedestriansThread(traficController);
+			initializeAllDirectionThreads(directions, traficController);
+		} else {
+			// A faire (cas 2 instersections)
+		} 		
 		
 		for(Thread thread: threads) {
 			thread.start();

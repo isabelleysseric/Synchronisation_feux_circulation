@@ -22,7 +22,7 @@ public class EastCar extends Car {
 	
 	public Movement getCrossIntersectionMovement() {
 		Action[]actionsWhenPriority = new Action[]{Action.TURN_LEFT, Action.CONTINUE, Action.TURN_RIGHT};
-		Action[] actionsWhenOppositeSideOn = new Action[] {};
+		Action[] actionsWhenOppositeSideOn = new Action[] {Action.CONTINUE, Action.TURN_RIGHT};
 		
 		return new Movement(actionsWhenPriority, actionsWhenOppositeSideOn);
 	}

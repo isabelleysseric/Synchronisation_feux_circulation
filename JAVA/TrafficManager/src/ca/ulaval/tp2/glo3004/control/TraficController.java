@@ -42,12 +42,21 @@ public abstract class TraficController {
 	}
 
 	public synchronized void pedestrianPass() throws InterruptedException {
-
-		while (lights.get(Direction.EAST).isGreen() 
-				|| lights.get(Direction.WEST).isGreen()
-				|| lights.get(Direction.SOUTH).isGreen()) {
-			wait();
+		if (intersectionType == IntersectionType.THREE_WAY) {
+			while (lights.get(Direction.EAST).isGreen() 
+					|| lights.get(Direction.WEST).isGreen()
+					|| lights.get(Direction.SOUTH).isGreen()) {
+				wait();
+			}			
+		} else {
+			while (lights.get(Direction.EAST).isGreen() 
+					|| lights.get(Direction.WEST).isGreen()
+					|| lights.get(Direction.SOUTH).isGreen()
+					|| lights.get(Direction.NORTH).isGreen()) {
+				wait();
+			}
 		}
+		
 
 		for (int i = 0; i < numberOfPedestrians; i++) {
 			printLightStates();
@@ -58,18 +67,29 @@ public abstract class TraficController {
 	}
 	
 	private void printLightStates() {
+		String lightStates;
 		LightColor eastColor = lights.get(Direction.EAST).getColor();
 		LightColor westColor = lights.get(Direction.WEST).getColor();
 		LightColor southColor = lights.get(Direction.SOUTH).getColor();
-		String lightStates = String.format("🚥 EAST:%s WEST:%s SOUTH:%s ", eastColor, westColor, southColor);
-
+		if (intersectionType == IntersectionType.THREE_WAY) {
+			lightStates = String.format("🚥 EAST:%s WEST:%s SOUTH:%s ", eastColor, westColor, southColor);			
+		} else {
+			LightColor northColor = lights.get(Direction.NORTH).getColor();
+			lightStates = String.format("🚥 EAST:%s WEST:%s SOUTH:%s NORTH:%s", eastColor, westColor, southColor, northColor);	
+		}
 		System.out.print(lightStates);
 	}
 
 	public synchronized void controlEastLight() throws Exception {
-		while (lights.get(Direction.SOUTH).isGreen()) {
-			wait();
-		}
+		if (intersectionType == IntersectionType.THREE_WAY) {
+			while (lights.get(Direction.SOUTH).isGreen()) {
+				wait();
+			}			
+		} else {
+			while (lights.get(Direction.SOUTH).isGreen() || lights.get(Direction.NORTH).isGreen()) {
+				wait();
+			}
+		}		
 		
 		Direction direction = Direction.EAST;
 		handleLightState(direction);
@@ -89,20 +109,35 @@ public abstract class TraficController {
 	}
 	
 	public synchronized void controlWestLight() throws Exception {
-		while (lights.get(Direction.SOUTH).isGreen()) {
-			wait();
-		}
+		if (intersectionType == IntersectionType.THREE_WAY) {
+			while (lights.get(Direction.SOUTH).isGreen()) {
+				wait();
+			}		
+		} else {
+			while (lights.get(Direction.SOUTH).isGreen() || lights.get(Direction.NORTH).isGreen()) {
+				wait();
+			}
+		}			
 		
 		Direction direction = Direction.WEST;
 		handleLightState(direction);
 	}
 
-	public synchronized void controlSouthLight() throws Exception {
+	public synchronized void controlSouthLight() throws Exception {		
 		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
 			wait();
 		}
 		
 		Direction direction = Direction.SOUTH;
+		handleLightState(direction);
+	}
+	
+	public synchronized void controlNorthLight() throws Exception {		
+		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
+			wait();
+		}
+		
+		Direction direction = Direction.NORTH;
 		handleLightState(direction);
 	}
 

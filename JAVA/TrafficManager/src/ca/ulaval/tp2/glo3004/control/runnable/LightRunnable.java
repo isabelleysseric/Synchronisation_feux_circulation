@@ -43,6 +43,7 @@ public class LightRunnable implements Runnable {
 			controler.controlSouthLight();
 			break;
 		case NORTH:
+			controler.controlNorthLight();
 			break;
 		}
 

@@ -22,20 +22,39 @@ public class Main {
 	
 	public static void main(String[] args) throws InvalidCarActionException {
 		
-		System.out.println("TP2 setup ...");
+		System.out.println(""
+				+ "**************************************** \n"
+				+ "       BIENVENUE DANS LE PROGRAMME       \n"
+				+ " Synchronisation de feux de circulation  \n"
+				+ "**************************************** \n");
 		
 		BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in)); 
         
-        System.out.print("Quel intersection voulez-vous exécuter ? (1 pour l'insterction en T, 2 pour l'instersection ordinaire et 3 pour les deux synchronisées)");
+        System.out.print(""
+        		+ "Quelle intersection voulez-vous exécuter ? \n "
+        		+ "1. Intersection en T \n "
+        		+ "2. Intersection ordinaire \n "
+        		+ "3. Les deux intersections \n"
+        		+ "\n"
+        		+ "Votre choix: " );
         
-        String param = "";
+        String choice = "";
 		try {
-			param = myReader.readLine();
+			choice = myReader.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
   
-		if (param.equals("1")) {
+		if (choice.equals("1")) {
+			
+			System.out.print("\n");
+			
+	       /* System.out.print(""
+	        		+ "Quelle intersection voulez-vous exécuter ? \n "
+	        		+ "1. Intersection en T \n "
+	        		+ "2. Intersection ordinaire \n "
+	        		+ "3. Les deux intersections"); */
+			
 			Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST};
 			CarFactory carFactory = new CarFactory();
 			
@@ -47,7 +66,17 @@ public class Main {
 			
 			initializePedestriansThread(traficController);
 			initializeAllDirectionThreads(directions, traficController);
-		} else if (param.equals("2")){ 
+		} 
+		else if (choice.equals("2")){ 
+			
+			System.out.print("\n");
+			
+		    /* System.out.print(""
+    		+ "Quelle intersection voulez-vous exécuter ? \n "
+    		+ "1. Intersection en T \n "
+    		+ "2. Intersection ordinaire \n "
+    		+ "3. Les deux intersections"); */
+			
 			Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST,Direction.SOUTH, Direction.NORTH};
 			CarFactory carFactory = new CarFactory();
 			
@@ -59,7 +88,17 @@ public class Main {
 			
 			initializePedestriansThread(traficController);
 			initializeAllDirectionThreads(directions, traficController);
-		} else {
+		} 
+		else {
+			
+			System.out.print("\n");
+			
+		    /* System.out.print(""
+    		+ "Quelle intersection voulez-vous exécuter ? \n "
+    		+ "1. Intersection en T \n "
+    		+ "2. Intersection ordinaire \n "
+    		+ "3. Les deux intersections"); */
+			
 			// A faire (cas 2 instersections)
 		} 		
 		

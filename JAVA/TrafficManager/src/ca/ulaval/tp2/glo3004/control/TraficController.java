@@ -9,8 +9,12 @@ import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 
+/**
+ * Classe permettant le controle du traffic des voitures, pietons et lumieres aux intersection en T et en croix
+ */
 public abstract class TraficController {
 
+	// Attributs prives
 	private Map<Direction, Light> lights = new HashMap<Direction, Light>();
 	private Map<Direction, Boolean> timeOutMaps = new HashMap<Direction, Boolean>();
 	private Map<Direction, Direction> oppositeDirectionMap = new HashMap<Direction, Direction>();
@@ -22,6 +26,7 @@ public abstract class TraficController {
 	private CarFactory carFactory;
 	private IntersectionType intersectionType;
 	
+	// Constructeur avec parametres pour le controle du traffic sur une intersection en T ou en croix
 	public TraficController(CarFactory carFactory, IntersectionType intersectionType, ExecutionParameters parameters) {
 		this.intersectionType = intersectionType;
 		this.carFactory = carFactory;
@@ -33,6 +38,7 @@ public abstract class TraficController {
 		initializeLightsAndTimeOuts();
 	}
 
+	// Methode qui initialise les lumieres des interesections
 	private void initializeLightsAndTimeOuts() {
 		for (Direction direction : directions) {
 			Light light = new Light(direction);
@@ -41,6 +47,7 @@ public abstract class TraficController {
 		}
 	}
 
+	// Synchronisation du passage des piétons avec les lumières
 	public synchronized void pedestrianPass() throws InterruptedException {
 		if (intersectionType == IntersectionType.THREE_WAY) {
 			while (lights.get(Direction.EAST).isGreen() 
@@ -66,6 +73,7 @@ public abstract class TraficController {
 		notifyAll();
 	}
 	
+	// Methode qui affiche le statut des lumieres en fonction des intersections
 	private void printLightStates() {
 		String lightStates;
 		LightColor eastColor = lights.get(Direction.EAST).getColor();
@@ -80,6 +88,7 @@ public abstract class TraficController {
 		System.out.print(lightStates);
 	}
 
+	// Methode qui empeche les lumieres de l'est d'être vertes en meme temps que celles du sud
 	public synchronized void controlEastLight() throws Exception {
 		if (intersectionType == IntersectionType.THREE_WAY) {
 			while (lights.get(Direction.SOUTH).isGreen()) {
@@ -95,6 +104,7 @@ public abstract class TraficController {
 		handleLightState(direction);
 	}
 
+	// Methode qui change la couleur des lumieres suivant les directions
 	private void handleLightState(Direction direction) throws InterruptedException {
 		lights.get(direction).switchTo(LightColor.GREEN);
 		notifyAll();
@@ -108,6 +118,7 @@ public abstract class TraficController {
 		notifyAll();
 	}
 	
+	// Methode qui empeche les lumieres de l'ouest d'être vertes en meme temps que celles du sud
 	public synchronized void controlWestLight() throws Exception {
 		if (intersectionType == IntersectionType.THREE_WAY) {
 			while (lights.get(Direction.SOUTH).isGreen()) {
@@ -123,6 +134,7 @@ public abstract class TraficController {
 		handleLightState(direction);
 	}
 
+	// Methode qui empeche les lumieres du sud d'être vertes en meme temps que celles de l'est ou de l'ouest
 	public synchronized void controlSouthLight() throws Exception {		
 		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
 			wait();
@@ -132,6 +144,7 @@ public abstract class TraficController {
 		handleLightState(direction);
 	}
 	
+	// Methode qui empeche les lumieres du nord d'être vertes en meme temps que celles de l'est ou de l'ouest
 	public synchronized void controlNorthLight() throws Exception {		
 		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
 			wait();
@@ -141,6 +154,7 @@ public abstract class TraficController {
 		handleLightState(direction);
 	}
 
+	// Methode qui synchronise la circulation des voitures aux intersections
 	public synchronized void carMove(Direction direction) throws Exception {
 
 		while (lights.get(direction).isRed()) {

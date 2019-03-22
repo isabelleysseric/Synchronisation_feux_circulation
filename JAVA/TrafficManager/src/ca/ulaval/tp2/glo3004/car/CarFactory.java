@@ -7,8 +7,12 @@ import ca.ulaval.tp2.glo3004.car.implementation.SouthCar;
 import ca.ulaval.tp2.glo3004.car.implementation.WestCar;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
 
+/**
+ * Classe permettant la création de voitures
+ */
 public class CarFactory {
 
+	// Constructeur avec parametres
 	public Car createCar(Direction direction, IntersectionType intersectionType) throws Exception {
 		Car car = null;
 		
@@ -30,5 +34,4 @@ public class CarFactory {
 		return car;
 	}
 	
-
 }

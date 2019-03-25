@@ -25,4 +25,12 @@ public enum LightColor {
 	public String toString() {
 		return String.format("%s%s", this.name(), this.icon);
 	}
+
+	public boolean isGreen() {
+		return this.equals(GREEN);
+	}
+	
+	public boolean isRed() {
+		return this.equals(RED);
+	}
 }

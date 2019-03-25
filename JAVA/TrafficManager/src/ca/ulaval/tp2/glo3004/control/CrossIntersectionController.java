@@ -9,28 +9,53 @@ import ca.ulaval.tp2.glo3004.car.CarFactory;
 /**
  * Classe permettant le controle de l'intersection en croix
  */
-public class CrossIntersectionController extends TraficController{
+public class CrossIntersectionController extends TraficController {
 
-	// Constructeur avec paramettres pour le controle de l'intersection en croix
 	public CrossIntersectionController(CarFactory carFactory, ExecutionParameters parameters) {
 		super(carFactory, IntersectionType.CROSS, parameters);
 	}
-	
-	// Methode permettant la lecture des directions opposées accessibles dans l'intersection en croix
-	public Map<Direction, Direction> getOppositeDirectionMap() {
-		Map<Direction, Direction> oppositeDirectionMap = new HashMap<Direction, Direction>();
 
-		oppositeDirectionMap.put(Direction.EAST, Direction.WEST);
-		oppositeDirectionMap.put(Direction.WEST, Direction.EAST);
-		oppositeDirectionMap.put(Direction.SOUTH, Direction.NORTH);
-		oppositeDirectionMap.put(Direction.NORTH, Direction.SOUTH);
-		
+	// Methode permettant la lecture des directions opposï¿½es accessibles dans
+	// l'intersection en croix
+	public Map<Direction, Direction> getOppositeDirectionMap() {
+
+		Map<Direction, Direction> oppositeDirectionMap = new HashMap<Direction, Direction>() {
+			private static final long serialVersionUID = 1L;
+			{
+				put(Direction.EAST, Direction.WEST);
+				put(Direction.WEST, Direction.EAST);
+				put(Direction.SOUTH, Direction.NORTH);
+				put(Direction.NORTH, Direction.SOUTH);
+			}
+		};
+
 		return oppositeDirectionMap;
 	}
-	
-	// Methode permettant la lecture d'une nouvelle direction dans l'intersection en croix
+
+	// Methode permettant la lecture d'une nouvelle direction dans l'intersection en
+	// croix
 	public Direction[] getDirections() {
-		return new Direction[] {Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
+		return new Direction[] { Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH };
 	}
-	
+
+	@Override
+	public Map<Direction, Direction[]> getAdjacenceMap() {
+
+		Map<Direction, Direction[]> oppositeDirectionMap = new HashMap<Direction, Direction[]>() {
+
+			private static final long serialVersionUID = 1L;
+
+			{
+				put(Direction.EAST, new Direction[] { Direction.SOUTH, Direction.NORTH });
+				put(Direction.WEST, new Direction[] { Direction.SOUTH, Direction.NORTH });
+				put(Direction.SOUTH, new Direction[] { Direction.EAST, Direction.WEST });
+				put(Direction.NORTH, new Direction[] { Direction.EAST, Direction.WEST });
+
+			}
+		};
+
+		return oppositeDirectionMap;
+
+	}
+
 }

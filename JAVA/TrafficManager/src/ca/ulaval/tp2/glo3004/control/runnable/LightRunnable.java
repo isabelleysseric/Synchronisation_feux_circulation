@@ -18,7 +18,9 @@ public class LightRunnable implements Runnable {
 		while (true) {
 
 			try {
-				notifyControler();
+				//notifyControler();
+				controler.controlLight(direction);
+			
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {
 				exception.printStackTrace();
@@ -31,7 +33,7 @@ public class LightRunnable implements Runnable {
 
 	private void notifyControler() throws Exception {
 
-		switch (direction) {
+		/*switch (direction) {
 
 		case EAST:
 			controler.controlEastLight();
@@ -45,7 +47,7 @@ public class LightRunnable implements Runnable {
 		case NORTH:
 			controler.controlNorthLight();
 			break;
-		}
+		}*/
 
 	}
 }

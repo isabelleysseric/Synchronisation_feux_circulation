@@ -1,32 +1,39 @@
 package ca.ulaval.tp2.glo3004.control;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import java.util.stream.Collectors;
 
 import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
-import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 
 /**
- * Classe permettant le controle du traffic des voitures, pietons et lumieres aux intersection en T et en croix
+ * Classe permettant le controle du traffic des voitures, pietons et lumieres
+ * aux intersection en T et en croix
  */
 public abstract class TraficController {
 
-	// Attributs prives
-	private Map<Direction, Light> lights = new HashMap<Direction, Light>();
+	private Map<Direction, LightColor> lights = new HashMap<Direction, LightColor>();
 	private Map<Direction, Boolean> timeOutMaps = new HashMap<Direction, Boolean>();
 	private Map<Direction, Direction> oppositeDirectionMap = new HashMap<Direction, Direction>();
+	private Map<Direction, Direction[]> adjacenceMap = new HashMap<Direction, Direction[]>();
+	private Map<Direction, Object> directionLocks = new HashMap<Direction, Object>();
 
 	private int numberOfCars;
 	private int numberOfPedestrians;
 	private Direction[] directions;
-	
+	private Object lock = new Object();
+
 	private CarFactory carFactory;
 	private IntersectionType intersectionType;
-	
-	// Constructeur avec parametres pour le controle du traffic sur une intersection en T ou en croix
+
+	// Constructeur avec parametres pour le controle du traffic sur une intersection
+	// en T ou en croix
 	public TraficController(CarFactory carFactory, IntersectionType intersectionType, ExecutionParameters parameters) {
 		this.intersectionType = intersectionType;
 		this.carFactory = carFactory;
@@ -34,152 +41,189 @@ public abstract class TraficController {
 		this.numberOfPedestrians = parameters.getNumberOfPedestrians();
 		this.directions = getDirections();
 		this.oppositeDirectionMap = getOppositeDirectionMap();
-		
-		initializeLightsAndTimeOuts();
+		this.adjacenceMap = getAdjacenceMap();
+
+		initializeDirectionVariables();
 	}
+
+	public abstract Map<Direction, Direction> getOppositeDirectionMap();
+
+	public abstract Map<Direction, Direction[]> getAdjacenceMap();
+
+	public abstract Direction[] getDirections();
 
 	// Methode qui initialise les lumieres des interesections
-	private void initializeLightsAndTimeOuts() {
+	private void initializeDirectionVariables() {
+
 		for (Direction direction : directions) {
-			Light light = new Light(direction);
-			lights.put(direction, light);
+			lights.put(direction, LightColor.RED);
 			timeOutMaps.put(direction, false);
+			directionLocks.put(direction, new Object());
 		}
 	}
 
-	// Synchronisation du passage des piétons avec les lumières
-	public synchronized void pedestrianPass() throws InterruptedException {
-		if (intersectionType == IntersectionType.THREE_WAY) {
-			while (lights.get(Direction.EAST).isGreen() 
-					|| lights.get(Direction.WEST).isGreen()
-					|| lights.get(Direction.SOUTH).isGreen()) {
-				wait();
-			}			
-		} else {
-			while (lights.get(Direction.EAST).isGreen() 
-					|| lights.get(Direction.WEST).isGreen()
-					|| lights.get(Direction.SOUTH).isGreen()
-					|| lights.get(Direction.NORTH).isGreen()) {
-				wait();
-			}
-		}
-		
-
-		for (int i = 0; i < numberOfPedestrians; i++) {
-			printLightStates();
-			System.out.println("ðŸš¶ PEDESTRIANS::CROSS");
-		}
-
-		notifyAll();
-	}
-	
 	// Methode qui affiche le statut des lumieres en fonction des intersections
 	private void printLightStates() {
-		String lightStates;
-		LightColor eastColor = lights.get(Direction.EAST).getColor();
-		LightColor westColor = lights.get(Direction.WEST).getColor();
-		LightColor southColor = lights.get(Direction.SOUTH).getColor();
-		if (intersectionType == IntersectionType.THREE_WAY) {
-			lightStates = String.format("ðŸš¥ EAST:%s WEST:%s SOUTH:%s ", eastColor, westColor, southColor);			
-		} else {
-			LightColor northColor = lights.get(Direction.NORTH).getColor();
-			lightStates = String.format("ðŸš¥ EAST:%s WEST:%s SOUTH:%s NORTH:%s", eastColor, westColor, southColor, northColor);	
+
+		synchronized (lock) {
+			StringBuilder lightStates = new StringBuilder();
+			lightStates.append("ðŸš¥");
+
+			lights.forEach((direction, color) -> {
+				lightStates.append(String.format(" %s:%s ", direction, color));
+			});
+
+			System.out.print(lightStates.toString());
 		}
-		System.out.print(lightStates);
 	}
 
-	// Methode qui empeche les lumieres de l'est d'être vertes en meme temps que celles du sud
-	public synchronized void controlEastLight() throws Exception {
-		if (intersectionType == IntersectionType.THREE_WAY) {
-			while (lights.get(Direction.SOUTH).isGreen()) {
-				wait();
-			}			
-		} else {
-			while (lights.get(Direction.SOUTH).isGreen() || lights.get(Direction.NORTH).isGreen()) {
-				wait();
+	private void switchLight(Direction direction, LightColor color) {
+
+		synchronized (lock) {
+			lights.put(direction, color);
+			lock.notifyAll();
+		}
+	}
+
+	private boolean atLeastOneLightIsGreen() {
+		return lights.values().contains(LightColor.GREEN);
+	}
+
+	private boolean atLeastOneNeighBoorIsGreen(Direction direction) {
+		List<Direction> neighboors = Arrays.asList(this.adjacenceMap.get(direction));
+		List<LightColor> neighboorsLights = neighboors.stream().map(neighboor -> this.lights.get(neighboor))
+				.collect(Collectors.toList());
+
+		return neighboorsLights.contains(LightColor.GREEN);
+	}
+
+	// Synchronisation du passage des piï¿½tons avec les lumiï¿½res
+	public void pedestrianPass() throws InterruptedException {
+
+		synchronized (lock) {
+			while (atLeastOneLightIsGreen()) {
+				lock.wait();
 			}
-		}		
-		
-		Direction direction = Direction.EAST;
-		handleLightState(direction);
+			for (int i = 0; i < numberOfPedestrians; i++) {
+				printLightStates();
+				System.out.println("ðŸš¶ PEDESTRIANS::CROSS");
+			}
+			lock.notifyAll();
+		}
+	}
+
+	// Methode qui empeche les lumieres de l'est d'ï¿½tre vertes en meme temps que
+	// celles du sud
+	public void controlLight(Direction direction) throws Exception {
+		synchronized (lock) {
+
+			while (atLeastOneNeighBoorIsGreen(direction)) {
+				lock.wait();
+			}
+
+			switchLight(direction, LightColor.GREEN);
+		}
+
+		switchBackToRedAfterCarCirculation(direction);
 	}
 
 	// Methode qui change la couleur des lumieres suivant les directions
-	private void handleLightState(Direction direction) throws InterruptedException {
-		lights.get(direction).switchTo(LightColor.GREEN);
-		notifyAll();
+	private void switchBackToRedAfterCarCirculation(Direction direction) throws InterruptedException {
+		Object directionLock = directionLocks.get(direction);
 
-		while (!timeOutMaps.get(direction)) {
-			wait();
-		}
-			
-		lights.get(direction).switchTo(LightColor.RED);
-		timeOutMaps.put(direction, false);
-		notifyAll();
-	}
-	
-	// Methode qui empeche les lumieres de l'ouest d'être vertes en meme temps que celles du sud
-	public synchronized void controlWestLight() throws Exception {
-		if (intersectionType == IntersectionType.THREE_WAY) {
-			while (lights.get(Direction.SOUTH).isGreen()) {
-				wait();
-			}		
-		} else {
-			while (lights.get(Direction.SOUTH).isGreen() || lights.get(Direction.NORTH).isGreen()) {
-				wait();
+		synchronized (directionLock) {
+			while (!timeOutMaps.get(direction)) {
+				directionLock.wait();
 			}
-		}			
-		
-		Direction direction = Direction.WEST;
-		handleLightState(direction);
-	}
+		}
 
-	// Methode qui empeche les lumieres du sud d'être vertes en meme temps que celles de l'est ou de l'ouest
-	public synchronized void controlSouthLight() throws Exception {		
-		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
-			wait();
+		switchLight(direction, LightColor.RED);
+
+		synchronized (directionLock) {
+			timeOutMaps.put(direction, false);
+			directionLock.notifyAll();
 		}
-		
-		Direction direction = Direction.SOUTH;
-		handleLightState(direction);
-	}
-	
-	// Methode qui empeche les lumieres du nord d'être vertes en meme temps que celles de l'est ou de l'ouest
-	public synchronized void controlNorthLight() throws Exception {		
-		while (lights.get(Direction.WEST).isGreen() || lights.get(Direction.EAST).isGreen()) {
-			wait();
-		}
-		
-		Direction direction = Direction.NORTH;
-		handleLightState(direction);
 	}
 
 	// Methode qui synchronise la circulation des voitures aux intersections
-	public synchronized void carMove(Direction direction) throws Exception {
+	public void carMove(Direction direction) throws Exception {
 
-		while (lights.get(direction).isRed()) {
-			wait();
+		synchronized (lock) {
+			while (lights.get(direction).isRed()) {
+				lock.wait();
+			}
 		}
-		
+
 		Car car = carFactory.createCar(direction, intersectionType);
 		Direction oppositeDirection = oppositeDirectionMap.get(direction);
 
 		for (int i = 0; i < numberOfCars; i++) {
 			printLightStates();
 
-			if (oppositeDirection == null || lights.get(oppositeDirection).isRed()) {
-				car.randomMoveWithPriority();
-			} else {
-				car.randomMoveWithOppositeSideOn();
+			synchronized (lock) {
+				if (oppositeDirection == null || lights.get(oppositeDirection).isRed()) {
+					car.randomMoveWithPriority();
+				} else {
+					car.randomMoveWithOppositeSideOn();
+				}
 			}
 		}
 
-		timeOutMaps.put(direction, true);
-		notifyAll();
+		synchronized (directionLocks.get(direction)) {
+			timeOutMaps.put(direction, true);
+			directionLocks.get(direction).notifyAll();
+		}
+
 	}
-	
-	public abstract Map<Direction, Direction> getOppositeDirectionMap();
-	
-	public abstract Direction[] getDirections();
-	
+
+	// Methode qui empeche les lumieres de l'est d'ï¿½tre vertes en meme temps que
+	// celles du sud
+	/*
+	 * public void controlEastLight() throws Exception { Direction direction =
+	 * Direction.EAST;
+	 * 
+	 * synchronized (lock) {
+	 * 
+	 * while (atLeastOneNeighBoorIsGreen(direction)) { lock.wait(); }
+	 * 
+	 * switchLight(direction, LightColor.GREEN); }
+	 * 
+	 * switchBackToRedAfterCarCirculation(direction); }
+	 * 
+	 * 
+	 * 
+	 * // Methode qui empeche les lumieres de l'ouest d'ï¿½tre vertes en meme temps
+	 * que // celles du sud public synchronized void controlWestLight() throws
+	 * Exception { Direction direction = Direction.WEST;
+	 * 
+	 * synchronized (lock) { while (atLeastOneNeighBoorIsGreen(direction)) {
+	 * lock.wait(); }
+	 * 
+	 * switchLight(direction, LightColor.GREEN); }
+	 * 
+	 * switchBackToRedAfterCarCirculation(direction); }
+	 * 
+	 * // Methode qui empeche les lumieres du sud d'ï¿½tre vertes en meme temps que //
+	 * celles de l'est ou de l'ouest public void controlSouthLight() throws
+	 * Exception { Direction direction = Direction.SOUTH;
+	 * 
+	 * synchronized (lock) { while (atLeastOneNeighBoorIsGreen(direction)) {
+	 * lock.wait(); }
+	 * 
+	 * switchLight(direction, LightColor.GREEN); }
+	 * 
+	 * switchBackToRedAfterCarCirculation(direction); }
+	 * 
+	 * // Methode qui empeche les lumieres du nord d'ï¿½tre vertes en meme temps que
+	 * // celles de l'est ou de l'ouest public void controlNorthLight() throws
+	 * Exception { Direction direction = Direction.NORTH;
+	 * 
+	 * synchronized (lock) { while (atLeastOneNeighBoorIsGreen(direction)) {
+	 * lock.wait(); }
+	 * 
+	 * switchLight(direction, LightColor.GREEN); }
+	 * 
+	 * switchBackToRedAfterCarCirculation(direction); }
+	 */
+
 }

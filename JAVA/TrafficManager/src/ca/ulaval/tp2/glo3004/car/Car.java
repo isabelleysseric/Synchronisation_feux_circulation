@@ -6,11 +6,11 @@ import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
 
 /**
- * Classe abstraite définissant les actions possibles des voitures
+ * Classe abstraite dï¿½finissant les actions possibles des voitures
  */
 public abstract class Car {
 
-	// Attributs privés
+	// Attributs privï¿½s
 	private Direction direction;
 	private Movement movement;
 	
@@ -20,7 +20,7 @@ public abstract class Car {
 		initializeMovement(intersectionType);
 	}
 	
-	// Méthode initialisant les mouvements selon le type d'intersection
+	// Mï¿½thode initialisant les mouvements selon le type d'intersection
 	private void initializeMovement(IntersectionType intersectionType) {
 		
 		switch(intersectionType) {
@@ -35,7 +35,7 @@ public abstract class Car {
 		}
 	}
 	
-	// Méthode qui affiche les mouvements des voitures
+	// Mï¿½thode qui affiche les mouvements des voitures
 	protected void printMovement(Action action) {
 		String movement = String.format("ðŸš™ CAR:%s::%s", direction, action);
 		System.out.println(movement);
@@ -47,7 +47,7 @@ public abstract class Car {
 		 this.randomMove(oppositeSideOn);
 	   }
 	 
-	 public void randomMoveWithPriority() throws InvalidCarActionException {
+	 public void  randomMoveWithPriority() throws InvalidCarActionException {
 		 boolean oppositeSideOn = false;
 		 this.randomMove(oppositeSideOn);
 	 }

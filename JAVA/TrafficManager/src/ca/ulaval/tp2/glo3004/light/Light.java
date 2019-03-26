@@ -6,43 +6,46 @@ public class Light {
 
 	private Direction direction;
 	private LightColor color;
-	
+	private Object lock = new Object();
+
 	public Light(Direction direction) {
 		this.direction = direction;
 		this.color = LightColor.RED;
 	}
-	
+
 	public void switchTo(LightColor color) {
+		synchronized (lock) {
 			this.color = color;
+		}
+
 	}
-
-	public synchronized void switchToRed() {
-		this.color = LightColor.RED;
-}
-
-	public synchronized void switchToGreen() {
-		this.color = LightColor.GREEN;
-}
 
 	public Direction getDirection() {
 		return direction;
 	}
 
-	public LightColor getColor() {
-		return color;
+	public synchronized LightColor getColor() {
+		synchronized (lock) {
+			return color;
+		}
+
 	}
-	
+
 	public String getState() {
 		String state = String.format("🚥 %s::%s", direction, color);
 		return state;
 	}
-	
+
 	public boolean isGreen() {
-		return color == LightColor.GREEN;
+		synchronized (lock) {
+			return color == LightColor.GREEN;
+		}
 	}
 
 	public boolean isRed() {
-		return color == LightColor.RED;
+		synchronized (lock) {
+			return color == LightColor.RED;
+		}
 	}
-	
+
 }

@@ -11,6 +11,7 @@ public class LightRunnable implements Runnable {
 	public LightRunnable(Direction direction, TraficController controler) {
 		this.controler = controler;
 		this.direction = direction;
+	
 	}
 
 	public void run() {
@@ -18,36 +19,18 @@ public class LightRunnable implements Runnable {
 		while (true) {
 
 			try {
-				//notifyControler();
 				controler.controlLight(direction);
-			
+				
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {
-				exception.printStackTrace();
+				System.out.println("LIGHT RUNNABLE STOP");
+			    return;
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
 
 		}
-	}
-
-	private void notifyControler() throws Exception {
-
-		/*switch (direction) {
-
-		case EAST:
-			controler.controlEastLight();
-			break;
-		case WEST:
-			controler.controlWestLight();
-			break;
-		case SOUTH:
-			controler.controlSouthLight();
-			break;
-		case NORTH:
-			controler.controlNorthLight();
-			break;
-		}*/
-
+	
+	
 	}
 }

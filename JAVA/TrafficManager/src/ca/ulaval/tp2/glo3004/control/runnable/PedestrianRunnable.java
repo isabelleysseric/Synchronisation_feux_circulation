@@ -5,8 +5,8 @@ import ca.ulaval.tp2.glo3004.control.TraficController;
 public class PedestrianRunnable implements Runnable {
 
 	private TraficController control;
-	
-	public PedestrianRunnable(TraficController control) {
+
+	public PedestrianRunnable( TraficController control) {
 		this.control = control;
 	}
 	
@@ -16,9 +16,10 @@ public class PedestrianRunnable implements Runnable {
 			while (true) {
 				control.pedestrianPass();
 				Thread.sleep(1000);
-				
 			}
 		} catch (InterruptedException e) {
+			System.out.println("PEDESTRIAN RUNNABLE STOP");
+		    return;
 		}
 	}
 	

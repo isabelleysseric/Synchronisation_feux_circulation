@@ -50,7 +50,7 @@ public class LightController {
 	public synchronized String getLightStates() {
 
 		StringBuilder lightStates = new StringBuilder();
-		//lightStates.append(String.format("🚥 %s:", Thread.currentThread().getName()));
+		//lightStates.append(String.format("%s:", Thread.currentThread().getName()));
 
 		lights.forEach((direction, light) -> {
 			lightStates.append(String.format(" %s:%s ", direction, light.getColor()));

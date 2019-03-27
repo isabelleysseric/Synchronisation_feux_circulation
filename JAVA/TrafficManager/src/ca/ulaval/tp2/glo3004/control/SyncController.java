@@ -112,7 +112,7 @@ public class SyncController {
 	// Methode qui affiche le statut des lumieres en fonction des intersections
 	private void printLightStates(IntersectionType intersectionType) {
 		StringBuilder lightStates = new StringBuilder();
-		lightStates.append(String.format("🚥 %s:", intersectionType));
+		lightStates.append(String.format("%s:", intersectionType));
 
 		threeWayLightView.setLights(lightController.getLights());
 		crossLightView.setLights(lightController.getLights());
@@ -163,7 +163,7 @@ public class SyncController {
 		return this.lightController.atLeastOneNeighBoorIsGreen(neighboors, direction);
 	}
 
-	// Synchronisation du passage des pi�tons avec les lumi�res
+	// Synchronisation du passage des pi�tons avec les lumieres
 	public void pedestrianPass(IntersectionType intersectionType) throws InterruptedException {
 
 		synchronized (lock) {

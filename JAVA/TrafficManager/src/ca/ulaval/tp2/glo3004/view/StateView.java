@@ -41,9 +41,9 @@ public class StateView extends JTextPane {
 	}
 
 	public void displayPedestriansState(IntersectionType intersectionType) {
-		String pedestrianState = String.format("\n 유 PEDESTRIANS::%s:GO \n", intersectionType);
+		String pedestrianState = String.format("\n�PEDESTRIANS::%s:GO \n", intersectionType);
 
-		System.out.println("🚶 PEDESTRIANS::GO");
+		System.out.println("PEDESTRIANS::GO");
 
 		appendText(pedestrianState, PEDESTRIAN_TEXT_COLOR);
 	}
@@ -58,11 +58,11 @@ public class StateView extends JTextPane {
 		String typeCar = car.getTypeCar();
 
 		if (nextIntersectionType == null || typeCar == null) {
-			carState = String.format("⚑CAR:%s::%s:%s", direction, intersectionType, action);
+			carState = String.format("CAR:%s::%s:%s", direction, intersectionType, action);
 
 		} else {
 			Action previousAction = car.getPreviousAction();
-			carState = String.format("⚑CAR:%s:%s::%s -> %s:%s", direction, intersectionType,
+			carState = String.format("CAR:%s:%s::%s -> %s:%s", direction, intersectionType,
 					previousAction, nextIntersectionType, action);
 		}
 		System.out.println(carState);

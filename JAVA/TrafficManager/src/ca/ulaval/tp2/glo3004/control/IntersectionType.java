@@ -5,9 +5,9 @@ package ca.ulaval.tp2.glo3004.control;
  */
 public enum IntersectionType {
 
-	THREE_WAY("╣"), CROSS("╬"), SYNCHRO(""), SYNCHRO_TEST("");
+	THREE_WAY, CROSS, SYNCHRO, SYNCHRO_TEST;
 	
-	
+	/*
 	private String icon;
 	 
 	IntersectionType(String icon) {
@@ -17,9 +17,9 @@ public enum IntersectionType {
 	 public String getIcon() {
 		 return icon;
 	  }
-	 
+	 */
 	 public String toString() {
-		 return String.format("%s%s", this.name(), this.icon);
+		 return String.format("%s", this.name());	//this.icon
 	 }
    
 }

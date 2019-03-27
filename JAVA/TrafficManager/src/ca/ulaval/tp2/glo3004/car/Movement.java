@@ -1,12 +1,12 @@
 package ca.ulaval.tp2.glo3004.car;
 
 /**
- * Classe permettant des mouvements sécuritaires et des mouvements dans
- * des directions opposées
+ * Classe permettant des mouvements securitaires et des mouvements dans
+ * des directions opposees
  */
 public class Movement {
 
-	// Attributs privés
+	// Attributs prives
 	private Action[] actionsWhenPriority;
 	private Action[] actionsWhenOppositeSideOn;
 	
@@ -16,12 +16,12 @@ public class Movement {
 		this.actionsWhenOppositeSideOn = actionsWhenOppositeSideOn;
 	}
 	
-	// Méthode permettant la lecture des actions prioritaires
+	// Methode permettant la lecture des actions prioritaires
 	public Action[] getActionWhenPriority() {
 		return this.actionsWhenPriority;
 	}
 	
-	// Méthode permettant la lecture des actions de directions opposées
+	// Methode permettant la lecture des actions de directions opposées
 	public Action[] getActionWhenOppositeSideOn() {
 		return this.actionsWhenOppositeSideOn;
 	}

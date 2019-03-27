@@ -10,7 +10,7 @@ import ca.ulaval.tp2.glo3004.view.StateView;
 
 
 /**
- * Classe permettant la cr�ation de voitures
+ * Classe permettant la creation de voitures
  */
 public class CarFactory {
 

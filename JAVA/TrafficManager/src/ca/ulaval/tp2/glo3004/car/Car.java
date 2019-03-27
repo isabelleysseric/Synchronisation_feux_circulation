@@ -9,11 +9,11 @@ import ca.ulaval.tp2.glo3004.control.IntersectionType;
 import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
- * Classe abstraite d�finissant les actions possibles des voitures
+ * Classe abstraite definissant les actions possibles des voitures
  */
 public abstract class Car {
 
-	// Attributs priv�s
+	// Attributs prives
 	private Direction direction;
 	private Movement movement;
 	private IntersectionType intersectionType;
@@ -110,7 +110,7 @@ public abstract class Car {
 			
 		}
 		else {
-			 movement = String.format("🚙( %s)-CAR:%s::(%s:%s -> %s:%s)", typeCar, direction, 
+			 movement = String.format("( %s)-CAR:%s::(%s:%s -> %s:%s)", typeCar, direction, 
 						intersectionType, previousAction, action, nextIntersectionType);
 		}
 		System.out.println(movement);*/

@@ -30,7 +30,7 @@ public class Main {
 
 		BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.print("" + "Quelle intersection voulez-vous ex?cuter ? \n " + "1. Intersection en T \n "
+		System.out.print("" + "Quelle intersection voulez-vous executer ? \n " + "1. Intersection en T \n "
 				+ "2. Intersection en croix \n " + "3. Les deux intersections \n" + "\n" + "Votre choix: ");
 
 		String choice = "";

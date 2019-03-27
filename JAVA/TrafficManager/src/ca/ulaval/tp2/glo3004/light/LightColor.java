@@ -6,8 +6,8 @@ package ca.ulaval.tp2.glo3004.light;
 public enum LightColor {
 
 	// Enumeration
-	RED("⛔"), GREEN("✅");
-
+	RED, GREEN;
+	/*
 	// Attributs privés
 	private String icon;
 
@@ -20,10 +20,10 @@ public enum LightColor {
 	public String getIcon() {
 		return icon;
 	}
-
+	*/
 	// Methode renvoyant les informations  de la couleur de la lumiere
 	public String toString() {
-		return String.format("%s%s", this.name(), this.icon);
+		return String.format("%s", this.name());	//this.icon
 	}
 
 	public boolean isGreen() {

@@ -32,7 +32,7 @@ public class Light {
 	}
 
 	public String getState() {
-		String state = String.format("🚥 %s::%s", direction, color);
+		String state = String.format("%s::%s", direction, color);
 		return state;
 	}
 

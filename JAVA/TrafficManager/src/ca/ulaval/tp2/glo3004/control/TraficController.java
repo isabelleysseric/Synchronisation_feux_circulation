@@ -75,7 +75,7 @@ public abstract class TraficController {
 	private void printLightStates() {
 		StringBuilder lightStates = new StringBuilder();
 		
-		lightStates.append(String.format("🚥 %s:", intersectionType));
+		lightStates.append(String.format("%s:", intersectionType));
 
 		lightView.setLights(lightController.getLights());
 
@@ -84,7 +84,7 @@ public abstract class TraficController {
 		System.out.print(lightStates.toString());
 	}
 
-	// Methode qui empeche les lumieres de l'est d'�tre vertes en meme temps que
+	// Methode qui empeche les lumieres de l'est d'etre vertes en meme temps que
 	// celles du sud
 	public void controlLight(Direction direction) throws Exception {
 		synchronized (lock) {
@@ -125,7 +125,7 @@ public abstract class TraficController {
 		return this.lightController.atLeastOneNeighBoorIsGreen(neighboors, direction);
 	}
 
-	// Synchronisation du passage des pi�tons avec les lumi�res
+	// Synchronisation du passage des pi�tons avec les lumieres
 	public void pedestrianPass() throws InterruptedException {
 
 		synchronized (lock) {
@@ -135,7 +135,7 @@ public abstract class TraficController {
 			}
 			for (int i = 0; i < numberOfPedestrians; i++) {
 				printLightStates();
-				//System.out.println("🚶 PEDESTRIANS::GO");
+				//System.out.println("PEDESTRIANS::GO");
 				stateView.displayPedestriansState(intersectionType);
 			}
 			lock.notifyAll();

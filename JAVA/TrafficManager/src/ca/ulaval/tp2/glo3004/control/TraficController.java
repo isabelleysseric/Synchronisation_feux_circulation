@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.LightView;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.view.LightView;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
  * Classe permettant le controle du traffic des voitures, pietons et lumieres
@@ -32,11 +33,16 @@ public abstract class TraficController {
 	private IntersectionType intersectionType;
 	private LightView lightView;
 	private int WAITING_TIME = 2000;
+	private StateView stateView;
 	
 	// Constructeur avec parametres pour le controle du traffic sur une intersection
 	// en T ou en croix
-	public TraficController(CarFactory carFactory, IntersectionType intersectionType, ExecutionParameters parameters,
-			LightView lightView, LightController lightController) {
+	public TraficController(CarFactory carFactory, 
+			IntersectionType intersectionType, 
+			ExecutionParameters parameters,
+			StateView stateView,
+			LightView lightView, 
+			LightController lightController) {
 		this.intersectionType = intersectionType;
 		this.carFactory = carFactory;
 		this.numberOfCars = parameters.getNumberOfCars();
@@ -45,6 +51,7 @@ public abstract class TraficController {
 		this.oppositeDirectionMap = getOppositeDirectionMap();
 		this.adjacenceMap = getAdjacenceMap();
 		this.lightView = lightView;
+		this.stateView = stateView;
 		this.lightController = lightController;
 		initializeDirectionVariables();
 	}
@@ -128,7 +135,8 @@ public abstract class TraficController {
 			}
 			for (int i = 0; i < numberOfPedestrians; i++) {
 				printLightStates();
-				System.out.println("🚶 PEDESTRIANS::GO");
+				//System.out.println("🚶 PEDESTRIANS::GO");
+				stateView.displayPedestriansState(intersectionType);
 			}
 			lock.notifyAll();
 		}

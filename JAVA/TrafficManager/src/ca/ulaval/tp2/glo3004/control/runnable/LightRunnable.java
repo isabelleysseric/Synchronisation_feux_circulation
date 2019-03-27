@@ -1,8 +1,6 @@
 package ca.ulaval.tp2.glo3004.control.runnable;
 
 import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.control.IntersectionType;
-import ca.ulaval.tp2.glo3004.control.SyncController;
 import ca.ulaval.tp2.glo3004.control.TraficController;
 
 public class LightRunnable implements Runnable {

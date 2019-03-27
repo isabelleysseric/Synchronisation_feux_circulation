@@ -21,27 +21,12 @@ public class PedestrianRunnable implements Runnable {
 	}
 
 	public void run() {
-
-		if (this.isSynchro) {
-			while (true) {
-
-				try {
-					syncController.pedestrianPass(intersectionType);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			normalPedestrianRunnable();
-		}
-
-	}
-
-	private void normalPedestrianRunnable() {
+		
 		while (true) {
 
 			try {
-				control.pedestrianPass();
+				if(isSynchro) syncController.pedestrianPass(intersectionType);
+				else control.pedestrianPass();
 
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {

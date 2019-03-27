@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.LightView;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.view.LightView;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
  * Classe permettant le controle du traffic des voitures, pietons et lumieres
@@ -26,8 +27,8 @@ public class SyncController {
 	private Map<Direction, Direction[]> adjacenceMap = new HashMap<Direction, Direction[]>();
 	private Map<Direction, Object> directionLocks = new HashMap<Direction, Object>();
 
-	private BlockingQueue<Car> crossIncomingCars = new LinkedBlockingQueue<>();
-	private BlockingQueue<Car> threeWayIncomingCars = new LinkedBlockingQueue<>();
+	private BlockingQueue<Car> crossIncomingCars = new LinkedBlockingQueue<>(1);
+	private BlockingQueue<Car> threeWayIncomingCars = new LinkedBlockingQueue<>(1);
 
 	protected int numberOfCars;
 	private int numberOfPedestrians;
@@ -38,11 +39,15 @@ public class SyncController {
 	private LightView threeWayLightView;
 	private LightView crossLightView;
 	private int WAITING_TIME = 2000;
+	private StateView stateView;
 
 	// Constructeur avec parametres pour le controle du traffic sur une intersection
 	// en T ou en croix
-	public SyncController(CarFactory carFactory, ExecutionParameters parameters, LightView threeWayLightView,
-			LightView crossLightView, LightController lightController) {
+	public SyncController(CarFactory carFactory, ExecutionParameters parameters, 
+			StateView stateView,
+			LightView threeWayLightView,
+			LightView crossLightView, 
+			LightController lightController) {
 		// this.intersectionType = intersectionType;
 		this.carFactory = carFactory;
 		this.numberOfCars = parameters.getNumberOfCars();
@@ -50,6 +55,7 @@ public class SyncController {
 		this.directions = getDirections();
 		this.oppositeDirectionMap = getOppositeDirectionMap();
 		this.adjacenceMap = getAdjacenceMap();
+		this.stateView = stateView;
 		this.threeWayLightView = threeWayLightView;
 		this.crossLightView = crossLightView;
 		this.lightController = lightController;
@@ -167,7 +173,8 @@ public class SyncController {
 			}
 			for (int i = 0; i < numberOfPedestrians; i++) {
 				printLightStates(intersectionType);
-				System.out.println("🚶 PEDESTRIANS::GO");
+				
+				stateView.displayPedestriansState(intersectionType);
 			}
 			lock.notifyAll();
 		}

@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004;
+package ca.ulaval.tp2.glo3004.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,20 +6,22 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import ca.ulaval.tp2.glo3004.IntersectionControllerFactory;
 import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
 
 public class MainView {
 
-	private static LightView threeWayLightComponent = new LightView();
-	private static LightView crossLightComponent = new LightView();
+	private static LightView threeWayLightComponent = new LightView(IntersectionType.THREE_WAY);
+	private static LightView crossLightComponent = new LightView(IntersectionType.CROSS);
+	private static StateView stateView = new StateView();
 
 	private static List<Thread> threads;
 
@@ -34,16 +36,21 @@ public class MainView {
 	public void initialize() {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBounds(30, 30, 700, 450);
+		window.setBounds(30, 30, 700, 500);
 
-		GridLayout mainContent = new GridLayout(0, 2);
+		BorderLayout mainContent = new BorderLayout();
 
 		JPanel lightsPanel = createBothIntersectionPanels();
+
+		JScrollPane stateViewScroll = new JScrollPane(stateView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
 		JPanel actionPanel = createActionPanel();
 
 		window.getContentPane().setLayout(mainContent);
-		window.getContentPane().add(lightsPanel);
-		window.getContentPane().add(actionPanel);
+		window.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
+		window.getContentPane().add(lightsPanel, BorderLayout.LINE_START);
+		window.getContentPane().add(stateViewScroll, BorderLayout.CENTER);
 
 		window.setVisible(true);
 	}
@@ -51,13 +58,12 @@ public class MainView {
 	public void startExecution() {
 
 		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(threeWayLightComponent,
-				crossLightComponent);
+				crossLightComponent, stateView);
 
 		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
 
-		
 		this.initialize();
-		
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -73,9 +79,10 @@ public class MainView {
 		JPanel lightsPanel = new JPanel();
 		lightsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		lightsPanel.setLayout(lightLayout);
+		lightsPanel.setBackground(Color.DARK_GRAY);
 
-		JPanel threeWayPanel = createIntersectionPanel("THREE-WAY INTERSECTION", threeWayLightComponent);
-		JPanel crossPanel = createIntersectionPanel("CROSS INTERSECTION", crossLightComponent);
+		JPanel threeWayPanel = createIntersectionPanel(threeWayLightComponent);
+		JPanel crossPanel = createIntersectionPanel(crossLightComponent);
 
 		lightsPanel.add(threeWayPanel);
 		lightsPanel.add(crossPanel);
@@ -83,16 +90,19 @@ public class MainView {
 		return lightsPanel;
 	}
 
-	private JPanel createIntersectionPanel(String intersectionName, LightView lightComponent) {
+	private JPanel createIntersectionPanel(LightView lightComponent) {
 
 		JPanel intersectionPanel = new JPanel();
 		intersectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		intersectionPanel.setBackground(Color.WHITE);
+		intersectionPanel.setBackground(Color.BLACK);
 
 		BorderLayout borderLayout = new BorderLayout();
 		intersectionPanel.setLayout(borderLayout);
 
-		intersectionPanel.add(new JLabel(intersectionName), BorderLayout.PAGE_START);
+		String intersectionName = lightComponent.getName();
+		JLabel intersectionLabel = new JLabel(intersectionName);
+		intersectionLabel.setForeground(Color.WHITE);
+		intersectionPanel.add(intersectionLabel, BorderLayout.PAGE_START);
 		intersectionPanel.add(lightComponent, BorderLayout.CENTER);
 
 		return intersectionPanel;
@@ -148,4 +158,5 @@ public class MainView {
 
 		return stopButton;
 	}
+
 }

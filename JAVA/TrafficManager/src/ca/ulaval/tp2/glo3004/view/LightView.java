@@ -1,16 +1,23 @@
-package ca.ulaval.tp2.glo3004;
+package ca.ulaval.tp2.glo3004.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import ca.ulaval.tp2.glo3004.Direction;
+import ca.ulaval.tp2.glo3004.control.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 
@@ -33,16 +40,22 @@ public class LightView extends JComponent {
 
 	private Object lock = new Object();
 	private Map<Direction, Light> lights = new HashMap<>();
+	private String name;
 	
 	
-	public LightView() {
-		
+	public LightView(IntersectionType intersectionType) {
+		this.name = String.format("%s INTERSECTION", intersectionType);
+		this.setPreferredSize(new Dimension(300, 200));
 		reinitialize();
 	}
 
 	public void reinitialize() {
 		initializeLightPositions();
 		initializeLights();
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	private void initializeLightPositions() {
@@ -129,8 +142,9 @@ public class LightView extends JComponent {
 
 	private void drawText(Graphics2D g2, float x, float y, Direction direction) {
 		
-		g2.setPaint(Color.BLACK);
+		g2.setPaint(Color.WHITE);
 		g2.drawString(direction.name(), x, y-5);
 
 	}
+	
 }

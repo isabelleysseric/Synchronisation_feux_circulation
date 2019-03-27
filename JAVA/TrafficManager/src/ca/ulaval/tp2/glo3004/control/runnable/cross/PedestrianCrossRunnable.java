@@ -21,28 +21,12 @@ public class PedestrianCrossRunnable implements Runnable {
 	}
 
 	public void run() {
-
-		if (this.isSynchro) {
-			while (true) {
-
-				try {
-					syncController.pedestrianPass(intersectionType);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			normalCrossPedestriansRunnable();
-		}
-
-	}
-
-	private void normalCrossPedestriansRunnable() {
+		
 		while (true) {
 
 			try {
-				controler.pedestrianPass();
+				if(isSynchro) syncController.pedestrianPass(intersectionType);
+				else controler.pedestrianPass();
 
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {

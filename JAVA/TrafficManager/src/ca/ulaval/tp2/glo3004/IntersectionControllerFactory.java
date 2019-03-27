@@ -17,26 +17,34 @@ import ca.ulaval.tp2.glo3004.control.runnable.cross.LightCrossRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.cross.PedestrianCrossRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.sync.LightSyncRunnable;
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.view.LightView;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 public class IntersectionControllerFactory {
 
 	private LightView threeWayLightComponent;
 	private LightView crossLightComponent;
+	private StateView stateView;
 
 	private ThreeWayIntersectionController threeWayController;
 	private CrossIntersectionController crossController;
+	
 	private SyncController syncController;
 
-	private CarFactory carFactory = new CarFactory();
+	private CarFactory carFactory;
 
 	private static volatile LightController lightSync = new LightController();
+	
 	private static Direction[] directions = new Direction[] { Direction.EAST, Direction.WEST, Direction.SOUTH,
 			Direction.NORTH };
 
-	public IntersectionControllerFactory(LightView threeWayLightComponent, LightView crossLightComponent) {
+	public IntersectionControllerFactory(LightView threeWayLightComponent, 
+			LightView crossLightComponent, StateView stateView) {
 
 		this.threeWayLightComponent = threeWayLightComponent;
 		this.crossLightComponent = crossLightComponent;
+		this.stateView = stateView;
+		this.carFactory = new CarFactory(stateView);
 
 	}
 
@@ -68,12 +76,12 @@ public class IntersectionControllerFactory {
 
 	private void initializeIntersectionControllers(boolean intersectionIsSync, ExecutionParameters parameters) {
 
-		threeWayController = new ThreeWayIntersectionController(carFactory, parameters, threeWayLightComponent,
+		threeWayController = new ThreeWayIntersectionController(carFactory, parameters, stateView, threeWayLightComponent,
 				lightSync);
 
-		crossController = new CrossIntersectionController(carFactory, parameters, crossLightComponent, lightSync);
+		crossController = new CrossIntersectionController(carFactory, parameters, stateView, crossLightComponent, lightSync);
 
-		syncController = new SyncController(carFactory, parameters, threeWayLightComponent, crossLightComponent,
+		syncController = new SyncController(carFactory, parameters, stateView, threeWayLightComponent, crossLightComponent,
 				lightSync);
 
 	}

@@ -24,28 +24,12 @@ public class CarCrossRunnable implements Runnable {
 	}
 
 	public void run() {
-
-		if (this.isSynchro) {
-			while (true) {
-
-				try {
-					syncController.carCrossMove(direction, intersectionType);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			normalCrossRunnable();
-		}
-
-	}
-
-	private void normalCrossRunnable() {
+		
 		while (true) {
-
+			
 			try {
-				controler.carMove(direction);
+				if (this.isSynchro) syncController.carCrossMove(direction, intersectionType);
+				else controler.carMove(direction);
 
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {
@@ -58,5 +42,6 @@ public class CarCrossRunnable implements Runnable {
 		}
 
 	}
+
 
 }

@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.LightView;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.view.LightView;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
  * Classe permettant le controle de l'intersection en croix
@@ -15,10 +16,10 @@ public class CrossIntersectionController extends TraficController {
 
 	
 	public CrossIntersectionController(CarFactory carFactory, 
-			ExecutionParameters parameters, LightView panelComponent 
+			ExecutionParameters parameters, StateView stateView, LightView panelComponent 
 			, LightController lightSync) {
 		
-		super(carFactory, IntersectionType.CROSS, parameters, panelComponent, lightSync);
+		super(carFactory, IntersectionType.CROSS, parameters, stateView, panelComponent, lightSync);
 	
 	}
 

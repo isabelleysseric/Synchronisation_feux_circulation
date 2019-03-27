@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004;
+package ca.ulaval.tp2.glo3004.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,6 @@ public class Main {
 	public static void main(String[] args) throws InvalidCarActionException {
 
 		displayMenu();
-	
 		//initializeApp(IntersectionType.THREE_WAY);
 		mainView.startExecution();
 	

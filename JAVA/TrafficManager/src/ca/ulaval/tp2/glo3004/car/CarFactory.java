@@ -6,6 +6,7 @@ import ca.ulaval.tp2.glo3004.car.implementation.NorthCar;
 import ca.ulaval.tp2.glo3004.car.implementation.SouthCar;
 import ca.ulaval.tp2.glo3004.car.implementation.WestCar;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 
 /**
@@ -13,22 +14,27 @@ import ca.ulaval.tp2.glo3004.control.IntersectionType;
  */
 public class CarFactory {
 
+	private StateView stateView;
+	public CarFactory(StateView stateView) {
+		this.stateView = stateView;
+	}
 	// Constructeur avec parametres
-	public Car createCar(Direction direction, IntersectionType intersectionType) throws Exception {
+	public Car createCar(Direction direction, 
+			IntersectionType intersectionType) throws Exception {
 		Car car = null;
 		
 		switch(direction) {
 		case EAST:
-			car = new EastCar(intersectionType);
+			car = new EastCar(intersectionType, stateView);
 			break;
 		case WEST:
-			car = new WestCar(intersectionType);
+			car = new WestCar(intersectionType, stateView);
 			break;
 		case SOUTH:
-			car = new SouthCar(intersectionType);
+			car = new SouthCar(intersectionType, stateView);
 			break;
 		case NORTH:
-			car = new NorthCar(intersectionType);
+			car = new NorthCar(intersectionType, stateView);
 			break;
 		}
 		

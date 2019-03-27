@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.LightView;
-
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.view.LightView;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
  * Classe permettant le controle de l'intersection en T
@@ -17,10 +17,11 @@ public class ThreeWayIntersectionController extends TraficController {
 
 	
 	public ThreeWayIntersectionController(CarFactory carFactory, 
-			ExecutionParameters parameters, LightView panelComponent, 
+			ExecutionParameters parameters, StateView stateView, LightView panelComponent, 
 			 LightController lightController) {
 		
-		super(carFactory, IntersectionType.THREE_WAY, parameters, panelComponent, lightController);
+		super(carFactory, IntersectionType.THREE_WAY, parameters, stateView, panelComponent, 
+				lightController);
 	
 	}
 

@@ -25,31 +25,16 @@ public class CarRunnable implements Runnable {
 
 	public void run() {
 
-		if (this.isSynchro) {
-			while (true) {
-
-				try {
-					
-					 syncController.carMove(direction, intersectionType);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-		} else {
-			normalThreeWayIntersection();
-		}
-
-	}
-
-	private void normalThreeWayIntersection() {
 		while (true) {
 
 			try {
-				if(!direction.equals(Direction.NORTH)){
-					controler.carMove(direction);
+				if(isSynchro) syncController.carMove(direction, intersectionType);
+				else {
+					if(!direction.equals(Direction.NORTH)){
+						controler.carMove(direction);
+					}
 				}
-
+				
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {
 				return;
@@ -59,7 +44,6 @@ public class CarRunnable implements Runnable {
 			}
 
 		}
-
 	}
 
 }

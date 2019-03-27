@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
+import ca.ulaval.tp2.glo3004.view.StateView;
 
 /**
  * Classe abstraite d�finissant les actions possibles des voitures
@@ -20,13 +21,15 @@ public abstract class Car {
 	private String typeCar;
 	private Action previousAction;
 	private Action action;
+	private StateView stateView;
 	
 	
 	// Constructeur avec parametres
-	public Car(Direction direction, IntersectionType intersectionType) {
+	public Car(Direction direction, IntersectionType intersectionType, StateView stateView) {
 		this.direction = direction;
 		initializeMovement(intersectionType);
 		this.intersectionType = intersectionType;
+		this.stateView = stateView;
 	}
 	
 	public void setNextIntersectionType(IntersectionType nextIntersectionType) {
@@ -59,6 +62,30 @@ public abstract class Car {
 		this.typeCar = typeCar;
 	}
 	
+	public String getTypeCar() {
+		return this.typeCar;
+	}
+	
+	public Action getPreviousAction() {
+		return this.previousAction;
+	}
+	
+	public Action getCurrentAction() {
+		return this.action;
+	}
+	
+	public IntersectionType getIntersectionType() {
+		return this.intersectionType;
+	}
+	
+	public IntersectionType getNextIntersectionType() {
+		return this.nextIntersectionType;
+	}
+	
+	public Direction getDirection() {
+		return this.direction;
+	}
+	
 	// M�thode initialisant les mouvements selon le type d'intersection
 	private void initializeMovement(IntersectionType intersectionType) {
 		
@@ -77,7 +104,7 @@ public abstract class Car {
 	
 	// M�thode qui affiche les mouvements des voitures
 	protected void printMovement(Action action) {
-		String movement = "";
+		/*String movement = "";
 		if(nextIntersectionType == null) {
 			 movement = String.format("🚙 CAR:%s::%s:%s", direction, intersectionType, action);
 			
@@ -86,7 +113,9 @@ public abstract class Car {
 			 movement = String.format("🚙( %s)-CAR:%s::(%s:%s -> %s:%s)", typeCar, direction, 
 						intersectionType, previousAction, action, nextIntersectionType);
 		}
-		System.out.println(movement);
+		System.out.println(movement);*/
+		
+		stateView.displayCarState(this);
 		
 	}
 

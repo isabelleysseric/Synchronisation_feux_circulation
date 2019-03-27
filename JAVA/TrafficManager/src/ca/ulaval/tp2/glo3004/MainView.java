@@ -55,9 +55,16 @@ public class MainView {
 
 		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
 
+		
+		this.initialize();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		threads.forEach(thread -> thread.start());
 
-		this.initialize();
 	}
 
 	private JPanel createBothIntersectionPanels() {

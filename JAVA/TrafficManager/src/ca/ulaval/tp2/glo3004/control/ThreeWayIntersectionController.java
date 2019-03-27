@@ -18,9 +18,9 @@ public class ThreeWayIntersectionController extends TraficController {
 	
 	public ThreeWayIntersectionController(CarFactory carFactory, 
 			ExecutionParameters parameters, LightView panelComponent, 
-			 LightController lightController, boolean intersectionIsSync) {
+			 LightController lightController) {
 		
-		super(carFactory, IntersectionType.THREE_WAY, parameters, panelComponent, lightController, intersectionIsSync);
+		super(carFactory, IntersectionType.THREE_WAY, parameters, panelComponent, lightController);
 	
 	}
 
@@ -50,7 +50,7 @@ public class ThreeWayIntersectionController extends TraficController {
 	@Override
 	public Map<Direction, Direction[]> getAdjacenceMap() {
 		
-		Map<Direction, Direction[]> oppositeDirectionMap = new HashMap<Direction, Direction[]>() {
+		Map<Direction, Direction[]> adjacenceMap = new HashMap<Direction, Direction[]>() {
 			private static final long serialVersionUID = 1L;
 
 			{
@@ -61,7 +61,7 @@ public class ThreeWayIntersectionController extends TraficController {
 
 		};
 
-		return oppositeDirectionMap;
+		return adjacenceMap;
 	}
 
 }

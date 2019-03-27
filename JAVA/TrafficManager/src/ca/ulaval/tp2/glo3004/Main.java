@@ -19,6 +19,7 @@ public class Main {
 
 		displayMenu();
 	
+		//initializeApp(IntersectionType.THREE_WAY);
 		mainView.startExecution();
 	
 	}

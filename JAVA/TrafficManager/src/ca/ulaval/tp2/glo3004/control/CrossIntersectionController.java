@@ -16,9 +16,9 @@ public class CrossIntersectionController extends TraficController {
 	
 	public CrossIntersectionController(CarFactory carFactory, 
 			ExecutionParameters parameters, LightView panelComponent 
-			, LightController lightSync,  boolean intersectionIsSync) {
+			, LightController lightSync) {
 		
-		super(carFactory, IntersectionType.CROSS, parameters, panelComponent, lightSync, intersectionIsSync);
+		super(carFactory, IntersectionType.CROSS, parameters, panelComponent, lightSync);
 	
 	}
 

@@ -4,14 +4,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CyclicBarrier;
-import java.util.stream.Collectors;
-
 import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.LightView;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
-import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 import ca.ulaval.tp2.glo3004.light.LightController;
 
@@ -36,12 +32,11 @@ public abstract class TraficController {
 	private IntersectionType intersectionType;
 	private LightView lightView;
 	private int WAITING_TIME = 2000;
-	private boolean intersectionIsSync;
-
+	
 	// Constructeur avec parametres pour le controle du traffic sur une intersection
 	// en T ou en croix
 	public TraficController(CarFactory carFactory, IntersectionType intersectionType, ExecutionParameters parameters,
-			LightView lightView, LightController lightController, boolean intersectionIsSync) {
+			LightView lightView, LightController lightController) {
 		this.intersectionType = intersectionType;
 		this.carFactory = carFactory;
 		this.numberOfCars = parameters.getNumberOfCars();
@@ -51,7 +46,6 @@ public abstract class TraficController {
 		this.adjacenceMap = getAdjacenceMap();
 		this.lightView = lightView;
 		this.lightController = lightController;
-		this.intersectionIsSync = intersectionIsSync;
 		initializeDirectionVariables();
 	}
 
@@ -73,7 +67,9 @@ public abstract class TraficController {
 	// Methode qui affiche le statut des lumieres en fonction des intersections
 	private void printLightStates() {
 		StringBuilder lightStates = new StringBuilder();
-		lightStates.append(String.format("🚥 %s:%s:", Thread.currentThread().getName(), intersectionType));
+		
+		lightStates.append(String.format("🚥 %s:", intersectionType));
+
 		lightView.setLights(lightController.getLights());
 
 		lightStates.append(lightController.getLightStates());

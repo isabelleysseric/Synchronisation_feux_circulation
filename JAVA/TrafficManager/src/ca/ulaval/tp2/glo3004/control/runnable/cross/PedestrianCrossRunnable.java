@@ -1,26 +1,23 @@
-package ca.ulaval.tp2.glo3004.control.runnable;
+package ca.ulaval.tp2.glo3004.control.runnable.cross;
 
-import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.control.IntersectionType;
 import ca.ulaval.tp2.glo3004.control.SyncController;
 import ca.ulaval.tp2.glo3004.control.TraficController;
 
-public class CarRunnable implements Runnable {
+public class PedestrianCrossRunnable implements Runnable {
 
 	private TraficController controler;
-	private Direction direction;
 	private SyncController syncController;
+
 	private IntersectionType intersectionType;
 	private boolean isSynchro;
 
-	public CarRunnable(IntersectionType intersectionType, Direction direction, TraficController controler,
+	public PedestrianCrossRunnable(IntersectionType intersectionType, TraficController control,
 			SyncController syncController, boolean isSynchro) {
-		this.controler = controler;
-		this.direction = direction;
+		this.controler = control;
 		this.syncController = syncController;
 		this.intersectionType = intersectionType;
 		this.isSynchro = isSynchro;
-
 	}
 
 	public void run() {
@@ -29,26 +26,23 @@ public class CarRunnable implements Runnable {
 			while (true) {
 
 				try {
-					
-					 syncController.carMove(direction, intersectionType);
+					syncController.pedestrianPass(intersectionType);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
 		} else {
-			normalThreeWayIntersection();
+			normalCrossPedestriansRunnable();
 		}
 
 	}
 
-	private void normalThreeWayIntersection() {
+	private void normalCrossPedestriansRunnable() {
 		while (true) {
 
 			try {
-				if(!direction.equals(Direction.NORTH)){
-					controler.carMove(direction);
-				}
+				controler.pedestrianPass();
 
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {

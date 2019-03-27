@@ -5,5 +5,5 @@ package ca.ulaval.tp2.glo3004.control;
  */
 public enum IntersectionType {
 
-	THREE_WAY, CROSS, SYNCHRO
+	THREE_WAY, CROSS, SYNCHRO, SYNCHRO_TEST
 }

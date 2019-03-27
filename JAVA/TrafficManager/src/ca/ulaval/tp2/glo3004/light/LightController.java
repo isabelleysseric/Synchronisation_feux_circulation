@@ -14,13 +14,11 @@ public class LightController {
 	private static Light westLight = new Light(Direction.WEST);
 	private static Light southLight = new Light(Direction.SOUTH);
 	private static Light northLight = new Light(Direction.NORTH);
-	private static Map<Direction, CyclicBarrier> barriers = new HashMap<Direction, CyclicBarrier>();
-
+	
 	private Map<Direction, Light> lights = new HashMap<>();
 
 	public LightController() {
 		initializeLights();
-		initializeSyncIntersectionBarriers();
 	}
 
 	private void initializeLights() {
@@ -71,19 +69,6 @@ public class LightController {
 				.collect(Collectors.toList());
 
 		return neighboorsLights.stream().anyMatch(light -> light.isGreen());
-	}
-
-	public CyclicBarrier getBarrier(Direction direction) {
-		return barriers.get(direction);
-	}
-	
-	private void initializeSyncIntersectionBarriers() {
-		barriers = new HashMap<>();
-		barriers.put(Direction.EAST, new CyclicBarrier(2));
-		barriers.put(Direction.WEST, new CyclicBarrier(2));
-		barriers.put(Direction.SOUTH, new CyclicBarrier(2));
-		barriers.put(Direction.NORTH, new CyclicBarrier(1));
-
 	}
 
 }

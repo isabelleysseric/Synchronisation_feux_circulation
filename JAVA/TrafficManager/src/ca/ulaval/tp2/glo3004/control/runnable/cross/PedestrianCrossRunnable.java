@@ -11,6 +11,7 @@ public class PedestrianCrossRunnable implements Runnable {
 
 	private IntersectionType intersectionType;
 	private boolean isSynchro;
+	private boolean threadSuspended;
 
 	public PedestrianCrossRunnable(IntersectionType intersectionType, TraficController control,
 			SyncController syncController, boolean isSynchro) {
@@ -35,7 +36,14 @@ public class PedestrianCrossRunnable implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+			synchronized(this) {
+				while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
 		}
 
 	}

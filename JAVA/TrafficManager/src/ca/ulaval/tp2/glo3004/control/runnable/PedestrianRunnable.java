@@ -11,6 +11,8 @@ public class PedestrianRunnable implements Runnable {
 
 	private IntersectionType intersectionType;
 	private boolean isSynchro;
+	private boolean btnValue;
+	private boolean threadSuspended;
 
 	public PedestrianRunnable(IntersectionType intersectionType, TraficController control,
 			SyncController syncController, boolean isSynchro) {
@@ -18,6 +20,10 @@ public class PedestrianRunnable implements Runnable {
 		this.syncController = syncController;
 		this.intersectionType = intersectionType;
 		this.isSynchro = isSynchro;
+	}
+	
+	public void setPaused(boolean pausedValue) {
+		btnValue = pausedValue;
 	}
 
 	public void run() {
@@ -35,6 +41,15 @@ public class PedestrianRunnable implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+            synchronized(this) {
+                while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+            }
 
 		}
 

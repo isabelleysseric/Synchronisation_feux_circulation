@@ -8,6 +8,7 @@ public class LightSyncRunnable implements Runnable {
 
 	private Direction direction;
 	private SyncController syncController;
+	private boolean threadSuspended;
 
 	public LightSyncRunnable(Direction direction, SyncController syncController) {
 		this.direction = direction;
@@ -28,7 +29,15 @@ public class LightSyncRunnable implements Runnable {
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
-
+			
+			synchronized(this) {
+				while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
 		}
 	
 	}

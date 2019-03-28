@@ -12,6 +12,8 @@ public class CarCrossRunnable implements Runnable {
 	private SyncController syncController;
 	private IntersectionType intersectionType;
 	private boolean isSynchro;
+	private boolean threadSuspended;
+	private boolean btnValue;
 
 	public CarCrossRunnable(IntersectionType intersectionType, Direction direction, TraficController controler,
 			SyncController syncController, boolean isSynchro) {
@@ -21,6 +23,10 @@ public class CarCrossRunnable implements Runnable {
 		this.intersectionType = intersectionType;
 		this.isSynchro = isSynchro;
 
+	}
+	
+	public void setPaused(boolean pausedValue) {
+		btnValue = pausedValue;
 	}
 
 	public void run() {
@@ -38,10 +44,17 @@ public class CarCrossRunnable implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			synchronized(this) {
+				while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
 
 		}
 
 	}
-
-
 }

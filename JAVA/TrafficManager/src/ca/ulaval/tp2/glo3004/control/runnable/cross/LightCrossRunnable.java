@@ -7,6 +7,7 @@ public class LightCrossRunnable implements Runnable {
 
 	private TraficController controler;
 	private Direction direction;
+	private boolean threadSuspended;
 
 	public LightCrossRunnable(Direction direction, TraficController controler) {
 		this.controler = controler;
@@ -27,7 +28,14 @@ public class LightCrossRunnable implements Runnable {
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
-
+			synchronized(this) {
+				while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+			}
 		}
 	
 	

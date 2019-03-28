@@ -58,8 +58,7 @@ public class TraficController {
 		}
 	}
 
-
-	// Methode qui empeche les lumieres de l'est d'�tre vertes en meme temps que
+	// Methode qui empeche les lumieres de l'est d'etre vertes en meme temps que
 	// celles du sud
 	public void controlLight(Direction direction) throws Exception {
 		synchronized (lock) {
@@ -91,7 +90,7 @@ public class TraficController {
 					directionLock.wait();
 				}
 			}
-
+			
 			switchLight(direction, LightColor.RED);
 			
 			pedestrianCanPass();

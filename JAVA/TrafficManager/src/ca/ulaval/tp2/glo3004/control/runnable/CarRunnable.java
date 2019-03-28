@@ -12,6 +12,7 @@ public class CarRunnable implements Runnable {
 	private SyncController syncController;
 	private IntersectionType intersectionType;
 	private boolean isSynchro;
+	private boolean threadSuspended;
 
 	public CarRunnable(IntersectionType intersectionType, Direction direction, TraficController controler,
 			SyncController syncController, boolean isSynchro) {
@@ -40,6 +41,14 @@ public class CarRunnable implements Runnable {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			synchronized(this) {
+				while (threadSuspended)
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 			}
 
 		}

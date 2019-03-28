@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +39,7 @@ public class MainView {
 	public void initialize() {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBounds(30, 30, 700, 500);
+		window.setBounds(30, 30, 900, 700);
 
 		BorderLayout mainContent = new BorderLayout();
 
@@ -77,7 +78,7 @@ public class MainView {
 
 	private JPanel createBothIntersectionPanels() {
 		GridLayout lightLayout = new GridLayout(2, 0, 30, 20);
-
+		
 		JPanel lightsPanel = new JPanel();
 		lightsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		lightsPanel.setLayout(lightLayout);
@@ -114,51 +115,102 @@ public class MainView {
 		JPanel actionPanel = new JPanel();
 		actionPanel.setBackground(Color.LIGHT_GRAY);
 
-		JButton stopButton = createStopButton();
-		JButton restartButton = createRestartButton();
+		JButton pauseButton    = createPauseButton();
+		JButton unpausedButton = createUnPausedButton();
+		JButton restartButton  = createRestartButton();
+		JButton quitButton     = createQuitButton();
 
-		actionPanel.add(stopButton);
+		actionPanel.add(pauseButton);
+		actionPanel.add(unpausedButton);
 		actionPanel.add(restartButton);
+		actionPanel.add(quitButton);
 
 		return actionPanel;
 	}
 
-	private JButton createStopButton() {
-		JButton stopButton = new JButton("STOP");
+	private JButton createPauseButton() {
+		
+		JButton pauseButton = new JButton("PAUSE");
 
-		stopButton.addActionListener(new ActionListener() {
+		pauseButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(" \n"
+								 + "**************************************** \n"
+				 		 		 + "MESSAGE: Interuption des threads \n"
+						 		 + "ACTION:  PAUSE \n"
+						 		 + "Cliquer sur \"unpaused\" pour continuer  \n"
+						 		 + "**************************************** \n"
+						 		 + "\n");
+				threads.forEach(thread -> thread.suspend());
+			}
+		});
+		return pauseButton;
+	}
+	
+	private JButton createUnPausedButton() {
+		JButton unpausedButton = new JButton("UNPAUSED");
+		unpausedButton.addActionListener(new ActionListener() {
 
-				threads.forEach(thread -> thread.interrupt());
-				initialize();
-				resetLightView(threeWayLightView);
-				resetLightView(crossLightView);
+			public void actionPerformed(ActionEvent e) {
+				
+				System.out.println(" \n"
+								 + "**************************************** \n"
+						 		 + "MESSAGE: Interuption des threads \n"
+								 + "ACTION: UNPAUSED \n"
+						         + "On continue...   \n"   
+								 + "**************************************** \n" 
+						         + "\n");
+				threads.forEach(thread -> thread.resume());
+			}
+		});
+		return unpausedButton;
+	}
+	
+	private JButton createRestartButton() {
+		JButton restartButton = new JButton("RESTART");
 
+		restartButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(" \n"
+								 + "**************************************** \n"
+								 + "MESSAGE: Interuption des threads \n"
+							 	 + "ACTION: RESTART \n"
+						 		 + "We start again !\n"
+						 		 + "**************************************** \n");
+				threads.clear();	
+				System.console ();
 			}
 		});
 
-		return stopButton;
+		return restartButton;
+	}
+	private JButton createQuitButton() {
+		JButton quitButton = new JButton("QUIT");
+
+		quitButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.print(" \n"
+								 + "**************************************** \n"
+						 		 + "MESSAGE: La liste des threads est vid�e  \n"
+								 + "ACTION:  QUIT \n"
+				         		 + "See you next time !\n"
+								 + "**************************************** \n");
+				threads.clear();
+				System.exit(0);
+			}
+		});
+
+		return quitButton;
 	}
 
 	private void resetLightView(LightView lightView) {
 		lightView.reinitialize();
 		lightView.repaint();
 	}
-
-	private JButton createRestartButton() {
-		JButton stopButton = new JButton("RESTART");
-
-		stopButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startExecution();
-			}
-		});
-
-		return stopButton;
-	}
-
 }

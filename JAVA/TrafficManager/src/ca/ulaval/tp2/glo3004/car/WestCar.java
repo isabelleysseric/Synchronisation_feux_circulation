@@ -5,8 +5,8 @@ import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
 /**
- * Classe permettant le passage des voitures venant de l'ouest vers les diff�rentes 
- * directions en toute s�curit�.
+ * Classe permettant le passage des voitures venant de l'ouest vers les differentes 
+ * directions en toute securite.
  */
 public class WestCar extends Car{
 	
@@ -15,7 +15,7 @@ public class WestCar extends Car{
 		super(Direction.WEST, intersectionType);
 	}
 
-	// Methode permettant le mouvement en toute s�curit� aux voitures 
+	// Methode permettant le mouvement en toute securite aux voitures 
 	// venant de l'ouest dans une intersection en T
 	public Movement getThreeWayIntersectionMovement() {
 		Action[] actionsWhenPriority = new Action[]{Action.CONTINUE, Action.TURN_RIGHT};
@@ -24,7 +24,7 @@ public class WestCar extends Car{
 		return new Movement(actionsWhenPriority, actionsWhenOppositeSideOn);
 	}
 	
-	// Methode permettant le mouvement en toute s�curit� aux voitures 
+	// Methode permettant le mouvement en toute securite aux voitures 
 	// venant de l'ouest dans une intersection en croix
 	public Movement getCrossIntersectionMovement() {
 		Action[]actionsWhenPriority = new Action[]{Action.CONTINUE, Action.TURN_RIGHT, Action.TURN_LEFT};

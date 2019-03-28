@@ -49,7 +49,6 @@ public class LightController {
 	}
 
 	public synchronized String getLightStates() {
-
 		StringBuilder lightStates = new StringBuilder();
 
 		lights.forEach((direction, light) -> {

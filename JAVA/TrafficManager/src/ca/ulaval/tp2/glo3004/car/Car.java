@@ -6,7 +6,7 @@ import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
 /**
- * Classe abstraite d�finissant les actions possibles des voitures
+ * Classe abstraite definissant les actions possibles des voitures
  */
 public abstract class Car {
 
@@ -115,7 +115,6 @@ public abstract class Car {
 		}
 	}
 
-	
 	public void randomMoveWithOppositeSideOn() throws InvalidCarActionException {
 		boolean oppositeSideOn = true;
 		this.randomMove(oppositeSideOn);

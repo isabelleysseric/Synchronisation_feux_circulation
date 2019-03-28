@@ -1,7 +1,7 @@
 package ca.ulaval.tp2.glo3004.control.runnable;
 
-import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.control.TraficController;
+import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class LightRunnable implements Runnable {
 
@@ -19,10 +19,8 @@ public class LightRunnable implements Runnable {
 		while (true) {
 
 			try {
-				if (!direction.equals(Direction.NORTH)) {
 					controler.controlLight(direction);
-
-				}
+					
 				Thread.sleep(1500);
 			} catch (InterruptedException exception) {
 				System.out.println("LIGHT RUNNABLE STOP");

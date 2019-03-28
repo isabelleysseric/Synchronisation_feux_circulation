@@ -1,11 +1,11 @@
 package ca.ulaval.tp2.glo3004.light;
 
-import ca.ulaval.tp2.glo3004.Direction;
+import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class Light {
 
-	private Direction direction;
 	private LightColor color;
+	private Direction direction;
 	private Object lock = new Object();
 
 	public Light(Direction direction) {
@@ -17,7 +17,6 @@ public class Light {
 		synchronized (lock) {
 			this.color = color;
 		}
-
 	}
 
 	public Direction getDirection() {
@@ -28,7 +27,6 @@ public class Light {
 		synchronized (lock) {
 			return color;
 		}
-
 	}
 
 	public String getState() {

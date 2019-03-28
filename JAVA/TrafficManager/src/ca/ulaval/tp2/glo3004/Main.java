@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.view;
+package ca.ulaval.tp2.glo3004;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,8 @@ import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
 
 
 import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
-import ca.ulaval.tp2.glo3004.control.IntersectionType;
+import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
+import ca.ulaval.tp2.glo3004.view.MainView;
 
 public class Main {
 
@@ -18,7 +19,7 @@ public class Main {
 	public static void main(String[] args) throws InvalidCarActionException {
 
 		displayMenu();
-		//initializeApp(IntersectionType.THREE_WAY);
+		//initializeApp(IntersectionType.CROSS);
 		mainView.startExecution();
 	
 	}
@@ -49,7 +50,8 @@ public class Main {
 			break;
 			
 		case "3":
-			initializeApp(IntersectionType.SYNCHRO);
+			//initializeApp(IntersectionType.SYNCHRO);
+			System.out.println("Sorry not implemented yet ...");
 			break;
 			
 		default:
@@ -63,6 +65,7 @@ public class Main {
 		int numberOfPedestrians = 1;
 
 		ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
+		
 		mainView = new MainView(intersectionType, parameters);
 	}
 

@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.control;
+package ca.ulaval.tp2.glo3004.intersection;
 
 /**
  * Enumeration des differents types d'intersections possibles

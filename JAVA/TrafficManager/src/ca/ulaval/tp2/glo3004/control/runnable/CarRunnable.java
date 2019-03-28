@@ -1,9 +1,9 @@
 package ca.ulaval.tp2.glo3004.control.runnable;
 
-import ca.ulaval.tp2.glo3004.Direction;
-import ca.ulaval.tp2.glo3004.control.IntersectionType;
 import ca.ulaval.tp2.glo3004.control.SyncController;
 import ca.ulaval.tp2.glo3004.control.TraficController;
+import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
+import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class CarRunnable implements Runnable {
 
@@ -30,9 +30,8 @@ public class CarRunnable implements Runnable {
 			try {
 				if(isSynchro) syncController.carMove(direction, intersectionType);
 				else {
-					if(!direction.equals(Direction.NORTH)){
 						controler.carMove(direction);
-					}
+					
 				}
 				
 				Thread.sleep(1500);

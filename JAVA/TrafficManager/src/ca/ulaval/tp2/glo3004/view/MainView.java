@@ -13,24 +13,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import ca.ulaval.tp2.glo3004.IntersectionControllerFactory;
 import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
-import ca.ulaval.tp2.glo3004.control.IntersectionType;
+import ca.ulaval.tp2.glo3004.control.IntersectionControllerFactory;
+import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 
 public class MainView {
 
-	private static LightView threeWayLightComponent = new LightView(IntersectionType.THREE_WAY);
-	private static LightView crossLightComponent = new LightView(IntersectionType.CROSS);
+	private static LightView threeWayLightView;
+	private static LightView crossLightView;
 	private static StateView stateView = new StateView();
 
 	private static List<Thread> threads;
 
 	private ExecutionParameters parameters;
 	private IntersectionType intersectionType;
-
+	
 	public MainView(IntersectionType intersectionType, ExecutionParameters parameters) {
 		this.parameters = parameters;
 		this.intersectionType = intersectionType;
+		threeWayLightView = new LightView(IntersectionType.THREE_WAY);
+		crossLightView = new LightView(IntersectionType.CROSS);
 	}
 
 	public void initialize() {
@@ -57,8 +59,8 @@ public class MainView {
 
 	public void startExecution() {
 
-		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(threeWayLightComponent,
-				crossLightComponent, stateView);
+		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(threeWayLightView,
+				crossLightView, stateView);
 
 		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
 
@@ -81,8 +83,8 @@ public class MainView {
 		lightsPanel.setLayout(lightLayout);
 		lightsPanel.setBackground(Color.DARK_GRAY);
 
-		JPanel threeWayPanel = createIntersectionPanel(threeWayLightComponent);
-		JPanel crossPanel = createIntersectionPanel(crossLightComponent);
+		JPanel threeWayPanel = createIntersectionPanel(threeWayLightView);
+		JPanel crossPanel = createIntersectionPanel(crossLightView);
 
 		lightsPanel.add(threeWayPanel);
 		lightsPanel.add(crossPanel);
@@ -131,8 +133,8 @@ public class MainView {
 
 				threads.forEach(thread -> thread.interrupt());
 				initialize();
-				resetLightView(threeWayLightComponent);
-				resetLightView(crossLightComponent);
+				resetLightView(threeWayLightView);
+				resetLightView(crossLightView);
 
 			}
 		});

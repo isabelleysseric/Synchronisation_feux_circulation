@@ -9,10 +9,10 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.car.Action;
 import ca.ulaval.tp2.glo3004.car.Car;
-import ca.ulaval.tp2.glo3004.control.IntersectionType;
+import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
+import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class StateView extends JTextPane {
 
@@ -39,36 +39,47 @@ public class StateView extends JTextPane {
 			return;
 		}
 	}
-
-	public void displayPedestriansState(IntersectionType intersectionType) {
-		String pedestrianState = String.format("\n 유 PEDESTRIANS::%s:GO \n", intersectionType);
+	
+	public void displayPedestrians() {
+		String pedestrianState = String.format("\n 유 PEDESTRIANS::GO \n");
 
 		System.out.println("🚶 PEDESTRIANS::GO");
 
 		appendText(pedestrianState, PEDESTRIAN_TEXT_COLOR);
 	}
 
-	public void displayCarState(Car car) {
-		String carState = "";
-
+	public void displayCarState(Car car, boolean isSynchro) throws Exception {
 		Direction direction = car.getDirection();
 		IntersectionType intersectionType = car.getIntersectionType();
 		IntersectionType nextIntersectionType = car.getNextIntersectionType();
 		Action action = car.getCurrentAction();
 		String typeCar = car.getTypeCar();
 
+		StringBuilder carStateBuilder = new StringBuilder();
+		carStateBuilder.append("\n");
+		
 		if (nextIntersectionType == null || typeCar == null) {
-			carState = String.format("⚑CAR:%s::%s:%s", direction, intersectionType, action);
-
+			String singleMoveCarState = String.format("⚑CAR:%s::%s:%s", direction, intersectionType, action);
+			carStateBuilder.append(singleMoveCarState);
+			
+			if(isSynchro)  {
+				String endMoveFlag = (car.canMoveToNextIntersection())?"->NEXT": "->END";
+				carStateBuilder.append(endMoveFlag);
+			}
+				
 		} else {
 			Action previousAction = car.getPreviousAction();
-			carState = String.format("⚑CAR:%s:%s::%s -> %s:%s", direction, intersectionType,
+			String doubleMoveCarState = String.format("⚑CAR:%s:%s::%s -> %s:%s", direction, intersectionType,
 					previousAction, nextIntersectionType, action);
+			carStateBuilder.append(doubleMoveCarState);
 		}
-		System.out.println(carState);
-
+		
+		carStateBuilder.append("\n");
+		
+		System.out.println(carStateBuilder.toString());
+		
 		Color intersectionColor = (isCross(intersectionType)) ? CROSS_TEXT_COLOR : THREE_WAY_TEXT_COLOR;
-		appendText(String.format("\n %s \n", carState), intersectionColor);
+		appendText(carStateBuilder.toString(), intersectionColor);
 	}
 
 	private boolean isCross(IntersectionType intersectionType) {

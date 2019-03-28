@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
+import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.LightColor;
 import ca.ulaval.tp2.glo3004.light.LightController;
+import ca.ulaval.tp2.glo3004.road.Direction;
 import ca.ulaval.tp2.glo3004.view.LightView;
 import ca.ulaval.tp2.glo3004.view.StateView;
 
@@ -135,6 +136,9 @@ public class SyncController {
 			switchLight(direction, LightColor.GREEN);
 		}
 
+
+		Thread.sleep(2000);
+		System.out.println("****************** I AM UP........");
 		switchBackToRedAfterCarCirculation(direction);
 	}
 
@@ -174,7 +178,7 @@ public class SyncController {
 			for (int i = 0; i < numberOfPedestrians; i++) {
 				printLightStates(intersectionType);
 				
-				stateView.displayPedestriansState(intersectionType);
+				stateView.displayPedestrians();
 			}
 			lock.notifyAll();
 		}
@@ -206,6 +210,7 @@ public class SyncController {
 			while (lightController.getLight(direction).isRed()) {
 				lock.wait();
 			}
+
 		}
 
 		if (!direction.equals(Direction.NORTH) && intersectionType.equals(IntersectionType.THREE_WAY)) {
@@ -216,26 +221,28 @@ public class SyncController {
 				sendCarsToNextIntersection(direction, intersectionType);
 			}
 		}
-
+		
 		synchronized (directionLocks.get(direction)) {
 			timeOutMaps.put(direction, true);
 			directionLocks.get(direction).notifyAll();
 		}
-
 	}
 
 	public void carCrossMove(Direction direction, IntersectionType intersectionType) throws Exception {
 
-		while (lightController.getLight(direction).isGreen()) {
+		
+			while (lightController.getLight(direction).isGreen()) {
 
-			if (isEastCross(direction, intersectionType) || isWestThreeWay(direction, intersectionType)) {
+				if (isEastCross(direction, intersectionType) || isWestThreeWay(direction, intersectionType)) {
 
-				getCarFromPreviousIntersection(direction, intersectionType);
-			} else {
+					getCarFromPreviousIntersection(direction, intersectionType);
+				} else {
 
-				sendCarsToNextIntersection(direction, intersectionType);
+					sendCarsToNextIntersection(direction, intersectionType);
+				}
 			}
-		}
+		
+		
 	}
 
 	private boolean isEastCross(Direction direction, IntersectionType intersectionType) {
@@ -263,6 +270,10 @@ public class SyncController {
 		}
 	}
 
+	/*
+	 * PRODUCTEURS=> 3-WAY: EST-CONTINUE, SUD:GAUCHE
+	 * PRODUCTEURS => CROSS: NORD-GAUCHE, OUEST-CONTINUE, SUD:DROITE 
+	 * */
 	private void sendCarsToNextIntersection(Direction direction, IntersectionType intersectionType) throws Exception {
 		Car car = carFactory.createCar(direction, intersectionType);
 		moveInCorrectDirection(car, direction, intersectionType);
@@ -286,6 +297,10 @@ public class SyncController {
 
 	}
 
+	/*
+	 * CONSOMMATEURS=> 3-WAY: OUEST
+	 * CONSOMMATEURS => CROSS: EST 
+	 * */
 	private void getCarFromPreviousIntersection(Direction direction, IntersectionType intersectionType)
 			throws Exception {
 		Car car = null;

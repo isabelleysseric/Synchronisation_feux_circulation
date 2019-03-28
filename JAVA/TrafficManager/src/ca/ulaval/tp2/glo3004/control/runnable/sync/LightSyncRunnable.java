@@ -1,7 +1,7 @@
 package ca.ulaval.tp2.glo3004.control.runnable.sync;
 
-import ca.ulaval.tp2.glo3004.Direction;
 import ca.ulaval.tp2.glo3004.control.SyncController;
+import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class LightSyncRunnable implements Runnable {
 

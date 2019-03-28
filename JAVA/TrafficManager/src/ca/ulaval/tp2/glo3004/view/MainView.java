@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -15,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import ca.ulaval.tp2.glo3004.ExecutionParameters;
+import ca.ulaval.tp2.glo3004.Main;
 import ca.ulaval.tp2.glo3004.control.IntersectionControllerFactory;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 
@@ -23,9 +28,7 @@ public class MainView {
 	private static LightView threeWayLightView;
 	private static LightView crossLightView;
 	private static StateView stateView = new StateView();
-
 	private static List<Thread> threads;
-
 	private ExecutionParameters parameters;
 	private IntersectionType intersectionType;
 	
@@ -40,14 +43,12 @@ public class MainView {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBounds(30, 30, 900, 700);
-
+		
 		BorderLayout mainContent = new BorderLayout();
-
 		JPanel lightsPanel = createBothIntersectionPanels();
-
-		JScrollPane stateViewScroll = new JScrollPane(stateView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane stateViewScroll = new JScrollPane(stateView, 
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
 		JPanel actionPanel = createActionPanel();
 
 		window.getContentPane().setLayout(mainContent);
@@ -60,33 +61,34 @@ public class MainView {
 
 	public void startExecution() {
 
-		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(threeWayLightView,
+		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(
+				threeWayLightView,
 				crossLightView, stateView);
 
-		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
+		threads = controllerFactory.createIntersectionControllerThreads(
+				intersectionType, 
+				parameters);
 
 		this.initialize();
-
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		threads.forEach(thread -> thread.start());
-
 	}
 
 	private JPanel createBothIntersectionPanels() {
-		GridLayout lightLayout = new GridLayout(2, 0, 30, 20);
+		GridLayout lightLayout = new GridLayout(2, 0, 30, 20);		
 		
 		JPanel lightsPanel = new JPanel();
+		JPanel threeWayPanel = createIntersectionPanel(threeWayLightView);
+		JPanel crossPanel = createIntersectionPanel(crossLightView);
+		
 		lightsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		lightsPanel.setLayout(lightLayout);
 		lightsPanel.setBackground(Color.DARK_GRAY);
-
-		JPanel threeWayPanel = createIntersectionPanel(threeWayLightView);
-		JPanel crossPanel = createIntersectionPanel(crossLightView);
-
+		
 		lightsPanel.add(threeWayPanel);
 		lightsPanel.add(crossPanel);
 
@@ -96,6 +98,7 @@ public class MainView {
 	private JPanel createIntersectionPanel(LightView lightComponent) {
 
 		JPanel intersectionPanel = new JPanel();
+		
 		intersectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		intersectionPanel.setBackground(Color.BLACK);
 
@@ -134,6 +137,7 @@ public class MainView {
 
 		pauseButton.addActionListener(new ActionListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(" \n"
@@ -153,6 +157,7 @@ public class MainView {
 		JButton unpausedButton = new JButton("UNPAUSED");
 		unpausedButton.addActionListener(new ActionListener() {
 
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
 				System.out.println(" \n"
@@ -181,13 +186,13 @@ public class MainView {
 							 	 + "ACTION: RESTART \n"
 						 		 + "We start again !\n"
 						 		 + "**************************************** \n");
-				threads.clear();	
+				threads.clear();
 				System.console ();
 			}
 		});
-
-		return restartButton;
+		return  restartButton;
 	}
+
 	private JButton createQuitButton() {
 		JButton quitButton = new JButton("QUIT");
 
@@ -209,6 +214,7 @@ public class MainView {
 		return quitButton;
 	}
 
+	@SuppressWarnings("unused")
 	private void resetLightView(LightView lightView) {
 		lightView.reinitialize();
 		lightView.repaint();

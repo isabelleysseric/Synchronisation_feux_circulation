@@ -11,13 +11,11 @@ public class ThreeWayIntersection extends Intersection {
 
 	
 	public ThreeWayIntersection() {
-		super(IntersectionType.THREE_WAY);
-		
+		super(IntersectionType.THREE_WAY);	
 	}
 	
 	@Override
 	public Direction[] getAllDirections() {
 		return DIRECTION_TYPES;
-	}
-	
+	}	
 }

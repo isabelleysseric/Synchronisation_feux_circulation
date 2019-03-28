@@ -86,7 +86,7 @@ public class SyncController {
 		System.out.print(lightStates.toString());
 	}
 
-	// Methode qui empeche les lumieres de l'est d'�tre vertes en meme temps que
+	// Methode qui empeche les lumieres de l'est d'etre vertes en meme temps que
 	// celles du sud
 	public void controlLight(Direction direction) throws Exception {
 
@@ -128,7 +128,7 @@ public class SyncController {
 		return this.lightController.atLeastOneNeighBoorIsGreen(neighboors, direction);
 	}
 
-	// Synchronisation du passage des pi�tons avec les lumieres
+	// Synchronisation du passage des pietons avec les lumieres
 	public void pedestrianPass() throws InterruptedException {
 
 		synchronized (lock) {

@@ -13,12 +13,12 @@ import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
+/**
+ * 
+ */
 public class LightView extends JComponent {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	private static float START_X = 5;
 	private static float START_Y = 50;
 	private static float LIGHT_MARGIN = 50;
@@ -29,17 +29,13 @@ public class LightView extends JComponent {
 	private static Color LIGHT_OFF_COLOR = Color.GRAY;
 	private static Map<Direction, Integer> lightPositions;
 
-
 	private Object lock = new Object();
-
 	private IntersectionType intersectionType;
 	private Map<Direction, Light> lights = new HashMap<>();
 
-	public LightView(IntersectionType intersectionType) {
-		
+	public LightView(IntersectionType intersectionType) {		
 		this.setPreferredSize(new Dimension(300, 200));
 		this.intersectionType = intersectionType;
-
 		reinitialize();
 	}
 
@@ -69,14 +65,12 @@ public class LightView extends JComponent {
 		if (intersectionType.equals(IntersectionType.CROSS)) {
 			this.lights.put(Direction.NORTH, new Light(Direction.NORTH));
 		};
-
 	}
 
 	public void setLights(Map<Direction, Light> lights) {
 		synchronized (lock) {
 			this.lights = lights;
 		}
-
 		repaint();
 	}
 
@@ -88,25 +82,20 @@ public class LightView extends JComponent {
 				return;
 			}
 			Graphics2D g2 = (Graphics2D) g;
-
 			int position = lightPositions.get(direction);
 			float lightX = position * START_X + position * LIGHT_CONTAINER_WIDTH;
 
 			drawLightContainer(g2, lightX, START_Y);
 			drawLights(g2, lightX, START_Y, light);
-			drawText(g2, lightX, START_Y, direction);
-			
+			drawText(g2, lightX, START_Y, direction);		
 		});
-
 	}
 
 	private void drawLightContainer(Graphics2D g2, float x, float y) {
-
 		Rectangle2D rectangle = new Rectangle2D.Double(x, y, LIGHT_CONTAINER_WIDTH, LIGHT_CONTAINER_HEIGHT);
 		g2.setPaint(Color.DARK_GRAY);
 		g2.fill(rectangle);
 		g2.draw(rectangle);
-
 	}
 
 	private void drawLights(Graphics2D g2, float x, float y, Light light) {
@@ -122,18 +111,13 @@ public class LightView extends JComponent {
 	}
 
 	private void drawLight(Graphics2D g2, double x, double y, Color color) {
-
 		Ellipse2D.Double circle = new Ellipse2D.Double(x, y, LIGHT_DIAMETER, LIGHT_DIAMETER);
 		g2.setPaint(color);
 		g2.fill(circle);
-
 	}
 
 	private void drawText(Graphics2D g2, float x, float y, Direction direction) {
-
 		g2.setPaint(Color.WHITE);
 		g2.drawString(direction.name(), x, y - 5);
-
 	}
-
 }

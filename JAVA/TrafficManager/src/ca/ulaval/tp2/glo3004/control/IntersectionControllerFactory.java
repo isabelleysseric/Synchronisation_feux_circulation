@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
+import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.control.runnable.CarRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.LightRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.PedestrianController;
@@ -12,7 +13,6 @@ import ca.ulaval.tp2.glo3004.intersection.CrossIntersection;
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.intersection.ThreeWayIntersection;
-import ca.ulaval.tp2.glo3004.light.LightController;
 import ca.ulaval.tp2.glo3004.road.Direction;
 import ca.ulaval.tp2.glo3004.view.LightView;
 import ca.ulaval.tp2.glo3004.view.StateView;
@@ -88,16 +88,6 @@ public class IntersectionControllerFactory {
 	
 	}
 	
-	/*private void initializePedestriansThread(List<Thread> threads, IntersectionType intersectionType,
-			TraficController traficController, boolean isSynchro) {
-
-	/*	PedestrianRunnable pedestriansRunnable = new PedestrianRunnable(intersectionType, traficController,
-				syncController, isSynchro);
-		PedestrianRunnable pedestriansRunnable = new PedestrianRunnable(new PedestrianController(lightController, stateView));
-		Thread pedestrianThread = new Thread(pedestriansRunnable);
-		threads.add(pedestrianThread);
-	}*/
-	
 	private void initializeCarThreads(List<Thread> threads, Intersection intersection,
 			TraficController traficController, boolean isSynchro) {
 
@@ -125,7 +115,6 @@ public class IntersectionControllerFactory {
 		thread.setName(threadName);
 		threads.add(thread);
 	}
-
 	
 	
 }

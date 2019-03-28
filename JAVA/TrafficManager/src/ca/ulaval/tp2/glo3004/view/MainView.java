@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
+import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.control.IntersectionControllerFactory;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 

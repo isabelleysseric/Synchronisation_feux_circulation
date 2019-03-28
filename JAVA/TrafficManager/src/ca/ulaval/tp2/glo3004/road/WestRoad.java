@@ -1,6 +1,5 @@
 package ca.ulaval.tp2.glo3004.road;
 
-import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 
 public class WestRoad extends Road{

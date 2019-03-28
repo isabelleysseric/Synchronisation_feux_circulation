@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.LightColor;
-import ca.ulaval.tp2.glo3004.light.LightController;
 import ca.ulaval.tp2.glo3004.road.Direction;
 import ca.ulaval.tp2.glo3004.view.LightView;
 import ca.ulaval.tp2.glo3004.view.StateView;

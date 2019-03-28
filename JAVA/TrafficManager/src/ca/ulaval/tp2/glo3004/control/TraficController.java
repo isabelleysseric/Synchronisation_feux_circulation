@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+
+import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
 import ca.ulaval.tp2.glo3004.light.LightColor;
-import ca.ulaval.tp2.glo3004.light.LightController;
 import ca.ulaval.tp2.glo3004.road.Direction;
 import ca.ulaval.tp2.glo3004.view.StateView;
 

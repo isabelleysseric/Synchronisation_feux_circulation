@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
-
-
-import ca.ulaval.tp2.glo3004.control.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.view.MainView;
 

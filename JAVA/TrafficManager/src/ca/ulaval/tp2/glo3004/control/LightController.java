@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.light;
+package ca.ulaval.tp2.glo3004.control;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
+import ca.ulaval.tp2.glo3004.light.Light;
+import ca.ulaval.tp2.glo3004.light.LightColor;
 import ca.ulaval.tp2.glo3004.road.Direction;
 import ca.ulaval.tp2.glo3004.view.LightView;
 

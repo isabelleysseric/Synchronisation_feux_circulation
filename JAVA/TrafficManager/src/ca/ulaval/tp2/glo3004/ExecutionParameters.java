@@ -1,11 +1,11 @@
-package ca.ulaval.tp2.glo3004.control;
+package ca.ulaval.tp2.glo3004;
 
 /**
- * Classe permettant l'accès et la modification du nombre de pietons et de voitures 
+ * Classe permettant l'accï¿½s et la modification du nombre de pietons et de voitures 
  */
 public class ExecutionParameters {
 
-	// Attributs privés de la classe
+	// Attributs privï¿½s de la classe
 	private int numberOfPedestrians;
 	private int numberOfCars;
 	

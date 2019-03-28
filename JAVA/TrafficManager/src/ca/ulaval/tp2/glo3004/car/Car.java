@@ -11,7 +11,7 @@ import ca.ulaval.tp2.glo3004.road.Direction;
 public abstract class Car {
 
 	private Direction direction;
-	private ActionController movement;
+	private Movement movement;
 	private IntersectionType intersectionType;
 	private IntersectionType nextIntersectionType;
 	private String typeCar;
@@ -136,11 +136,11 @@ public abstract class Car {
 		this.action = randomAction;
 	}
 
-	public abstract ActionController getThreeWayIntersectionMovement();
+	public abstract Movement getThreeWayIntersectionMovement();
 
-	public abstract ActionController getCrossIntersectionMovement();
+	public abstract Movement getCrossIntersectionMovement();
 
-	public ActionController getMovement() {
+	public Movement getMovement() {
 		return this.getMovement();
 	}
 }

@@ -4,14 +4,14 @@ package ca.ulaval.tp2.glo3004.car;
  * Classe permettant des mouvements s�curitaires et des mouvements dans
  * des directions oppos�es
  */
-public class ActionController {
+public class Movement {
 
 	// Attributs priv�s
 	private Action[] actionsWhenPriority;
 	private Action[] actionsWhenOppositeSideOn;
 	
 	// Constructeur avec parametres 
-	public ActionController(Action[] actionsWhenPriority, Action[] actionsWhenOppositeSideOn) {
+	public Movement(Action[] actionsWhenPriority, Action[] actionsWhenOppositeSideOn) {
 		this.actionsWhenPriority = actionsWhenPriority;
 		this.actionsWhenOppositeSideOn = actionsWhenOppositeSideOn;
 	}

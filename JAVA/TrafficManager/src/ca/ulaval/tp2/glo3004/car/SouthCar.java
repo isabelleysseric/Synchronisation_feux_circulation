@@ -16,19 +16,19 @@ public class SouthCar extends Car{
 	
 	// Methode permettant le mouvement en toute s�curit� aux voitures 
 	// venant du sud dans une intersection en T
-	public ActionController getThreeWayIntersectionMovement() {
+	public Movement getThreeWayIntersectionMovement() {
 		Action[] actionsWhenPriority = new Action[]{Action.TURN_LEFT, Action.TURN_RIGHT};
 		Action[] actionsWhenOppositeSideOn = new Action[]{Action.TURN_LEFT, Action.TURN_RIGHT};
 		
-		return new ActionController(actionsWhenPriority, actionsWhenOppositeSideOn);
+		return new Movement(actionsWhenPriority, actionsWhenOppositeSideOn);
 	}
 	
 	// Methode permettant le mouvement en toute s�curit� aux voitures  
 	// venant du sud dans une intersection en croix
-	public ActionController getCrossIntersectionMovement() {
+	public Movement getCrossIntersectionMovement() {
 		Action[]actionsWhenPriority = new Action[]{Action.TURN_LEFT, Action.TURN_RIGHT, Action.CONTINUE};
 		Action[] actionsWhenOppositeSideOn = new Action[] {Action.CONTINUE, Action.TURN_RIGHT};
 		
-		return new ActionController(actionsWhenPriority, actionsWhenOppositeSideOn);
+		return new Movement(actionsWhenPriority, actionsWhenOppositeSideOn);
 	}
 }

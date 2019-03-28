@@ -53,12 +53,11 @@ public class StateView extends JTextPane {
 		IntersectionType intersectionType = car.getIntersectionType();
 		IntersectionType nextIntersectionType = car.getNextIntersectionType();
 		Action action = car.getCurrentAction();
-		String typeCar = car.getTypeCar();
-
+		
 		StringBuilder carStateBuilder = new StringBuilder();
 		carStateBuilder.append("\n");
 
-		if (nextIntersectionType == null || typeCar == null) {
+		if (nextIntersectionType == null) {
 			String singleMoveCarState = String.format("⚑CAR:%s::%s:%s", direction, intersectionType, action);
 			carStateBuilder.append(singleMoveCarState);
 

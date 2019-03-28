@@ -29,7 +29,13 @@ public class CarRunnable implements Runnable {
 		while (true) {
 
 			try {
-				if(isSynchro) syncController.carMove(direction, intersectionType);
+				if(isSynchro) {
+					
+					syncController.carMove(direction, intersectionType);
+					
+					
+					
+				}
 				else {
 						controler.carMove(direction);
 					

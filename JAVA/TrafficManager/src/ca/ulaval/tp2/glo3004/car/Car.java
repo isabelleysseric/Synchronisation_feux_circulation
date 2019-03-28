@@ -14,7 +14,6 @@ public abstract class Car {
 	private Movement movement;
 	private IntersectionType intersectionType;
 	private IntersectionType nextIntersectionType;
-	private String typeCar;
 	private Action previousAction;
 	private Action action;
 	
@@ -69,14 +68,6 @@ public abstract class Car {
 		} else {
 			return false;
 		}
-	}
-
-	public void setTypeCar(String typeCar) {
-		this.typeCar = typeCar;
-	}
-
-	public String getTypeCar() {
-		return this.typeCar;
 	}
 
 	public Action getPreviousAction() {

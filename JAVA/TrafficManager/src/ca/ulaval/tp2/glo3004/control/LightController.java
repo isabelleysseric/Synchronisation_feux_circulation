@@ -13,26 +13,33 @@ import ca.ulaval.tp2.glo3004.view.LightView;
 
 public class LightController {
 
-	private Intersection intersection;
 	private LightView lightView;
+	private LightView secondLightView;
 	
 	private Map<Direction, Light> lights = new HashMap<>();
 
 	public LightController(Intersection intersection, LightView lightView) {
-		this.intersection = intersection;
+		//this.intersection = intersection;
 		this.lightView = lightView;
-		initializeLights();
+		initializeLights(intersection.getAllDirections());
+	}
+	
+	public LightController() {
+		Direction[] directions = new Direction[] {Direction.EAST, Direction.WEST,
+				Direction.NORTH, Direction.SOUTH};
+		
+		this.initializeLights(directions);
 	}
 
-	private void initializeLights() {
-		for(Direction directionType: intersection.getAllDirections()) {
+	private void initializeLights(Direction[] directions) {
+		for(Direction directionType: directions) {
 			lights.put(directionType, new Light(directionType));
 		}
 	}
 
 	// Methode qui affiche le statut des lumieres en fonction des intersections
 	public synchronized void switchLight(Direction direction, LightColor color) {
-		lightView.setLights(this.lights);
+		if(this.lightView !=null) lightView.setLights(this.lights);
 		this.lights.get(direction).switchTo(color);
 	}
 

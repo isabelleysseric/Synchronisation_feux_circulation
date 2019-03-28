@@ -84,6 +84,9 @@ public class LightView extends JComponent {
 
 		lights.forEach((direction, light) -> {
 
+			if(direction.equals(Direction.NORTH) && this.intersectionType.equals(IntersectionType.THREE_WAY)) {
+				return;
+			}
 			Graphics2D g2 = (Graphics2D) g;
 
 			int position = lightPositions.get(direction);
@@ -92,6 +95,7 @@ public class LightView extends JComponent {
 			drawLightContainer(g2, lightX, START_Y);
 			drawLights(g2, lightX, START_Y, light);
 			drawText(g2, lightX, START_Y, direction);
+			
 		});
 
 	}

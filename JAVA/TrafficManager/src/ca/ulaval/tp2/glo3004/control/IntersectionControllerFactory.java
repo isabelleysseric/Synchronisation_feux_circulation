@@ -9,6 +9,9 @@ import ca.ulaval.tp2.glo3004.control.runnable.CarRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.LightRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.PedestrianController;
 import ca.ulaval.tp2.glo3004.control.runnable.PedestrianRunnable;
+import ca.ulaval.tp2.glo3004.control.runnable.sync.LightSyncRunnable;
+import ca.ulaval.tp2.glo3004.control.runnable.sync.PedestrianSync;
+import ca.ulaval.tp2.glo3004.control.runnable.sync.SynchroIntersection;
 import ca.ulaval.tp2.glo3004.intersection.CrossIntersection;
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
@@ -39,33 +42,32 @@ public class IntersectionControllerFactory {
 			ExecutionParameters parameters) {
 		List<Thread> threads = new ArrayList<Thread>();
 
-		Intersection intersection = null;
-		LightView lightView = null;
-
 		switch (intersectionType) {
 		
 		case THREE_WAY:
-			intersection = new ThreeWayIntersection();
-			lightView = threeWayLightView;
+			Intersection threeWayIntersection = new ThreeWayIntersection();
+			initializeThreads(threads, threeWayIntersection, parameters, threeWayLightView);
 
 			break;
 		case CROSS:
-			intersection = new CrossIntersection();
-			lightView = crossLightView;
+			Intersection crossIntersection = new CrossIntersection();
+			initializeThreads(threads, crossIntersection, parameters, crossLightView);
+
 			break;
+		case SYNCHRO:
+			initializeSyncIntersectionThreads(threads, parameters);
 
 		default:
 			break;
 		}
-
-		lightController = new LightController(intersection, lightView);
-		initializeThreads(threads, intersection, parameters, lightView);
 		
 		return threads;
 	}
 
 	private void initializeThreads(List<Thread> threads, Intersection intersection, 
 			ExecutionParameters parameters, LightView lightView) {
+		
+		lightController = new LightController(intersection, lightView);
 		
 			
 		CyclicBarrier pedestrianBarrier = createPedestriansBarrier(intersection, parameters);
@@ -74,7 +76,7 @@ public class IntersectionControllerFactory {
 		initializeCarThreads(threads, intersection, traficController, false);
 		initializeLightsThreads(threads, intersection, traficController, false);
 	}
-
+	
 	private CyclicBarrier createPedestriansBarrier(Intersection intersection, ExecutionParameters parameters) {
 		int numberOfIntersections = intersection.getAllDirections().length;
 		int numberOfPedestrians = parameters.getNumberOfPedestrians();
@@ -116,5 +118,42 @@ public class IntersectionControllerFactory {
 		threads.add(thread);
 	}
 	
+	/*SYNCHRO INTERSECTION SETUP */
+	private void initializeSyncIntersectionThreads(List<Thread> threads,
+			ExecutionParameters parameters) {
+		boolean inSynchro = true;
+		
+		Intersection threeWayIntersection = new ThreeWayIntersection();
+		Intersection crossIntersection = new CrossIntersection();
+		
+		lightController = new LightController();
+		
+		SynchroIntersection syncIntersection = new SynchroIntersection(threeWayIntersection, crossIntersection);
+		SyncController synchroController = new SyncController(parameters, stateView, threeWayLightView
+				, crossLightView, 
+				lightController, syncIntersection);
+	
+		this.syncController = synchroController;
+		
+		initializeCarThreads(threads, threeWayIntersection, null, inSynchro);
+		initializeCarThreads(threads, crossIntersection, null, inSynchro);
+		initializeSyncLights(threads, syncIntersection);
+		initializePedestrianSync(threads);
+	}
+
+	private void initializeSyncLights(List<Thread> threads, SynchroIntersection syncIntersection) {
+		for (Direction direction : syncIntersection.getAllDirections()) {
+
+			Runnable lightSyncRunnable = new LightSyncRunnable(direction, syncController);
+			addNewThread(lightSyncRunnable, direction, "LIGHT-SYNC", threads);
+			
+		}
+	}
+	
+	private void initializePedestrianSync(List<Thread> threads) {
+		Runnable pedestrianSyncRunnable = new PedestrianSync(syncController);
+		addNewThread(pedestrianSyncRunnable, null, "PEDESTRIAN-SYNC", threads);
+	}
+
 	
 }

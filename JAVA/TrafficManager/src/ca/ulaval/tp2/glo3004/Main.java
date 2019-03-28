@@ -62,6 +62,9 @@ public class Main {
 		case 2:
 			initializeApp(IntersectionType.CROSS, parameters);
 			break;
+		case 3:
+			initializeApp(IntersectionType.SYNCHRO, parameters);
+			break;
 			
 		default:
 			System.out.println("Sorry not implemented yet ...");

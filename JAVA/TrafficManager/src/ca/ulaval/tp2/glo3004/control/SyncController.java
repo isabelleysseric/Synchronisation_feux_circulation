@@ -207,15 +207,12 @@ public class SyncController {
 			
 			for (int i = 0; i < numberOfCars; i++) {
 				printLightStates();
-
-				synchronized (lock) {
-					if (oppositeDirection == null || lightController.getLight(oppositeDirection).isRed()) {
-						car.randomMoveWithPriority();
-					} else {
-						car.randomMoveWithOppositeSideOn();
-					}
-					stateView.displayCarState(car, IN_SYNCHRO);
+				if (oppositeDirection == null || lightController.getLight(oppositeDirection).isRed()) {
+					car.randomMoveWithPriority();
+				} else {
+					car.randomMoveWithOppositeSideOn();
 				}
+				stateView.displayCarState(car, IN_SYNCHRO);
 			}
 		}
 		

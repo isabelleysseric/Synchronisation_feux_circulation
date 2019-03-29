@@ -12,10 +12,8 @@ public class Main {
 	private static MainView mainView;
 	
 	public static void main(String[] args) throws InvalidCarActionException {
-
-		displayMenu();
-		mainView.startExecution();
-	
+		mainView = new MainView();
+		mainView.initialize();
 	}
 	
 	private static void displayMenu() {
@@ -74,7 +72,7 @@ public class Main {
 	
 
 	private static void initializeApp(IntersectionType intersectionType, ExecutionParameters parameters) {
-		mainView = new MainView(intersectionType, parameters);
+		mainView = new MainView();
 	}
 
 }

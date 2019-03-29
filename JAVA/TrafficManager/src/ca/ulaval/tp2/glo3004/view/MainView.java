@@ -2,41 +2,52 @@ package ca.ulaval.tp2.glo3004.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.text.NumberFormat;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import ca.ulaval.tp2.glo3004.ExecutionParameters;
-import ca.ulaval.tp2.glo3004.Main;
 import ca.ulaval.tp2.glo3004.control.IntersectionControllerFactory;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 
 public class MainView {
 
-	private static LightView threeWayLightView;
-	private static LightView crossLightView;
+	private static int MIN_VALUE = 1;
+	private static int STEP = 1;
+	private static int MAX_VALUE = 1000;
+	private static IntersectionType[] CHOICE_INTERSECTION = { IntersectionType.THREE_WAY, IntersectionType.CROSS, IntersectionType.SYNCHRO };
+
+	private static LightView threeWayLightView = new LightView(IntersectionType.THREE_WAY);
+	private static LightView crossLightView = new LightView(IntersectionType.CROSS);
+	
 	private static StateView stateView = new StateView();
 	private static List<Thread> threads;
-	private ExecutionParameters parameters;
-	private IntersectionType intersectionType;
 	
-	public MainView(IntersectionType intersectionType, ExecutionParameters parameters) {
-		this.parameters = parameters;
-		this.intersectionType = intersectionType;
-		threeWayLightView = new LightView(IntersectionType.THREE_WAY);
-		crossLightView = new LightView(IntersectionType.CROSS);
+	private JSpinner numberOfCarSpinner ;
+	private JSpinner numberOfPedestrianSpinner;
+	private JComboBox<IntersectionType> intersectionComboBox;
+	 
+	
+	public MainView() {
+		this.intersectionComboBox = new JComboBox<IntersectionType>(CHOICE_INTERSECTION);
+		this.numberOfCarSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
+		this.numberOfPedestrianSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
 	}
 
 	public void initialize() {
@@ -61,6 +72,11 @@ public class MainView {
 
 	public void startExecution() {
 
+		IntersectionType intersectionType = (IntersectionType) this.intersectionComboBox.getSelectedItem();
+		int numberOfCars = (Integer) this.numberOfCarSpinner.getValue();
+		int numberOfPedestrians = (Integer) this.numberOfPedestrianSpinner.getValue();
+		ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
+		
 		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(
 				threeWayLightView,
 				crossLightView, stateView);
@@ -69,35 +85,104 @@ public class MainView {
 				intersectionType, 
 				parameters);
 
-		this.initialize();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		threads.forEach(thread -> thread.start());
 	}
 
 	private JPanel createBothIntersectionPanels() {
-		GridLayout lightLayout = new GridLayout(2, 0, 30, 20);		
+		GridLayout lightLayout = new GridLayout(3, 0, 30, 20);		
 		
 		JPanel lightsPanel = new JPanel();
 		JPanel threeWayPanel = createIntersectionPanel(threeWayLightView);
 		JPanel crossPanel = createIntersectionPanel(crossLightView);
+		JPanel userChoicePanel = createUserChoicePanel();
+		
 		
 		lightsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		lightsPanel.setLayout(lightLayout);
 		lightsPanel.setBackground(Color.DARK_GRAY);
 		
+		lightsPanel.add(userChoicePanel);
 		lightsPanel.add(threeWayPanel);
 		lightsPanel.add(crossPanel);
 
 		return lightsPanel;
 	}
 
+	private JPanel createUserChoicePanel() {
+
+		JPanel choicePanel = new JPanel();
+		
+		
+		choicePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		choicePanel.setBackground(Color.BLACK);
+
+		
+		BorderLayout borderLayout = new BorderLayout();
+		choicePanel.setLayout(borderLayout);
+		
+		
+		JPanel parameterPanel =  createParameterPanel();
+		
+		choicePanel.add(parameterPanel, BorderLayout.CENTER);
+		
+		return choicePanel;
+	}
+	
+	
+	private JPanel createParameterPanel() {
+
+		JPanel parametersPanel = new JPanel();
+		parametersPanel.setBackground(Color.BLACK);
+		parametersPanel.setForeground(Color.WHITE);
+		
+		GridLayout parameterLayout = new GridLayout(3, 2, 30, 20);		
+		
+		parametersPanel.setLayout(parameterLayout);
+		
+		JLabel intersectionLabel = createLabel("Which intersection do you want to run?");
+		JPanel choiceIntersection = createSubChoicePanel();	
+		choiceIntersection.add(intersectionLabel, BorderLayout.PAGE_START);
+		choiceIntersection.add(intersectionComboBox, BorderLayout.CENTER);
+		
+		
+		JLabel numberOfCarLabel = createLabel("How many cars do you want ?");
+		JPanel choiceCar = createSubChoicePanel();	
+		choiceCar.add(numberOfCarLabel, BorderLayout.PAGE_START);
+		choiceCar.add(numberOfCarSpinner, BorderLayout.CENTER);
+	
+		JLabel numberOfPedestrianLabel = createLabel("How many pedestrians do you want ? ");
+		JPanel choicePedestrian = createSubChoicePanel();	
+		choicePedestrian.add(numberOfPedestrianLabel, BorderLayout.PAGE_START);
+		choicePedestrian.add(numberOfPedestrianSpinner, BorderLayout.CENTER);
+	
+
+		parametersPanel.add(choiceIntersection);
+		parametersPanel.add(choiceCar);
+		parametersPanel.add(choicePedestrian);
+
+		
+		return parametersPanel;
+	}
+	
+	private JLabel createLabel(String message) {
+		JLabel label = new JLabel(message);
+		label.setForeground(Color.WHITE);
+		
+		return label;
+	}
+	
+	private JPanel createSubChoicePanel() {
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
+		panel.setLayout(new BorderLayout());
+		
+		return panel;
+	}
+	
 	private JPanel createIntersectionPanel(LightView lightComponent) {
 
 		JPanel intersectionPanel = new JPanel();
+		
 		
 		intersectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		intersectionPanel.setBackground(Color.BLACK);
@@ -121,16 +206,34 @@ public class MainView {
 		JButton pauseButton    = createPauseButton();
 		JButton unpausedButton = createUnPausedButton();
 		JButton restartButton  = createRestartButton();
+		JButton startButton    = createStartButton();
 		JButton quitButton     = createQuitButton();
 
 		actionPanel.add(pauseButton);
 		actionPanel.add(unpausedButton);
+		actionPanel.add(startButton);
 		actionPanel.add(restartButton);
 		actionPanel.add(quitButton);
 
 		return actionPanel;
 	}
 
+private JButton createStartButton() {
+		
+		JButton startButton = new JButton("START");
+
+		startButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				startExecution();
+				
+			}
+		});
+		return startButton;
+	}
+	
 	private JButton createPauseButton() {
 		
 		JButton pauseButton = new JButton("PAUSE");

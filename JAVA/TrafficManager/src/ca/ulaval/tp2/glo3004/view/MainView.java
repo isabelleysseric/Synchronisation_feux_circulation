@@ -31,34 +31,35 @@ public class MainView {
 	private static int MIN_VALUE = 1;
 	private static int STEP = 1;
 	private static int MAX_VALUE = 1000;
-	private static IntersectionType[] CHOICE_INTERSECTION = { IntersectionType.THREE_WAY, IntersectionType.CROSS, IntersectionType.SYNCHRO };
+	private static IntersectionType[] CHOICE_INTERSECTION = { IntersectionType.THREE_WAY, IntersectionType.CROSS,
+			IntersectionType.SYNCHRO };
 
 	private static LightView threeWayLightView = new LightView(IntersectionType.THREE_WAY);
 	private static LightView crossLightView = new LightView(IntersectionType.CROSS);
-	
+
 	private static StateView stateView = new StateView();
 	private static List<Thread> threads;
-	
-	private JSpinner numberOfCarSpinner ;
+
+	private JSpinner numberOfCarSpinner;
 	private JSpinner numberOfPedestrianSpinner;
 	private JComboBox<IntersectionType> intersectionComboBox;
-	 
-	
+	private boolean isPaused;
+
 	public MainView() {
 		this.intersectionComboBox = new JComboBox<IntersectionType>(CHOICE_INTERSECTION);
 		this.numberOfCarSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
 		this.numberOfPedestrianSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
+		this.isPaused = false;
 	}
 
 	public void initialize() {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBounds(30, 30, 900, 700);
-		
+
 		BorderLayout mainContent = new BorderLayout();
 		JPanel lightsPanel = createBothIntersectionPanels();
-		JScrollPane stateViewScroll = new JScrollPane(stateView, 
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane stateViewScroll = new JScrollPane(stateView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		JPanel actionPanel = createActionPanel();
 
@@ -76,31 +77,27 @@ public class MainView {
 		int numberOfCars = (Integer) this.numberOfCarSpinner.getValue();
 		int numberOfPedestrians = (Integer) this.numberOfPedestrianSpinner.getValue();
 		ExecutionParameters parameters = new ExecutionParameters(numberOfCars, numberOfPedestrians);
-		
-		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(
-				threeWayLightView,
+
+		IntersectionControllerFactory controllerFactory = new IntersectionControllerFactory(threeWayLightView,
 				crossLightView, stateView);
 
-		threads = controllerFactory.createIntersectionControllerThreads(
-				intersectionType, 
-				parameters);
+		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
 
 		threads.forEach(thread -> thread.start());
 	}
 
 	private JPanel createBothIntersectionPanels() {
-		GridLayout lightLayout = new GridLayout(3, 0, 30, 20);		
-		
+		GridLayout lightLayout = new GridLayout(3, 0, 30, 20);
+
 		JPanel lightsPanel = new JPanel();
 		JPanel threeWayPanel = createIntersectionPanel(threeWayLightView);
 		JPanel crossPanel = createIntersectionPanel(crossLightView);
 		JPanel userChoicePanel = createUserChoicePanel();
-		
-		
+
 		lightsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		lightsPanel.setLayout(lightLayout);
 		lightsPanel.setBackground(Color.DARK_GRAY);
-		
+
 		lightsPanel.add(userChoicePanel);
 		lightsPanel.add(threeWayPanel);
 		lightsPanel.add(crossPanel);
@@ -111,79 +108,71 @@ public class MainView {
 	private JPanel createUserChoicePanel() {
 
 		JPanel choicePanel = new JPanel();
-		
-		
+
 		choicePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		choicePanel.setBackground(Color.BLACK);
 
-		
 		BorderLayout borderLayout = new BorderLayout();
 		choicePanel.setLayout(borderLayout);
-		
-		
-		JPanel parameterPanel =  createParameterPanel();
-		
+
+		JPanel parameterPanel = createParameterPanel();
+
 		choicePanel.add(parameterPanel, BorderLayout.CENTER);
-		
+
 		return choicePanel;
 	}
-	
-	
+
 	private JPanel createParameterPanel() {
 
 		JPanel parametersPanel = new JPanel();
 		parametersPanel.setBackground(Color.BLACK);
 		parametersPanel.setForeground(Color.WHITE);
-		
-		GridLayout parameterLayout = new GridLayout(3, 2, 30, 20);		
-		
+
+		GridLayout parameterLayout = new GridLayout(3, 2, 30, 20);
+
 		parametersPanel.setLayout(parameterLayout);
-		
+
 		JLabel intersectionLabel = createLabel("Which intersection do you want to run?");
-		JPanel choiceIntersection = createSubChoicePanel();	
+		JPanel choiceIntersection = createSubChoicePanel();
 		choiceIntersection.add(intersectionLabel, BorderLayout.PAGE_START);
 		choiceIntersection.add(intersectionComboBox, BorderLayout.CENTER);
-		
-		
+
 		JLabel numberOfCarLabel = createLabel("How many cars do you want ?");
-		JPanel choiceCar = createSubChoicePanel();	
+		JPanel choiceCar = createSubChoicePanel();
 		choiceCar.add(numberOfCarLabel, BorderLayout.PAGE_START);
 		choiceCar.add(numberOfCarSpinner, BorderLayout.CENTER);
-	
+
 		JLabel numberOfPedestrianLabel = createLabel("How many pedestrians do you want ? ");
-		JPanel choicePedestrian = createSubChoicePanel();	
+		JPanel choicePedestrian = createSubChoicePanel();
 		choicePedestrian.add(numberOfPedestrianLabel, BorderLayout.PAGE_START);
 		choicePedestrian.add(numberOfPedestrianSpinner, BorderLayout.CENTER);
-	
 
 		parametersPanel.add(choiceIntersection);
 		parametersPanel.add(choiceCar);
 		parametersPanel.add(choicePedestrian);
 
-		
 		return parametersPanel;
 	}
-	
+
 	private JLabel createLabel(String message) {
 		JLabel label = new JLabel(message);
 		label.setForeground(Color.WHITE);
-		
+
 		return label;
 	}
-	
+
 	private JPanel createSubChoicePanel() {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		panel.setLayout(new BorderLayout());
-		
+
 		return panel;
 	}
-	
+
 	private JPanel createIntersectionPanel(LightView lightComponent) {
 
 		JPanel intersectionPanel = new JPanel();
-		
-		
+
 		intersectionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		intersectionPanel.setBackground(Color.BLACK);
 
@@ -203,14 +192,12 @@ public class MainView {
 		JPanel actionPanel = new JPanel();
 		actionPanel.setBackground(Color.LIGHT_GRAY);
 
-		JButton pauseButton    = createPauseButton();
-		JButton unpausedButton = createUnPausedButton();
-		JButton restartButton  = createRestartButton();
-		JButton startButton    = createStartButton();
-		JButton quitButton     = createQuitButton();
+		JButton pauseButton = createPauseButton();
+		JButton restartButton = createRestartButton();
+		JButton startButton = createStartButton();
+		JButton quitButton = createQuitButton();
 
 		actionPanel.add(pauseButton);
-		actionPanel.add(unpausedButton);
 		actionPanel.add(startButton);
 		actionPanel.add(restartButton);
 		actionPanel.add(quitButton);
@@ -218,24 +205,24 @@ public class MainView {
 		return actionPanel;
 	}
 
-private JButton createStartButton() {
-		
+	private JButton createStartButton() {
+
 		JButton startButton = new JButton("START");
 
 		startButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				startExecution();
-				
+
 			}
 		});
 		return startButton;
 	}
-	
+
 	private JButton createPauseButton() {
-		
+
 		JButton pauseButton = new JButton("PAUSE");
 
 		pauseButton.addActionListener(new ActionListener() {
@@ -243,39 +230,47 @@ private JButton createStartButton() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" \n"
-								 + "**************************************** \n"
-				 		 		 + "MESSAGE: Interrupting threads \n"
-						 		 + "ACTION:  PAUSE \n"
-						 		 + "Click on \"unpaused\" to continue \n"
-						 		 + "**************************************** \n"
-						 		 + "\n");
-				threads.forEach(thread -> thread.suspend());
+				if (!isPaused) {
+					isPaused = true;
+					pauseExecution();
+					pauseButton.setText("RESUME");
+				} else {
+					isPaused = false;
+					resumeExecution();
+					pauseButton.setText("PAUSE");
+				}
 			}
 		});
 		return pauseButton;
 	}
-	
-	private JButton createUnPausedButton() {
-		JButton unpausedButton = new JButton("UNPAUSED");
-		unpausedButton.addActionListener(new ActionListener() {
 
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-				
-				System.out.println(" \n"
-								 + "**************************************** \n"
-						 		 + "MESSAGE: Interrupting threads \n"
-								 + "ACTION: UNPAUSED \n"
-						         + "We continue...   \n"   
-								 + "**************************************** \n" 
-						         + "\n");
-				threads.forEach(thread -> thread.resume());
-			}
-		});
-		return unpausedButton;
+	private void pauseExecution() {
+		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
+				+ "ACTION:  PAUSE \n" + "Click on \"Resume\" to continue \n"
+				+ "**************************************** \n" + "\n");
+		threads.forEach(thread -> thread.suspend());
 	}
-	
+
+	private void resumeExecution() {
+		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
+				+ "ACTION:  PAUSE \n" + "Click on \"unpaused\" to continue \n"
+				+ "**************************************** \n" + "\n");
+		threads.forEach(thread -> thread.resume());
+	}
+
+	/*
+	 * private JButton createUnPausedButton() { JButton unpausedButton = new
+	 * JButton("RESUME"); unpausedButton.addActionListener(new ActionListener() {
+	 * 
+	 * @SuppressWarnings("deprecation") public void actionPerformed(ActionEvent e) {
+	 * 
+	 * System.out.println(" \n" + "**************************************** \n" +
+	 * "MESSAGE: Interrupting threads \n" + "ACTION: UNPAUSED \n" +
+	 * "We continue...   \n" + "**************************************** \n" +
+	 * "\n"); threads.forEach(thread -> thread.resume()); } }); return
+	 * unpausedButton; }
+	 */
+
 	private JButton createRestartButton() {
 		JButton restartButton = new JButton("RESTART");
 
@@ -283,17 +278,14 @@ private JButton createStartButton() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" \n"
-								 + "**************************************** \n"
-								 + "MESSAGE: Interrupting threads \n"
-							 	 + "ACTION: RESTART \n"
-						 		 + "We start again !\n"
-						 		 + "**************************************** \n");
+				System.out.println(" \n" + "**************************************** \n"
+						+ "MESSAGE: Interrupting threads \n" + "ACTION: RESTART \n" + "We start again !\n"
+						+ "**************************************** \n");
 				threads.clear();
-				System.console ();
+				System.console();
 			}
 		});
-		return  restartButton;
+		return restartButton;
 	}
 
 	private JButton createQuitButton() {
@@ -303,12 +295,9 @@ private JButton createStartButton() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.print(" \n"
-								 + "**************************************** \n"
-						 		 + "MESSAGE: The list of threads is empty  \n"
-								 + "ACTION:  QUIT \n"
-				         		 + "See you next time !\n"
-								 + "**************************************** \n");
+				System.out.print(" \n" + "**************************************** \n"
+						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
+						+ "**************************************** \n");
 				threads.clear();
 				System.exit(0);
 			}

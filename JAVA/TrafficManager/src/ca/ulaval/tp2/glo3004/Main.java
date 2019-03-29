@@ -13,7 +13,7 @@ public class Main {
 	
 	public static void main(String[] args) throws InvalidCarActionException {
 		mainView = new MainView();
-		mainView.initialize();
+		mainView.render();
 	}
 	
 	private static void displayMenu() {

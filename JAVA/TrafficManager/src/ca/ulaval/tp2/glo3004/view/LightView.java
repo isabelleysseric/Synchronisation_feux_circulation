@@ -31,11 +31,12 @@ public class LightView extends JComponent {
 
 	private Object lock = new Object();
 	private IntersectionType intersectionType;
-	private Map<Direction, Light> lights = new HashMap<>();
+	private Map<Direction, Light> lights;
 
 	public LightView(IntersectionType intersectionType) {		
 		this.setPreferredSize(new Dimension(300, 200));
 		this.intersectionType = intersectionType;
+		this.lights = new HashMap<>();
 		reinitialize();
 	}
 

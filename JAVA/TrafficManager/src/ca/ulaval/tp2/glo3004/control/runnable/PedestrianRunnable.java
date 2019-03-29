@@ -1,5 +1,7 @@
 package ca.ulaval.tp2.glo3004.control.runnable;
 
+import ca.ulaval.tp2.glo3004.control.PedestrianController;
+
 public class PedestrianRunnable implements Runnable {
 
 	private boolean btnValue;
@@ -23,6 +25,7 @@ public class PedestrianRunnable implements Runnable {
 						wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+						return;
 					}
 			}
 			pedestrianController.go();

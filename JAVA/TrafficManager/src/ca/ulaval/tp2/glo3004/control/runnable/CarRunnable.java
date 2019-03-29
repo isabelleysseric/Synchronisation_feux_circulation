@@ -33,8 +33,6 @@ public class CarRunnable implements Runnable {
 					
 					syncController.carMove(direction, intersectionType);
 					
-					
-					
 				}
 				else {
 						controler.carMove(direction);

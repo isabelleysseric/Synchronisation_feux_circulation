@@ -82,5 +82,9 @@ public class StateView extends JTextPane {
 	private boolean isCross(IntersectionType intersectionType) {
 		return intersectionType.equals(IntersectionType.CROSS);
 	}
+	
+	public void clearDocument() {
+		this.setText("");
+	}
 
 }

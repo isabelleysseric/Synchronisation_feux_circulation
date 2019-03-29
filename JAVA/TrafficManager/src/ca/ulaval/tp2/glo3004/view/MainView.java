@@ -33,9 +33,11 @@ public class MainView {
 	private static int MAX_VALUE = 1000;
 	private static IntersectionType[] CHOICE_INTERSECTION = { IntersectionType.THREE_WAY, IntersectionType.CROSS,
 			IntersectionType.SYNCHRO };
+	private static SpinnerModel CAR_DEFAULT_SPINNER_MODEL = new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP);
+	private static SpinnerModel PEDESTRIAN_DEFAULT_SPINNER_MODEL = new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP);
 
-	private static LightView threeWayLightView = new LightView(IntersectionType.THREE_WAY);
-	private static LightView crossLightView = new LightView(IntersectionType.CROSS);
+	private static LightView threeWayLightView;
+	private static LightView crossLightView;
 
 	private static StateView stateView = new StateView();
 	private static List<Thread> threads;
@@ -43,16 +45,21 @@ public class MainView {
 	private JSpinner numberOfCarSpinner;
 	private JSpinner numberOfPedestrianSpinner;
 	private JComboBox<IntersectionType> intersectionComboBox;
-	private boolean isPaused;
+	private boolean appIsPaused;
+	private boolean appIsRunning;
 
 	public MainView() {
+		this.appIsPaused = false;
+		this.appIsRunning = false;
 		this.intersectionComboBox = new JComboBox<IntersectionType>(CHOICE_INTERSECTION);
-		this.numberOfCarSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
-		this.numberOfPedestrianSpinner = new JSpinner(new SpinnerNumberModel(MIN_VALUE, MIN_VALUE, MAX_VALUE, STEP));
-		this.isPaused = false;
+		this.numberOfCarSpinner = new JSpinner(CAR_DEFAULT_SPINNER_MODEL);
+		this.numberOfPedestrianSpinner = new JSpinner(PEDESTRIAN_DEFAULT_SPINNER_MODEL);
+		
+		threeWayLightView = new LightView(IntersectionType.THREE_WAY);
+		crossLightView = new LightView(IntersectionType.CROSS);
 	}
-
-	public void initialize() {
+	
+	public void render() {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBounds(30, 30, 900, 700);
@@ -84,6 +91,8 @@ public class MainView {
 		threads = controllerFactory.createIntersectionControllerThreads(intersectionType, parameters);
 
 		threads.forEach(thread -> thread.start());
+
+		appIsRunning = true;
 	}
 
 	private JPanel createBothIntersectionPanels() {
@@ -193,13 +202,11 @@ public class MainView {
 		actionPanel.setBackground(Color.LIGHT_GRAY);
 
 		JButton pauseButton = createPauseButton();
-		JButton restartButton = createRestartButton();
 		JButton startButton = createStartButton();
 		JButton quitButton = createQuitButton();
 
 		actionPanel.add(pauseButton);
 		actionPanel.add(startButton);
-		actionPanel.add(restartButton);
 		actionPanel.add(quitButton);
 
 		return actionPanel;
@@ -214,7 +221,14 @@ public class MainView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				startExecution();
+				if (!appIsRunning) {
+					startExecution();
+					startButton.setText("RESTART");
+				} else {
+					appIsRunning = false;
+					restartExecution();
+					startButton.setText("START");
+				}
 
 			}
 		});
@@ -230,12 +244,12 @@ public class MainView {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isPaused) {
-					isPaused = true;
+				if (!appIsPaused) {
+					appIsPaused = true;
 					pauseExecution();
 					pauseButton.setText("RESUME");
 				} else {
-					isPaused = false;
+					appIsPaused = false;
 					resumeExecution();
 					pauseButton.setText("PAUSE");
 				}
@@ -258,34 +272,28 @@ public class MainView {
 		threads.forEach(thread -> thread.resume());
 	}
 
-	/*
-	 * private JButton createUnPausedButton() { JButton unpausedButton = new
-	 * JButton("RESUME"); unpausedButton.addActionListener(new ActionListener() {
-	 * 
-	 * @SuppressWarnings("deprecation") public void actionPerformed(ActionEvent e) {
-	 * 
-	 * System.out.println(" \n" + "**************************************** \n" +
-	 * "MESSAGE: Interrupting threads \n" + "ACTION: UNPAUSED \n" +
-	 * "We continue...   \n" + "**************************************** \n" +
-	 * "\n"); threads.forEach(thread -> thread.resume()); } }); return
-	 * unpausedButton; }
-	 */
 
-	private JButton createRestartButton() {
-		JButton restartButton = new JButton("RESTART");
+	private void restartExecution() {
+		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
+				+ "ACTION: RESTART \n" + "We start again !\n" + "**************************************** \n");
 
-		restartButton.addActionListener(new ActionListener() {
+		threads.forEach(thread -> thread.interrupt());
+		threads.clear();
+		reinitializeViews();
+		
+		System.console();
+	}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(" \n" + "**************************************** \n"
-						+ "MESSAGE: Interrupting threads \n" + "ACTION: RESTART \n" + "We start again !\n"
-						+ "**************************************** \n");
-				threads.clear();
-				System.console();
-			}
-		});
-		return restartButton;
+	public void reinitializeViews() {
+		resetLightView(threeWayLightView);
+		resetLightView(crossLightView);
+		
+		stateView.clearDocument();
+	}
+	
+	private void resetLightView(LightView lightView) {
+		lightView.reinitialize();
+		lightView.repaint();
 	}
 
 	private JButton createQuitButton() {
@@ -298,6 +306,7 @@ public class MainView {
 				System.out.print(" \n" + "**************************************** \n"
 						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
 						+ "**************************************** \n");
+				threads.forEach(thread -> thread.interrupt());
 				threads.clear();
 				System.exit(0);
 			}
@@ -306,9 +315,6 @@ public class MainView {
 		return quitButton;
 	}
 
-	@SuppressWarnings("unused")
-	private void resetLightView(LightView lightView) {
-		lightView.reinitialize();
-		lightView.repaint();
-	}
+	
+	
 }

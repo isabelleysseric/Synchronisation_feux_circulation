@@ -7,7 +7,6 @@ import java.util.concurrent.CyclicBarrier;
 import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.control.runnable.CarRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.LightRunnable;
-import ca.ulaval.tp2.glo3004.control.runnable.PedestrianController;
 import ca.ulaval.tp2.glo3004.control.runnable.PedestrianRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.sync.LightSyncRunnable;
 import ca.ulaval.tp2.glo3004.control.runnable.sync.PedestrianSync;

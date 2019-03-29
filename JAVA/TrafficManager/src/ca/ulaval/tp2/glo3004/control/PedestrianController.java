@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.control.runnable;
+package ca.ulaval.tp2.glo3004.control;
 
 import ca.ulaval.tp2.glo3004.view.StateView;
 

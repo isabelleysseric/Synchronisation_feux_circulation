@@ -165,20 +165,19 @@ public class SyncController {
 
 	// Methode qui synchronise la circulation des voitures aux intersections
 	public void carMove(Direction direction, IntersectionType intersectionType) throws Exception {
-
+		
 		synchronized (lock) {
 
 			while (lightController.getLight(direction).isRed()) {
 				lock.wait();
 			}
-
+		}		
+		
+		if (isEastCross(direction, intersectionType) || isWestThreeWay(direction, intersectionType)) {
+			getCarFromPreviousIntersection(direction, intersectionType);
+		} else {
+			sendCarsToNextIntersection(direction, intersectionType);
 		}
-			if (isEastCross(direction, intersectionType) || isWestThreeWay(direction, intersectionType)) {
-				getCarFromPreviousIntersection(direction, intersectionType);
-			} else {
-
-				sendCarsToNextIntersection(direction, intersectionType);
-			}
 
 		synchronized (directionLocks.get(direction)) {
 			timeOutMaps.put(direction, true);
@@ -199,19 +198,31 @@ public class SyncController {
 		
 		Intersection intersection = this.synchroIntersection.getIntersection(intersectionType);
 		Direction oppositeDirection = intersection.getOppositeDirection(direction);
+		
+		synchronized (lock) {
+			
+			while (lightController.getLight(direction).isRed()) {
+				lock.wait();
+			}
+			
+			for (int i = 0; i < numberOfCars; i++) {
+				printLightStates();
 
-		for (int i = 0; i < numberOfCars; i++) {
-			printLightStates();
-
-			synchronized (lock) {
-				if (oppositeDirection == null || lightController.getLight(oppositeDirection).isRed()) {
-					car.randomMoveWithPriority();
-				} else {
-					car.randomMoveWithOppositeSideOn();
+				synchronized (lock) {
+					if (oppositeDirection == null || lightController.getLight(oppositeDirection).isRed()) {
+						car.randomMoveWithPriority();
+					} else {
+						car.randomMoveWithOppositeSideOn();
+					}
+					stateView.displayCarState(car, IN_SYNCHRO);
 				}
-				stateView.displayCarState(car, IN_SYNCHRO);
 			}
 		}
+		
+		synchronized (directionLocks.get(direction)) {
+			timeOutMaps.put(direction, true);
+			directionLocks.get(direction).notifyAll();
+		}		
 	}
 
 	/*

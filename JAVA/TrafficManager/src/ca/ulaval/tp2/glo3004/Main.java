@@ -27,25 +27,25 @@ public class Main {
 		
 		
 		System.out.println("" + "**************************************** \n"
-							  + "       BIENVENUE DANS LE PROGRAMME       \n" 
-							  + " Synchronisation de feux de circulation  \n"
+							  + "          WELCOME TO THE PROGRAM         \n" 
+							  + "     Synchronization of traffic lights   \n"
 							  + "**************************************** \n");
 
-		System.out.print("\n" + "Quelle intersection voulez-vous executer ? \n " 
-							  + "1. Intersection en T      \n "
-							  + "2. Intersection en croix  \n " 
-							  + "3. Les deux intersections \n" 
-							  + "Votre choix: ");
+		System.out.print("\n" + "Which intersection do you want to run? \n " 
+							  + "1. Intersection three way \n "
+							  + "2. Intersection cross     \n " 
+							  + "3. The two intersections  \n" 
+							  + "Your choice: ");
 		typeIntersection = myReader.nextInt();
 		myReader.nextLine();
 
-		System.out.print("\n" + "Combien de voitures voulez-vous ? \n" 
-					          + "Votre choix: ");
+		System.out.print("\n" + "How many cars do you want ? \n" 
+					          + "Your choice: ");
 		numberOfCars = myReader.nextInt();
 		myReader.nextLine();
 	
-		System.out.print("\n" + "Combien de pietons voulez-vous ? \n"
-					   		  + "Votre choix: ");
+		System.out.print("\n" + "How many pedestrians do you want ? \n"
+					   		  + "Your choice: ");
 		numberOfPedestrians = myReader.nextInt();
 		myReader.nextLine();
 		myReader.close();

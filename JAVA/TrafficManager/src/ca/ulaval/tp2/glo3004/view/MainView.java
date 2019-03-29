@@ -142,9 +142,9 @@ public class MainView {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(" \n"
 								 + "**************************************** \n"
-				 		 		 + "MESSAGE: Interuption des threads \n"
+				 		 		 + "MESSAGE: Interrupting threads \n"
 						 		 + "ACTION:  PAUSE \n"
-						 		 + "Cliquer sur \"unpaused\" pour continuer  \n"
+						 		 + "Click on \"unpaused\" to continue \n"
 						 		 + "**************************************** \n"
 						 		 + "\n");
 				threads.forEach(thread -> thread.suspend());
@@ -162,9 +162,9 @@ public class MainView {
 				
 				System.out.println(" \n"
 								 + "**************************************** \n"
-						 		 + "MESSAGE: Interuption des threads \n"
+						 		 + "MESSAGE: Interrupting threads \n"
 								 + "ACTION: UNPAUSED \n"
-						         + "On continue...   \n"   
+						         + "We continue...   \n"   
 								 + "**************************************** \n" 
 						         + "\n");
 				threads.forEach(thread -> thread.resume());
@@ -182,7 +182,7 @@ public class MainView {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(" \n"
 								 + "**************************************** \n"
-								 + "MESSAGE: Interuption des threads \n"
+								 + "MESSAGE: Interrupting threads \n"
 							 	 + "ACTION: RESTART \n"
 						 		 + "We start again !\n"
 						 		 + "**************************************** \n");
@@ -202,7 +202,7 @@ public class MainView {
 			public void actionPerformed(ActionEvent e) {
 				System.out.print(" \n"
 								 + "**************************************** \n"
-						 		 + "MESSAGE: La liste des threads est vid�e  \n"
+						 		 + "MESSAGE: The list of threads is empty  \n"
 								 + "ACTION:  QUIT \n"
 				         		 + "See you next time !\n"
 								 + "**************************************** \n");

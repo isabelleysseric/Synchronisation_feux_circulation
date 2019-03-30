@@ -55,16 +55,18 @@
 ===========
 <p>Le programme propose à l’utilisateur de controler:</p>
 <ol>
-  1. Le systemes avec les boutons en haut de la fenêtre: <code>START</code>, <code>PAUSE</code>, <code>QUIT</code> <br>
-  2. Les parametres avec le menu à droite de la fenêtre: <code>START</code>, <code>PAUSE</code>, <code>QUIT</code> <br>
+  1. Le système avec les boutons en haut de la fenêtre: <code>START</code>, <code>PAUSE</code>, <code>QUIT</code> <br>
+  2. Les parametres du système avec le menu à droite de la fenêtre pour le choix de l'intersection, le nombre de voitures et de piétons, ainsi que la fréquences des différentes lumières.
+<br>
 </ol>
+<p>Plus en détails, le programme offre à l’utilisateur de :</p>
 <ol>
 Choisir le type d'intersection qu'il veut avec <br>
   1. L'intersection en T <code>THREE_WAY</code>  <br> 
   2. L'intersection en croix <code>CROSS</code>  <br> 
   3. Les deux intersections synchronisées <code>SYNCHRO</code>  <br>
 <br>
-  Choisir avec une entier entre 0 et 1 000 <br>
+  Choisir avec un entier entre 0 et 1 000 <br>
   1. Le nombre de voitures  <br> 
   2. Le nombre de piétons   <br> 
 <br>
@@ -74,12 +76,13 @@ Choisir avec un intervalle entre 500 et 10 000 <br>
   3. La fréquence de la lumière Nord  <br>
   4. La fréquence de la lumière Sud   <br>
 </ol>
-<p>En haut de la fenêtre, l’utilisateur peut ensuite controler le programme avec :</p>
+<br>
+<p>Controler le programme avec :</p>
 <ol>
   1. Le bouton <code>START</code> pour démarrer le système <br>
-  2. Le bouton <code>RESTART</code> apparaît pour recommencer le système après un <code>START</code><br>
+  2. Le bouton <code>RESTART</code> qui apparaît après un <code>START</code> pour recommencer le système <br>
   3. Le bouton <code>PAUSE</code> pour mettre sur pause le système <br>
-  4. Le bouton <code>RESUME</code> apparaît pour continuer le système après un <code>PAUSE</code><br>
+  4. Le bouton <code>RESUME</code> qui apparaît après un <code>PAUSE</code> pour continuer le système <br>
 </ol>
 <br> 
 <br>
@@ -89,15 +92,15 @@ Choisir avec un intervalle entre 500 et 10 000 <br>
 ===========================
 <p><strong>Livrable 1 : Conception à partir de la spécification FSP</strong><br>
 Fichier: Livrable1Equipe33.docx<br>
-Vous y trouverez les <em>principaux événements, actions et interactions</em>, les <em>entités passives</em>, l'<em>environnement interactif d'affichage</em> et les <em>structure des classes</em> pour chacune des intersections et pour les deux synchronisées.</p>
+Vous y trouverez les <em>principaux événements, actions et interactions</em>, les <em>entités passives</em>, l'<em>environnement interactif d'affichage</em> et la <em>structure des classes</em> pour chacune des intersections et pour les deux synchronisées.</p>
+<br>
 <p><strong>Livrable 2 : Implémentation de la spécification FSP en Java</strong><br>
 Dossier : JAVA/TrafficManager<br>
-  
-Vous y trouverez le fichier <code>Main</code> qui est le programme principal, <code>Direction</code> et les trois dossiers <code>car</code>, <code>control</code> et <code>Light</code>.</p>
+Vous y trouverez le fichier <code>Main.java</code> qui est le programme principal, <code>ExecutionParameters.java</code> et les sept dossiers <code>car</code>, <code>controller</code>, <code>intersection</code>, <code>light</code>, <code>road</code>, <code>runnable</code> et <code>view</code>.</p>
+<br>
 <p><strong>Livrable 3 : Fichier README avec la présentation et les instructions du programme</strong><br>
-Fichier: README.md <br>
-  
-Vous y trouverez les informations nécessaire pour bien utiliser le programme avec sa <code>DESCRIPTION</code>, sa <code>MISE EN PLACE</code>, son <code>UTILISATION</code> et <code>RESSOURCES, DOCUMENTATION</code>pour compléter l'information. Le tout accompagné de ses <code>AUTEURS</code> et l'<code>ÉTAT DU PROJET</code> pour connaître la version du programme.</p>
+Fichier: README.txt <br>
+Vous y trouverez les informations nécessaires pour bien utiliser le programme avec sa <code>DESCRIPTION</code>, sa <code>MISE EN PLACE</code>, son <code>UTILISATION</code> et <code>RESSOURCES, DOCUMENTATION</code>pour compléter l'information. Le tout accompagné de ses <code>AUTEURS</code> et l'<code>ÉTAT DU PROJET</code> pour connaître la version du programme.</p>
 <p>Pour plus d'informations sur les  feux de circulation, visitez le site web de <a href="https://fr.wikipedia.org/wiki/Feu_de_circulationl">Wikipedia</a> ou bien celui de <a href="https://www.ontario.ca/fr/document/guide-officiel-de-lautomobiliste/feux-de-circulation">Ontario</a>.</p><br>
 <br>
 

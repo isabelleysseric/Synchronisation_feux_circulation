@@ -61,5 +61,9 @@ public abstract class Intersection {
 		return this.roads.get(directionType).getCar();
 	}
 	
+	public int getNumberOfDirections() {
+		return this.getAllDirections().length;
+	}
+	
 	
 }

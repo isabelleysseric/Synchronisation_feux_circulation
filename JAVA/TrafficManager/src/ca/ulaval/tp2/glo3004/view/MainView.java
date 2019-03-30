@@ -114,15 +114,6 @@ public class MainView {
 		IntersectionType intersectionType = (IntersectionType) this.intersectionComboBox.getSelectedItem();
 		
 		ExecutionParameters parameters = this.getExecutionParameters();
-
-		
-		/*parameters.addLightFrequency(Direction.WEST, 2000);
-		parameters.addLightFrequency(Direction.EAST, 1000);
-		parameters.addLightFrequency(Direction.SOUTH, 2000);
-		parameters.addLightFrequency(Direction.NORTH, 3000);*/
-		
-		/*OldIntersectionControllerFactory controllerFactory = new OldIntersectionControllerFactory(threeWayLightView,
-				crossLightView, stateView);*/
 		
 		TraficController controllerFactory = new TraficController(threeWayLightView,
 				crossLightView, stateView);

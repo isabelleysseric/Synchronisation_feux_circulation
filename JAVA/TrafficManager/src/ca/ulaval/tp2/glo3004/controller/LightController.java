@@ -11,25 +11,25 @@ public class LightController {
 	private CyclicBarrier carBarrier;
 
 	private CyclicBarrier pedestrianBarrier;
-	
-	private final AllLightController allLightController;
-	
 
-	public LightController(CyclicBarrier carBarrier, CyclicBarrier pedestrianBarrier, AllLightController allLightController) {
-		
+	private final AllLightController allLightController;
+
+	public LightController(CyclicBarrier carBarrier, CyclicBarrier pedestrianBarrier,
+			AllLightController allLightController) {
+
 		this.carBarrier = carBarrier;
 		this.pedestrianBarrier = pedestrianBarrier;
-	this.allLightController = allLightController;
+		this.allLightController = allLightController;
 	}
 
 	public synchronized void switchLightState(Direction direction) {
-	
+
 		boolean lightIsGreen = this.allLightController.lightIsGreen(direction);
-		
+
 		if (lightIsGreen) {
-			
+
 			allLightController.switchLight(direction, LightColor.RED);
-				
+
 			try {
 				System.out.println(direction + " PEDESTRIANS AWAIT");
 				pedestrianBarrier.await();
@@ -42,22 +42,18 @@ public class LightController {
 			allLightController.switchLight(direction, LightColor.GREEN);
 
 			try {
-				//System.out.println(direction + " ==> BEFORE BARRIER AWAKE GREEN LIGHT...");
+				// System.out.println(direction + " ==> BEFORE BARRIER AWAKE GREEN LIGHT...");
 				carBarrier.await();
-				
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (BrokenBarrierException e) {
-			
+
 				e.printStackTrace();
 			}
-	
-			
+
 		}
-		
+
 	}
-
-
-	
 
 }

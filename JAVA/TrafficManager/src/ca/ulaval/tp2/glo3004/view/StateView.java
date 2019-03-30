@@ -40,13 +40,14 @@ public class StateView extends JTextPane {
 		}
 	}
 
-	public void displayPedestrians() {
-		String pedestrianState = String.format("\n PEDESTRIANS::GO \n");
-		System.out.println("PEDESTRIANS::GO");
+	public void displayPedestrianState(IntersectionType intersectionType) {
+		String pedestrianState = String.format("\n %s:PEDESTRIANS::GO \n", intersectionType);
+		System.out.println(pedestrianState);
 		appendText(pedestrianState, PEDESTRIAN_TEXT_COLOR);
 	}
 
-	public void displayCarState(Car car, boolean isSynchro) throws Exception {
+	public void displayCarState(Car car) throws Exception {
+		
 		Direction direction = car.getDirection();
 		IntersectionType intersectionType = car.getIntersectionType();
 		IntersectionType nextIntersectionType = car.getNextIntersectionType();
@@ -55,18 +56,14 @@ public class StateView extends JTextPane {
 		carStateBuilder.append("\n");
 
 		if (nextIntersectionType == null) {
-			String singleMoveCarState = String.format("CAR:%s::%s:%s", 
-													  direction, intersectionType, action);
+			String singleMoveCarState = String.format("%s::CAR:%s:%s", 
+					intersectionType, direction, action);
 			carStateBuilder.append(singleMoveCarState);
 
-			if (isSynchro) {
-				String endMoveFlag = (car.canMoveToNextIntersection()) ? "->NEXT" : "->END";
-				carStateBuilder.append(endMoveFlag);
-			}
 		} else {
 			Action previousAction = car.getPreviousAction();
-			String doubleMoveCarState = String.format("CAR:%s:%s::%s -> %s:%s", 
-													   direction, intersectionType,
+			String doubleMoveCarState = String.format("%s:CAR:%s::%s -> %s:%s", 
+					intersectionType, direction,
 													   previousAction, nextIntersectionType, action);
 			carStateBuilder.append(doubleMoveCarState);
 		}

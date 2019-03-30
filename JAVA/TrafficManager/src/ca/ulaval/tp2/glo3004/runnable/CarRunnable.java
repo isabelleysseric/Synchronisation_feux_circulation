@@ -43,14 +43,12 @@ public class CarRunnable implements Runnable {
 
 			if (allLightController.oppositeSideIsGreen(direction)) {
 				car.randomMoveWithOppositeSideOn();
-				System.out.println(direction + ":CAR continue - tourne droite");
 
 			} else {
 				car.randomMoveWithPriority();
-				System.out.println(direction + ":CAR roule....");
 			}
 
-			stateView.displayCarState(car, false);
+			stateView.displayCarState(car);
 		}
 	}
 

@@ -66,6 +66,8 @@ public class MainView {
 	private JComboBox<IntersectionType> intersectionComboBox;
 	private boolean appIsPaused;
 	private boolean appIsRunning;
+	
+	private JButton pauseButtonGlobal;
 
 	public MainView() {
 		this.appIsPaused = false;
@@ -301,8 +303,10 @@ public class MainView {
 					startButton.setText("RESTART");
 				} else {
 					appIsRunning = false;
+					appIsPaused = false;
 					restartExecution();
 					startButton.setText("START");
+					pauseButtonGlobal.setText("PAUSE");
 				}
 
 			}
@@ -313,6 +317,7 @@ public class MainView {
 	private JButton createPauseButton() {
 
 		JButton pauseButton = new JButton("PAUSE");
+		pauseButtonGlobal = pauseButton;
 
 		pauseButton.addActionListener(new ActionListener() {
 

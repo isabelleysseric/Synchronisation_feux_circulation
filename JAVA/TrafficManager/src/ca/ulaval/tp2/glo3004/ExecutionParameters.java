@@ -1,37 +1,49 @@
 package ca.ulaval.tp2.glo3004;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ca.ulaval.tp2.glo3004.road.Direction;
+
 /**
  * Classe permettant l'acc�s et la modification du nombre de pietons et de voitures 
  */
 public class ExecutionParameters {
 
-	// Attributs priv�s de la classe
 	private int numberOfPedestrians;
 	private int numberOfCars;
 	
-	// Constructeur avec parametres 
+	private Map<Direction, Integer> lightFrequencies;
+	
 	public ExecutionParameters(int numberOfCars, int numberOfPedestrians) {
 		this.numberOfCars = numberOfCars;
 		this.numberOfPedestrians = numberOfPedestrians;
+		this.lightFrequencies = new HashMap<Direction, Integer>();
 	}
 	
-	// Methode permettant de lire l'attribut de numberOfCars
 	public int getNumberOfCars(){
 		return numberOfCars;
 	}
 	
-	// Methode permettant de modifier l'attribut numberOfCars
 	public void setNumberOfCars(int newNumberOfCars){
 		numberOfCars = newNumberOfCars;
 	}
 	
-	// Methode permettant de lire l'attribut de numberOfPedestrians
 	public int getNumberOfPedestrians(){
 		return numberOfPedestrians;
 	}
 	
-	// Methode permettant de modifier l'attribut numberOfPedestrians
 	public void setNumberOfPedestrians(int newNumberOfPedestrians){
 		numberOfPedestrians = newNumberOfPedestrians;
 	}
+	
+	public void addLightFrequency(Direction direction, int frequency) {
+		this.lightFrequencies.put(direction, frequency);
+	}
+	
+	public int getLightFrequency(Direction direction) {
+		return this.lightFrequencies.get(direction);
+	}
+	
+	
 }

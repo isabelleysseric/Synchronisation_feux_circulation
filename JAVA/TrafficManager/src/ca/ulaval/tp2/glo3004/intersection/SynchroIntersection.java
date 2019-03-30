@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.control.runnable.sync;
+package ca.ulaval.tp2.glo3004.intersection;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import ca.ulaval.tp2.glo3004.car.Car;
-import ca.ulaval.tp2.glo3004.intersection.Intersection;
-import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class SynchroIntersection {

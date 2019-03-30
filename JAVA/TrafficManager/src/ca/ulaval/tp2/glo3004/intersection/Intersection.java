@@ -51,9 +51,9 @@ public abstract class Intersection {
 		return this.intersectionType;
 	}
 
-	public Direction getOppositeDirection(Direction directionType) {
-	
-		return this.roads.get(directionType).getOppositeDirection();
+	public Direction getOppositeDirection(Direction direction) {
+	System.out.println("Direction: "+direction);
+		return this.roads.get(direction).getOppositeDirection();
 	}
 	
 	public Car getCar(Direction directionType) {

@@ -6,20 +6,9 @@ package ca.ulaval.tp2.glo3004.intersection;
 public enum IntersectionType {
 
 	THREE_WAY, CROSS, SYNCHRO, SYNCHRO_TEST;
-	
-	/*
-	private String icon;
-	 
-	IntersectionType(String icon) {
-	        this.icon = icon;
-	 }
-	 
-	 public String getIcon() {
-		 return icon;
-	  }
-	 */
-	 public String toString() {
-		 return String.format("%s", this.name());	//this.icon
-	 }
-   
+
+	public String toString() {
+		return String.format("%s", this.name()); // this.icon
+	}
+
 }

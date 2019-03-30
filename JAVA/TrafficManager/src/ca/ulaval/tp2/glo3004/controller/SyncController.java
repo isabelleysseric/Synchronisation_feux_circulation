@@ -1,4 +1,4 @@
-package ca.ulaval.tp2.glo3004.control;
+package ca.ulaval.tp2.glo3004.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import ca.ulaval.tp2.glo3004.ExecutionParameters;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.car.InvalidCarActionException;
-import ca.ulaval.tp2.glo3004.control.runnable.sync.SynchroIntersection;
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.LightColor;
@@ -25,8 +24,8 @@ import ca.ulaval.tp2.glo3004.view.StateView;
  */
 public class SyncController {
 
-	private static final boolean IN_SYNCHRO = true;
-	protected LightController lightController;
+	/*private static final boolean IN_SYNCHRO = true;
+	protected OldLightController lightController;
 	private Map<Direction, Boolean> timeOutMaps = new HashMap<Direction, Boolean>();
 	private Map<Direction, Object> directionLocks = new HashMap<Direction, Object>();
 	
@@ -52,7 +51,7 @@ public class SyncController {
 			StateView stateView,
 			LightView threeWayLightView,
 			LightView crossLightView, 
-			LightController lightController,
+			OldLightController lightController,
 			SynchroIntersection synchroIntersection) {
 		
 		this.lightController = lightController;
@@ -225,7 +224,7 @@ public class SyncController {
 	/*
 	 * PRODUCTEURS=> 3-WAY: EST-CONTINUE, SUD:GAUCHE
 	 * PRODUCTEURS => CROSS: NORD-GAUCHE, OUEST-CONTINUE, SUD:DROITE 
-	 * */
+	 * *
 	private void sendCarsToNextIntersection(Direction direction, IntersectionType intersectionType) throws Exception {
 		Car car = synchroIntersection.getCar(direction, intersectionType);
 		moveInCorrectDirection(car, direction, intersectionType);
@@ -251,7 +250,7 @@ public class SyncController {
 	/*
 	 * CONSOMMATEURS=> 3-WAY: OUEST
 	 * CONSOMMATEURS => CROSS: EST 
-	 * */
+	 * *
 	private void getCarFromPreviousIntersection(Direction direction, IntersectionType intersectionType)
 			throws Exception {
 		Car car = null;
@@ -267,5 +266,5 @@ public class SyncController {
 		}
 
 		moveInCorrectDirection(car, direction, intersectionType);
-	}
+	}*/
 }

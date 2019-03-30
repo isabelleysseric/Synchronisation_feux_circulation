@@ -3,7 +3,7 @@ package ca.ulaval.tp2.glo3004.car;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
-/**
+/*
  * Classe permettant la creation de voitures
  */
 public class CarFactory {

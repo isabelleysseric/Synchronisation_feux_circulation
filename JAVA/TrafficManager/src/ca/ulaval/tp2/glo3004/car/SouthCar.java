@@ -3,7 +3,7 @@ package ca.ulaval.tp2.glo3004.car;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
-/**
+/*
  * Classe permettant le passage des voitures venant du sud vers les differentes 
  * directions en toute securite.
  */

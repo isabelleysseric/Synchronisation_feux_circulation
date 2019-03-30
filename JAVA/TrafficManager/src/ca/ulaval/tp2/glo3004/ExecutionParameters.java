@@ -5,7 +5,7 @@ import java.util.Map;
 
 import ca.ulaval.tp2.glo3004.road.Direction;
 
-/**
+/*
  * Classe permettant l'acc�s et la modification du nombre de pietons et de voitures 
  */
 public class ExecutionParameters {

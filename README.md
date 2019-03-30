@@ -101,7 +101,7 @@ Vous y trouverez le fichier <code>Main.java</code> qui est le programme principa
 <p><strong>Livrable 3 : Fichier README avec la présentation et les instructions du programme</strong><br>
 Fichier: README.txt <br>
 Vous y trouverez les informations nécessaires pour bien utiliser le programme avec sa <code>DESCRIPTION</code>, sa <code>MISE EN PLACE</code>, son <code>UTILISATION</code> et <code>RESSOURCES, DOCUMENTATION</code>pour compléter l'information. Le tout accompagné de ses <code>AUTEURS</code> et l'<code>ÉTAT DU PROJET</code> pour connaître la version du programme.</p>
-<p>Pour plus d'informations sur les  feux de circulation, visitez le site web de <a href="https://fr.wikipedia.org/wiki/Feu_de_circulationl">Wikipedia</a> ou bien celui de <a href="https://www.ontario.ca/fr/document/guide-officiel-de-lautomobiliste/feux-de-circulation">Ontario</a>.</p><br>
+<p>Pour plus d'informations sur les  feux de circulation, visitez le site web de <a href="https://fr.wikipedia.org/wiki/Feu_de_circulation">Wikipedia</a> ou bien celui de <a href="https://www.ontario.ca/fr/document/guide-officiel-de-lautomobiliste/feux-de-circulation">Ontario</a>.</p><br>
 <br>
 
 

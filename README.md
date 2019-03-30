@@ -26,31 +26,60 @@
 
 ### DESCRIPTION:
 ===========
-<p>Ce système contrôle les lumières soit d'une intersection en T, sois d'une intersection ordinaire, soit sur les deux en même temps. Il permet aux voitures et aux piétons de circuler en toute sécurité.</p>
+<p>Ce système contrôle les lumières soit d'une intersection en T, soit d'une intersection en croix, soit sur les deux en même temps. Il permet aux voitures et aux piétons de circuler en toute sécurité.</p>
 <br> 
 <br>
 
 
 ### MISE EN PLACE:
 =============
-<p>Télécharger le fichier <code>Synchronisation_feux_circulation</code> puis en extraire les fichiers. Ouvrez votre IDE pour <code>Java</code> et importer le dossier <code>JAVA</code> qui se trouve dans <code>Synchronisation_feux_circulation</code>. Exécuter le programme principal nommé <code>Main.java</code> qui se trouve dans les répertoires <code>JAVA/TrafficManager/src/ca/ulaval/tp2/glo3004</code>. 
+<p>Suivre les étapes:</p>
+<ol>
+  1. Télécharger le fichier <code>Synchronisation_feux_circulation</code> puis en extraire les fichiers. <br>
+  2. Ouvrez votre IDE pour <code>Java</code> et importer le dossier <code>JAVA</code> qui se trouve dans <code>Synchronisation_feux_circulation</code>. <br>
+  3. Exécuter le programme principal nommé <code>Main.java</code> qui se trouve dans les répertoires <code>JAVA\TrafficManager\src\ca\ulaval\tp2\glo3004</code>. <br>
+  4. Une fenêtre devrait apparaître. Il faut y rentrer les parametres du système qui sont sur la droite : <br>
+  <ol>
+    * Le choix de l'intersection<br>
+    * Le nombre de voitures     <br>
+    * Le nombre de pétons       <br>
+    * La fréquence de chacune des lumières (Est, Ouest, Nord et Sud)<br>
+    </ol>
+  5. Un fois les paramètres rentrés, appuyer sur le bouton <code>Start</code> pour démarrer le système.<br>
+</ol>
 <br> 
 <br>
 
 
 ### UTILISATION:
 ===========
-<p>Le programme propose à l’utilisateur de :</p>
+<p>Le programme propose à l’utilisateur de controler:</p>
 <ol>
-Choisir l'intersection qu'il préfère avec <br>
-  <code>1. Intersection en T</code>       <br> 
-  <code>2. Intersection ordinaire</code>  <br> 
-  <code>3. Les deux intersections</code>  <br>
+  1. Le systemes avec les boutons en haut de la fenêtre: <code>START</code>, <code>PAUSE</code>, <code>QUIT</code> <br>
+  2. Les parametres avec le menu à droite de la fenêtre: <code>START</code>, <code>PAUSE</code>, <code>QUIT</code> <br>
+</ol>
+<ol>
+Choisir le type d'intersection qu'il veut avec <br>
+  1. L'intersection en T <code>THREE_WAY</code>  <br> 
+  2. L'intersection en croix <code>CROSS</code>  <br> 
+  3. Les deux intersections synchronisées <code>SYNCHRO</code>  <br>
 <br>
-Choisir la fréquence des lumières avec <br>
-  <code>1. Intervalle de 1 secondes</code>       <br> 
-  <code>2. Intervalle de 3 secondes</code>  <br> 
-  <code>3. Intervalle de 5 secondes</code>
+  Choisir avec une entier entre 0 et 1 000 <br>
+  1. Le nombre de voitures  <br> 
+  2. Le nombre de piétons   <br> 
+<br>
+Choisir avec un intervalle entre 500 et 10 000 <br>
+  1. La fréquence de la lumière Est   <br> 
+  2. La fréquence de la lumière Ouest <br> 
+  3. La fréquence de la lumière Nord  <br>
+  4. La fréquence de la lumière Sud   <br>
+</ol>
+<p>En haut de la fenêtre, l’utilisateur peut ensuite controler le programme avec :</p>
+<ol>
+  1. Le bouton <code>START</code> pour démarrer le système <br>
+  2. Le bouton <code>RESTART</code> apparaît pour recommencer le système après un <code>START</code><br>
+  3. Le bouton <code>PAUSE</code> pour mettre sur pause le système <br>
+  4. Le bouton <code>RESUME</code> apparaît pour continuer le système après un <code>PAUSE</code><br>
 </ol>
 <br> 
 <br>

@@ -324,15 +324,18 @@ public class MainView {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!appIsPaused) {
-					appIsPaused = true;
-					pauseExecution();
-					pauseButton.setText("RESUME");
-				} else {
-					appIsPaused = false;
-					resumeExecution();
-					pauseButton.setText("PAUSE");
-				}
+				if (appIsRunning) {
+					if (!appIsPaused) {
+						appIsPaused = true;
+						pauseExecution();
+						pauseButton.setText("RESUME");
+					} else {
+						appIsPaused = false;
+						resumeExecution();
+						pauseButton.setText("PAUSE");
+					}
+				} 
+				
 			}
 		});
 		return pauseButton;
@@ -354,6 +357,7 @@ public class MainView {
 
 
 	private void restartExecution() {
+		pauseExecution();
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION: RESTART \n" + "We start again !\n" + "**************************************** \n");
 

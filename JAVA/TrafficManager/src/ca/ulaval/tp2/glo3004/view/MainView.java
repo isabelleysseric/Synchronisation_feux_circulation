@@ -361,8 +361,10 @@ public class MainView {
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION: RESTART \n" + "We start again !\n" + "**************************************** \n");
 
-		threads.forEach(thread -> thread.interrupt());
-		threads.clear();
+		if(!(threads == null)) {
+			threads.forEach(thread -> thread.interrupt());
+			threads.clear();					
+		}	
 		reinitializeViews();
 		
 		System.console();
@@ -387,7 +389,7 @@ public class MainView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				pauseExecution();
+				threads.forEach(thread -> thread.suspend());
 				System.out.print(" \n" + "**************************************** \n"
 						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
 						+ "**************************************** \n");

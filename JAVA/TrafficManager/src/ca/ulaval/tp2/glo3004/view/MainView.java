@@ -386,8 +386,10 @@ public class MainView {
 				System.out.print(" \n" + "**************************************** \n"
 						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
 						+ "**************************************** \n");
-				threads.forEach(thread -> thread.interrupt());
-				threads.clear();
+				if(!(threads == null)) {
+					threads.forEach(thread -> thread.interrupt());
+					threads.clear();					
+				}				
 				System.exit(0);
 			}
 		});

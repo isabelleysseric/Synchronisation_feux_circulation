@@ -387,6 +387,7 @@ public class MainView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				pauseExecution();
 				System.out.print(" \n" + "**************************************** \n"
 						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
 						+ "**************************************** \n");

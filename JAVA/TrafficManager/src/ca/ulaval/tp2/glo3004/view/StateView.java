@@ -9,10 +9,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import ca.ulaval.tp2.glo3004.car.Action;
 import ca.ulaval.tp2.glo3004.car.Car;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
-import ca.ulaval.tp2.glo3004.road.Direction;
 
 public class StateView extends JTextPane {
 
@@ -46,42 +44,44 @@ public class StateView extends JTextPane {
 		appendText(pedestrianState, PEDESTRIAN_TEXT_COLOR);
 	}
 
-	public void displayCarState(Car car) throws Exception {
+	public void displayCarState(Car car, boolean isSynchro) throws Exception {
 		
-		Direction direction = car.getDirection();
 		IntersectionType intersectionType = car.getIntersectionType();
-		IntersectionType nextIntersectionType = car.getNextIntersectionType();
-		Action action = car.getCurrentAction();		
 		StringBuilder carStateBuilder = new StringBuilder();
+		
 		carStateBuilder.append("\n");
-
-		if (nextIntersectionType == null) {
-			String singleMoveCarState = String.format("%s::CAR:%s:%s", 
-					intersectionType, direction, action);
-			carStateBuilder.append(singleMoveCarState);
-
-		} else {
-			Action previousAction = car.getPreviousAction();
-			String doubleMoveCarState = String.format("%s:CAR:%s::%s -> %s:%s", 
-					intersectionType, direction,
-													   previousAction, nextIntersectionType, action);
-			carStateBuilder.append(doubleMoveCarState);
+ 
+		if(!isSynchro) {
+			carStateBuilder.append(car.singleIntersectionFormat());
 		}
-
+		else {
+			carStateBuilder.append(car.synchroIntersectionFormat());
+		}
+		
+		
 		carStateBuilder.append("\n");
 
-		System.out.println(carStateBuilder.toString());
-
+		
 		Color intersectionColor = (isCross(intersectionType)) ? CROSS_TEXT_COLOR : THREE_WAY_TEXT_COLOR;
 		appendText(carStateBuilder.toString(), intersectionColor);
+	}
+	
+	public void displayyncCarState(Car car) throws Exception {
+		
+		String carState = car.synchroIntersectionFormat();
+		IntersectionType intersectionType = car.getIntersectionType();
+		System.out.println(carState);
+
+		Color intersectionColor = (isCross(intersectionType)) ? CROSS_TEXT_COLOR : THREE_WAY_TEXT_COLOR;
+		appendText(carState.toString(), intersectionColor);
 	}
 
 	private boolean isCross(IntersectionType intersectionType) {
 		return intersectionType.equals(IntersectionType.CROSS);
 	}
-	
+
 	public void clearDocument() {
 		this.setText("");
 	}
-
+	
 }

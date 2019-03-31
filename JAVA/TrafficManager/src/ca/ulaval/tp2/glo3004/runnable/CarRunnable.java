@@ -8,6 +8,8 @@ import ca.ulaval.tp2.glo3004.view.StateView;
 
 public class CarRunnable implements Runnable {
 
+	private static boolean IS_NOT_SYNCHRO = false;
+	
 	private final AllLightController allLightController;
 	private final StateView stateView;
 	private final Car car;
@@ -48,7 +50,7 @@ public class CarRunnable implements Runnable {
 				car.randomMoveWithPriority();
 			}
 
-			stateView.displayCarState(car);
+			stateView.displayCarState(car, IS_NOT_SYNCHRO);
 		}
 	}
 

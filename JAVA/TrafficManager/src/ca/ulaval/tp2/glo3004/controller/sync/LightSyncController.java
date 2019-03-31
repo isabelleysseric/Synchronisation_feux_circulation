@@ -5,6 +5,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 import ca.ulaval.tp2.glo3004.car.Car;
+import ca.ulaval.tp2.glo3004.car.CarFactory;
 import ca.ulaval.tp2.glo3004.intersection.Intersection;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.LightColor;
@@ -14,8 +15,10 @@ import ca.ulaval.tp2.glo3004.view.StateView;
 
 public class LightSyncController {
 
+	
+	private static boolean IS_SYNCHRO = true;
+	
 	private CyclicBarrier lightBarrier;
-
 	private CyclicBarrier pedestrianBarrier;
 	
 	private final Intersection intersection;
@@ -24,6 +27,7 @@ public class LightSyncController {
 	private final BlockingQueue<Car> crossIncomingCars;
 	private final BlockingQueue<Car> threeWayIncomingCars;
 	private final int numberOfCars;
+	
 
 	
 	private final AllLightSyncController allLightSyncController;
@@ -61,7 +65,6 @@ public class LightSyncController {
 		} else {
 			
 			switchToGreen(direction);
-			
 		}
 		
 	}
@@ -113,7 +116,8 @@ public class LightSyncController {
 		if (isEastCross(direction, intersectionType) || isWestThreeWay(direction, intersectionType)) {
 			getCarFromPreviousIntersection(direction);
 		} else {
-			Car car = intersection.getCar(direction);
+			CarFactory carFactory = new CarFactory();
+			Car car = carFactory.createCar(direction, intersectionType);
 			sendCarsToNextIntersection(car);
 		}
 
@@ -136,7 +140,7 @@ public class LightSyncController {
 	 * Ajoute des voitures à une voie entrante (EST, OUEST)
 	 */
 	private void sendCarsToNextIntersection(Car car) throws Exception {
-		moveInCorrectDirection(car);
+		moveInCorrectDirection(car, car.getDirection());
 
 		IntersectionType intersectionType = intersection.getIntersectionType();
 
@@ -145,13 +149,13 @@ public class LightSyncController {
 
 			if (intersectionType.equals(IntersectionType.THREE_WAY)) {
 				
-				car.setNextIntersectionType(IntersectionType.CROSS);
 				this.crossIncomingCars.put(car);
+				car.setNextOrientation(IntersectionType.CROSS, Direction.EAST);
 
 			} else if (intersectionType.equals(IntersectionType.CROSS)) {
 				
-				car.setNextIntersectionType(IntersectionType.THREE_WAY);
 				this.threeWayIncomingCars.put(car);
+				car.setNextOrientation(IntersectionType.THREE_WAY, Direction.WEST);
 
 			} 
 		}
@@ -159,18 +163,17 @@ public class LightSyncController {
 	}
 
 	
-	private void moveInCorrectDirection(Car car) throws Exception {
+	private void moveInCorrectDirection(Car car, Direction direction) throws Exception {
 
-		Direction direction = car.getDirection();
-		
 		for (int i = 0; i < numberOfCars; i++) {
 
 			if (this.allLightSyncController.oppositeSideIsGreen(direction)) {
 				car.randomMoveWithPriority();
-				stateView.displayCarState(car);
+				stateView.displayCarState(car, IS_SYNCHRO);
+				
 			} else {
 				car.randomMoveWithOppositeSideOn();
-				stateView.displayCarState(car);
+				stateView.displayCarState(car, IS_SYNCHRO);
 			}
 			
 		}
@@ -184,15 +187,16 @@ public class LightSyncController {
 
 		IntersectionType intersectionType = intersection.getIntersectionType();
 
-		
 		Car car = null;
 		if (intersectionType.equals(IntersectionType.THREE_WAY) && !this.crossIncomingCars.isEmpty()) {
 			 car = this.crossIncomingCars.take();
-			 moveInCorrectDirection(car);
+			
+			 moveInCorrectDirection(car, car.getNextDirection());
 
 		} else if (intersectionType.equals(IntersectionType.CROSS) && !this.threeWayIncomingCars.isEmpty()) {
 			 car = this.threeWayIncomingCars.take();
-			 moveInCorrectDirection(car);
+			
+			 moveInCorrectDirection(car, car.getNextDirection());
 		} 
 	
 	}

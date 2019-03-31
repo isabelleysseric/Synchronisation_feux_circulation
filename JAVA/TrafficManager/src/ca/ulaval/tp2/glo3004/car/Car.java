@@ -14,6 +14,7 @@ public abstract class Car {
 	private Movement movement;
 	private IntersectionType intersectionType;
 	private IntersectionType nextIntersectionType;
+	private Direction nextDirection;
 	private Action previousAction;
 	private Action action;
 	
@@ -23,10 +24,15 @@ public abstract class Car {
 		initializeMovement(intersectionType);
 	}
 
-	public void setNextIntersectionType(IntersectionType nextIntersectionType) {
+	public void setNextOrientation(IntersectionType nextIntersectionType, Direction nextDirection) {
 		this.nextIntersectionType = nextIntersectionType;
+		this.nextDirection = nextDirection;
 	}
 
+	public Direction getNextDirection() {
+		return this.nextDirection;
+	}
+	
 	public void setPreviousAction() {
 		this.previousAction = action;
 	}
@@ -132,5 +138,29 @@ public abstract class Car {
 
 	public Movement getMovement() {
 		return this.getMovement();
+	}
+	
+	public String singleIntersectionFormat() {
+		return String.format("%s::CAR:%s:%s", intersectionType, direction, action);
+	}
+	
+	public String synchroIntersectionFormat() throws Exception {
+		StringBuilder carFormatBuilder = new StringBuilder();
+		
+		if (nextIntersectionType == null) {
+			String singleMoveCarState = this.singleIntersectionFormat();
+			carFormatBuilder.append(singleMoveCarState);
+
+			String endMoveFlag = (this.canMoveToNextIntersection()) ? "->NEXT" : "->END";
+			carFormatBuilder.append(endMoveFlag);
+
+		} else {
+		
+			String doubleMoveCarState = String.format("%s:CAR:%s::%s -> %s::%s:%s", intersectionType, direction,
+					previousAction, nextIntersectionType, nextDirection, action);
+			carFormatBuilder.append(doubleMoveCarState);
+		}
+
+		return carFormatBuilder.toString();
 	}
 }

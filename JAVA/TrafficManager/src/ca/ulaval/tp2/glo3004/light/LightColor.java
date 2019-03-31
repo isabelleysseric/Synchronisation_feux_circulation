@@ -4,7 +4,7 @@ package ca.ulaval.tp2.glo3004.light;
  * Enumeration des differents icons associés aux couleurs des lumieres
  */
 public enum LightColor {
-	// Enumeration
+	
 	RED, GREEN;
 
 	// Methode renvoyant les informations de la couleur de la lumiere
@@ -17,6 +17,6 @@ public enum LightColor {
 	}
 	
 	public boolean isRed() {
-		return this.equals(RED);
+		return this.equals(RED); 
 	}
 }

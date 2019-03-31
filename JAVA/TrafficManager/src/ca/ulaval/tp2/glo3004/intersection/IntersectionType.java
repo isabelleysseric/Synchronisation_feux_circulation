@@ -8,7 +8,7 @@ public enum IntersectionType {
 	THREE_WAY, CROSS, SYNCHRO, SYNCHRO_TEST;
 
 	public String toString() {
-		return String.format("%s", this.name()); // this.icon
+		return String.format("%s", this.name()); 
 	}
 
 }

@@ -9,7 +9,7 @@ public enum LightColor {
 
 	// Methode renvoyant les informations de la couleur de la lumiere
 	public String toString() {
-		return String.format("%s%s", this.name());
+		return String.format("%s", this.name() );
 	}
 
 	public boolean isGreen() {

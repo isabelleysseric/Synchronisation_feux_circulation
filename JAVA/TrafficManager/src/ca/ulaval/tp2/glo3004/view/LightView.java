@@ -13,9 +13,6 @@ import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.light.Light;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
-/**
- * 
- */
 public class LightView extends JComponent {
 
 	private static final long serialVersionUID = 1L;

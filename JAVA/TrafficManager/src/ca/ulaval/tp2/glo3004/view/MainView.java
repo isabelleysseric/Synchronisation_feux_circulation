@@ -324,15 +324,18 @@ public class MainView {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!appIsPaused) {
-					appIsPaused = true;
-					pauseExecution();
-					pauseButton.setText("RESUME");
-				} else {
-					appIsPaused = false;
-					resumeExecution();
-					pauseButton.setText("PAUSE");
-				}
+				if (appIsRunning) {
+					if (!appIsPaused) {
+						appIsPaused = true;
+						pauseExecution();
+						pauseButton.setText("RESUME");
+					} else {
+						appIsPaused = false;
+						resumeExecution();
+						pauseButton.setText("PAUSE");
+					}
+				} 
+				
 			}
 		});
 		return pauseButton;
@@ -342,23 +345,30 @@ public class MainView {
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION:  PAUSE \n" + "Click on \"Resume\" to continue \n"
 				+ "**************************************** \n" + "\n");
-		threads.forEach(thread -> thread.suspend());
+		if(!(threads == null)) {
+			threads.forEach(thread -> thread.suspend());				
+		}			
 	}
 
 	private void resumeExecution() {
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION:  PAUSE \n" + "Click on \"unpaused\" to continue \n"
 				+ "**************************************** \n" + "\n");
-		threads.forEach(thread -> thread.resume());
+		if(!(threads == null)) {
+			threads.forEach(thread -> thread.resume());					
+		}		
 	}
 
 
-	private void restartExecution() {
+	private void restartExecution() {		
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION: RESTART \n" + "We start again !\n" + "**************************************** \n");
 
-		threads.forEach(thread -> thread.interrupt());
-		threads.clear();
+		if(!(threads == null)) {
+			threads.forEach(thread -> thread.suspend());
+			threads.forEach(thread -> thread.interrupt());
+			threads.clear();					
+		}	
 		reinitializeViews();
 		
 		System.console();
@@ -382,11 +392,12 @@ public class MainView {
 		quitButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {				
 				System.out.print(" \n" + "**************************************** \n"
 						+ "MESSAGE: The list of threads is empty  \n" + "ACTION:  QUIT \n" + "See you next time !\n"
 						+ "**************************************** \n");
 				if(!(threads == null)) {
+					threads.forEach(thread -> thread.suspend());
 					threads.forEach(thread -> thread.interrupt());
 					threads.clear();					
 				}				

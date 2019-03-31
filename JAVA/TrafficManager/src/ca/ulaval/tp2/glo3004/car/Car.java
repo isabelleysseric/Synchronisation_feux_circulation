@@ -5,9 +5,10 @@ import java.util.Random;
 import ca.ulaval.tp2.glo3004.intersection.IntersectionType;
 import ca.ulaval.tp2.glo3004.road.Direction;
 
-/**
+/*
  * Classe abstraite definissant les actions possibles des voitures
  */
+
 public abstract class Car {
 
 	private Direction direction;

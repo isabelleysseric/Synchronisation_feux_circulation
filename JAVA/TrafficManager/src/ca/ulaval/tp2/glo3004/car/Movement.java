@@ -1,6 +1,6 @@
 package ca.ulaval.tp2.glo3004.car;
 
-/**
+/*
  *  Classe permettant des mouvements securitaires et des mouvements dans
  * des directions opposees
  */

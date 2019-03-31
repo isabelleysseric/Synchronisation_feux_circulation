@@ -357,7 +357,7 @@ public class MainView {
 
 
 	private void restartExecution() {
-		pauseExecution();
+		threads.forEach(thread -> thread.suspend());
 		System.out.println(" \n" + "**************************************** \n" + "MESSAGE: Interrupting threads \n"
 				+ "ACTION: RESTART \n" + "We start again !\n" + "**************************************** \n");
 

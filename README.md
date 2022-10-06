@@ -7,17 +7,11 @@
 <br>
 <br>
 
-[Isabelle Eysseric](http://vision.gel.ulaval.ca/fr/about/index.php) (Laboratoire de recherche)
-&nbsp; • &nbsp;[Elida MELO](https://iid.ulaval.ca/) (Institut de recherche)
-&nbsp; • &nbsp;[Ermine WANKPO](https://sentinellenord.ulaval.ca/projets-de-recherche/design-biophilique-dans-larctique-co-creation-communautaire) (Projet)
-&nbsp; • &nbsp;[Slim BEN YAHIA](http://vision.gel.ulaval.ca/~jflalonde/students/) (Equipe)
-&nbsp; • &nbsp;[iid-ulaval](https://iid-ulaval.slack.com/archives/C0141TJKPH7) (Slack)
-&nbsp; • &nbsp;[Photographie Algorithmique](http://wcours.gel.ulaval.ca/GIF4105/index.html) (Cours)
-&nbsp; • &nbsp;[Computer-Vision-Research-Project](https://github.com/isabelleysseric/Computer-Vision-Research-Project) (GitHub)
-&nbsp; • &nbsp;[Computer-Vision-Research-Project](https://github.com/isabelleysseric/Computer-Vision-Research-Project/wiki) (Wiki)
-&nbsp; • &nbsp;[isabelleysseric](https://hub.docker.com/u/isabelleysseric) (Docker)
-&nbsp; • &nbsp;[isabelleysseric.com](https://isabelleysseric.com) (Portfolio)
-&nbsp; • &nbsp;[isabelle-eysseric](https://www.linkedin.com/in/isabelle-eysseric/) (Linkedin)
+[Isabelle Eysseric](https://github.com/isabelleysseric) (GitHub)
+&nbsp; • &nbsp;[Elida MELO](https://github.com/ElidaGMelo) (GitHub)
+&nbsp; • &nbsp;[Slim BEN YAHIA](https://github.com/sbenyahia) (GitHub)
+&nbsp; • &nbsp;[Synchronisation_feux_circulation](https://github.com/isabelleysseric/Synchronisation_feux_circulation) (GitHub)
+&nbsp; • &nbsp;[Synchronisation_feux_circulation](https://github.com/isabelleysseric/Synchronisation_feux_circulation/wiki) (Wiki)
 <br/>
 <br/>
 

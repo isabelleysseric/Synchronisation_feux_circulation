@@ -1,6 +1,5 @@
 # Système de contrôle de lumières
 <br>
-<br>
 
 
 [Isabelle Eysseric](https://github.com/isabelleysseric) (GitHub)

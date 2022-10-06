@@ -2,10 +2,6 @@
 <br>
 <br>
 
-## Etape 1 : Spécification en FSP : Synchronisation de feux de circulation <br>
-<p><a href="https://commons.wikimedia.org/wiki/File:Carrefour_16_mouvements.jpg#/media/File:Carrefour_16_mouvements.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Carrefour_16_mouvements.jpg" alt="Carrefour_16_mouvements.jpg"></a><br>
-<br>
-<br>
 
 [Isabelle Eysseric](https://github.com/isabelleysseric) (GitHub)
 &nbsp; • &nbsp;[Elida MELO](https://github.com/ElidaGMelo) (GitHub)
@@ -15,6 +11,11 @@
 <br/>
 <br/>
 
+
+## Etape 1 : Spécification en FSP : Synchronisation de feux de circulation <br>
+<p><a href="https://commons.wikimedia.org/wiki/File:Carrefour_16_mouvements.jpg#/media/File:Carrefour_16_mouvements.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Carrefour_16_mouvements.jpg" alt="Carrefour_16_mouvements.jpg"></a><br>
+<br>
+<br>
 
   
 ### AUTEURS:<br>

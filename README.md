@@ -2,11 +2,14 @@
 <br>
 
 
-[Isabelle Eysseric](https://github.com/isabelleysseric) (GitHub)
-&nbsp; • &nbsp;[Elida MELO](https://github.com/ElidaGMelo) (GitHub)
-&nbsp; • &nbsp;[Slim BEN YAHIA](https://github.com/sbenyahia) (GitHub)
-&nbsp; • &nbsp;[Synchronisation_feux_circulation](https://github.com/isabelleysseric/Synchronisation_feux_circulation) (GitHub)
-&nbsp; • &nbsp;[Synchronisation_feux_circulation](https://github.com/isabelleysseric/Synchronisation_feux_circulation/wiki) (Wiki)
+<p align='center'>
+  <a href="https://github.com/isabelleysseric">Isabelle Eysseric</a> (GitHub)
+  &nbsp; • &nbsp;<a href="https://github.com/ElidaGMelo">Elida MELO</a> (GitHub)
+  &nbsp; • &nbsp;<a href="https://github.com/sbenyahia">Slim BEN YAHIA</a> (GitHub)<br/>
+  <a href="https://github.com/isabelleysseric/Synchronisation_feux_circulation">Synchronisation_feux_circulation</a> (GitHub)
+  &nbsp; • &nbsp;<a href="https://github.com/isabelleysseric/Synchronisation_feux_circulation/wiki">Synchronisation_feux_circulation</a> (Wiki)
+  &nbsp; • &nbsp;<a href="https://github.com/isabelleysseric">Isabelle Eysseric</a><br/>
+</p>
 <br/>
 <br/>
 <br/>

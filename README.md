@@ -9,12 +9,15 @@
 &nbsp; • &nbsp;[Synchronisation_feux_circulation](https://github.com/isabelleysseric/Synchronisation_feux_circulation/wiki) (Wiki)
 <br/>
 <br/>
+<br/>
+
 
 
 ## Etape 1 : Spécification en FSP : Synchronisation de feux de circulation <br>
 <p><a href="https://commons.wikimedia.org/wiki/File:Carrefour_16_mouvements.jpg#/media/File:Carrefour_16_mouvements.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Carrefour_16_mouvements.jpg" alt="Carrefour_16_mouvements.jpg"></a><br>
-<br>
-<br>
+<br/>
+<br/>
+
 
   
 ### AUTEURS:<br>
